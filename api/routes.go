@@ -17,17 +17,19 @@ type HTTPServer struct {
 }
 
 func (s *HTTPServer)RegisterRoutes(router *fiber.App) {
+	rg := router.Group("/mfEngine")
+	{
 
-	router.Get("/", s.healthCheck)
+		rg.Get("/", s.healthCheck)
 
-	router.Post("/api/basicDetailsLanguage",s.basicDetailsLanguageController)
+		rg.Post("/api/basicDetailsLanguage", s.basicDetailsLanguageController)
 
-	router.Post("/api/basicDetailsIncome",s.basicDetailsIncomeController)
+		rg.Post("/api/basicDetailsIncome", s.basicDetailsIncomeController)
 
-	router.Post("/api/basicDetailsExpenses",s.basicDetailsExpensesController)
+		rg.Post("/api/basicDetailsExpenses", s.basicDetailsExpensesController)
 
-	router.Get("/api/basicDetailsReport" , s.basicDetailsReportController)
-
+		rg.Get("/api/basicDetailsReport", s.basicDetailsReportController)
+	}
 }
 func  (s *HTTPServer)HandleNotFound(router *fiber.App){
 
