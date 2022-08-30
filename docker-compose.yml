@@ -1,14 +1,13 @@
 version: '3.8'
 services:
-  db:
-    image: postgres:14.1-alpine
-    restart: always
-    environment:
-      - PGHOST=db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  indivest-mf-go:
+    build: ./
     ports:
-      - '5432:5432'
+      - "8080:8080"
+    volumes:
+      - ./logs/indivest-mf-go:/app/logs
+    restart: always
+
 networks:
   default:
     external:
