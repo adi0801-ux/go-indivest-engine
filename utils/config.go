@@ -6,9 +6,13 @@ import (
 )
 
 type Config struct {
-	DSN    string `mapstructure:"DSN"`
-	GINMode string `mapstructure:"GIN_MODE"`
+	DSN           string `mapstructure:"DSN"`
+	GINMode       string `mapstructure:"GIN_MODE"`
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
+	RedisAddress  string `mapstructure:"REDIS_ADDRESS"`
+	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
+	RedisUserName string `mapstructure:"REDIS_USERNAME"`
+	RedisDb       int    `mapstructure:"REDIS_DB"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {
@@ -26,7 +30,6 @@ func LoadConfig(path string) (config *Config, err error) {
 	}
 	err = v.Unmarshal(&config)
 
-
 	v.OnConfigChange(func(e fsnotify.Event) {
 		Log.Warn("Config file changed:", e.Name)
 		err := ReadConfig(v, config)
@@ -36,7 +39,6 @@ func LoadConfig(path string) (config *Config, err error) {
 		}
 	})
 	v.WatchConfig()
-
 
 	return
 }

@@ -5,5 +5,10 @@ import (
 )
 
 type ServiceConfig struct {
-	UserRep  *repositories.UserDetailsRepository
+	UserRep *repositories.UserDetailsRepository
+}
+
+type SandboxServiceConfig struct {
+	SandboxRep *repositories.SandboxRepository
+	RedisRep   *repositories.RedisRepository
 }

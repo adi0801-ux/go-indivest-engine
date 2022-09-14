@@ -3,18 +3,16 @@ package main
 import (
 	"indivest-engine/api"
 	"indivest-engine/db"
+	"indivest-engine/redis"
 	"indivest-engine/repositories"
 	"indivest-engine/services"
 	"indivest-engine/utils"
 	"log"
 )
 
-
-
-
-func main(){
+func main() {
 	err := utils.InitialiseLogger()
-	if err!=nil{
+	if err != nil {
 		log.Fatalln(err)
 	}
 	utils.Log.Info("logger initialized")
@@ -46,26 +44,46 @@ func main(){
 	}
 
 	utils.Log.Info("database connected")
-	//create repository references
 
+	// Make Redis Connection
+	utils.Log.Info("redis connecting....")
+	redisStore, err := makeRedisConnection(config)
+
+	if err != nil {
+		utils.Log.Fatal(err)
+		return
+	}
+	utils.Log.Info("redis connected")
+
+	//create repository references
 
 	//Create a Repository Reference
 	userRep := repositories.UserDetailsRepository{
 		Db: store,
 	}
+	sandboxRep := repositories.SandboxRepository{
+		Db: store,
+	}
 
+	redisRepo := repositories.RedisRepository{
+		Db: redisStore,
+	}
 
 	//Create a service Reference
 	Srv := services.ServiceConfig{
 		UserRep: &userRep,
 	}
 
-	//creating a config
+	sandboxSrv := services.SandboxServiceConfig{
+		SandboxRep: &sandboxRep,
+		RedisRep:   &redisRepo,
+	}
 
+	//creating a config
 
 	utils.Log.Info("api server initializing")
 	//Create HTTP Server
-	server := api.GetNewServer(&Srv , config)
+	server := api.GetNewServer(&Srv, &sandboxSrv, config)
 
 	err = server.StartServer(config.ServerAddress)
 	if err != nil {
@@ -74,20 +92,29 @@ func main(){
 
 	utils.Log.Info("api server initialized")
 
-
-
 	// Results:
 	// Name: addUser, Method: GET
 	// Name: destroyUser, Method: DELETE
 
 }
 
-
 func makeDBConnection(config *utils.Config) (*db.Database, error) {
 	dbConfig := &db.ConnectionConfig{
-		DSN:      config.DSN,
+		DSN: config.DSN,
 	}
 
 	database, err := db.ConnectToDB(dbConfig)
 	return database, err
+}
+
+func makeRedisConnection(config *utils.Config) (*redis.Client, error) {
+	redisConfig := &redis.ConnectionConfig{
+		Address:  config.RedisAddress,
+		Password: config.RedisPassword,
+		Username: config.RedisUserName,
+		DBName:   config.RedisDb,
+	}
+	client, err := redis.ConnectToRedis(redisConfig)
+
+	return client, err
 }

@@ -9,38 +9,36 @@ import (
 )
 
 type IError struct {
-	Type string `json:"type"`
-	Field string 	`json:"field"`
-	Tag   string	`json:"tag"`
-	Value string	`json:"value"`
+	Type    string `json:"type"`
+	Field   string `json:"field"`
+	Tag     string `json:"tag"`
+	Value   string `json:"value"`
 	Message string `json:"message"`
 }
 
+func ValidateRequest[C any](s *HTTPServer, c *fiber.Ctx, requestBody *C) ([]IError, error) {
 
-func ValidateRequest[C any](s *HTTPServer , c *fiber.Ctx , requestBody *C) ([]IError , error ) {
-
-	if err := c.BodyParser(&requestBody); err !=nil {
-		fmt.Println(err)
-		if err.Error()==constants.UnprocessableEntity{
+	if err := c.BodyParser(&requestBody); err != nil {
+		if err.Error() == constants.UnprocessableEntity {
 			customError := IError{
-				Type: "Invalid json",
+				Type:    "Invalid json",
 				Message: "Json cannot be parsed",
 			}
-			return []IError{customError} , fmt.Errorf(customError.Message)
+			return []IError{customError}, fmt.Errorf(customError.Message)
 		}
 		te, _ := err.(*json.UnmarshalTypeError)
 
 		customError := IError{
-			Type:  "DataType Error",
-			Field: te.Field,
-			Tag:   te.Type.String(),
-			Value: te.Value,
-			Message: "Change the data type of the field to "+ te.Type.String(),
+			Type:    "DataType Error",
+			Field:   te.Field,
+			Tag:     te.Type.String(),
+			Value:   te.Value,
+			Message: "Change the data type of the field to " + te.Type.String(),
 		}
-		return []IError{customError} , fmt.Errorf(customError.Message)
+		return []IError{customError}, fmt.Errorf(customError.Message)
 	}
 
-	if err := s.validator.Struct(requestBody);err !=nil {
+	if err := s.validator.Struct(requestBody); err != nil {
 		var errors []IError
 		for _, err := range err.(validator.ValidationErrors) {
 			var el IError
@@ -50,12 +48,11 @@ func ValidateRequest[C any](s *HTTPServer , c *fiber.Ctx , requestBody *C) ([]IE
 			el.Type = "Validation Error"
 			el.Message = "Please refer docs for providing valid field value"
 
-
 			errors = append(errors, el)
 		}
 
-		return errors ,  fmt.Errorf(constants.ValidationError)
+		return errors, fmt.Errorf(constants.ValidationError)
 	}
 
-	return []IError{} , nil
+	return []IError{}, nil
 }
