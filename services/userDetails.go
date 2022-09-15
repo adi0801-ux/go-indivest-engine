@@ -10,14 +10,13 @@ func (u *ServiceConfig) AddLanguage(language *models.UserBasicDetailsLanguage) e
 
 	var userDetails models.UserDetails
 	userDetails.UserID = language.UserId
-	userDetails.Language =  language.Language
+	userDetails.Language = language.Language
 
 	err := u.UserRep.CreateOrUpdateUserDetails(&userDetails)
 
 	return err
 
 }
-
 
 func (u *ServiceConfig) AddIncome(Income *models.UserBasicDetailsIncome) error {
 
@@ -33,11 +32,11 @@ func (u *ServiceConfig) AddIncome(Income *models.UserBasicDetailsIncome) error {
 	return err
 }
 
-func (u *ServiceConfig) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (calcResp models.CalculationResponse ,err error ) {
+func (u *ServiceConfig) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (calcResp models.CalculationResponse, err error) {
 
 	userDetails, err := u.UserRep.ReadUserDetails(Expenses.UserId)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 
 	userDetails.UserID = Expenses.UserId
@@ -57,45 +56,41 @@ func (u *ServiceConfig) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (
 
 	err = u.UserRep.UpdateUserDetails(userDetails)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 	return u.CalculateUserInformation(userDetails)
 }
 
-func (u *ServiceConfig) GetUserInformation(UserId string)(calcResp models.CalculationResponse ,err error ){
+func (u *ServiceConfig) GetUserInformation(UserId string) (calcResp models.CalculationResponse, err error) {
 	userDetails, err := u.UserRep.ReadUserDetails(UserId)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 
 	return u.CalculateUserInformation(userDetails)
 
 }
 
-
-func (u *ServiceConfig) CalculateUserInformation(userDetails *models.UserDetails) (calcResp models.CalculationResponse ,err error ){
-
-
+func (u *ServiceConfig) CalculateUserInformation(userDetails *models.UserDetails) (calcResp models.CalculationResponse, err error) {
 
 	surplus, err := u.CalculateRecommendedInvestibleSurplus(userDetails)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 	calcResp.InvestibleSurplus = surplus
 
-	stats , err := u.CalculateCurrentPercentStats(userDetails)
+	stats, err := u.CalculateCurrentPercentStats(userDetails)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 	calcResp.CurrentPercentStats = stats
 
 	signal := u.CalculateHealthSignal(&stats)
 	calcResp.HealthSignal = signal
 
-
-	idealStats , err := u.CalculateIdealFinancialProfile(userDetails)
+	idealStats, err := u.CalculateIdealFinancialProfile(userDetails)
 	if err != nil {
-		return calcResp , err
+		return calcResp, err
 	}
 	calcResp.IdealPercentStats = idealStats
 
@@ -103,38 +98,36 @@ func (u *ServiceConfig) CalculateUserInformation(userDetails *models.UserDetails
 
 }
 
-func (u *ServiceConfig) CalculateRecommendedInvestibleSurplus(userDetails *models.UserDetails) (models.InvestibleSurplus , error) {
+func (u *ServiceConfig) CalculateRecommendedInvestibleSurplus(userDetails *models.UserDetails) (models.InvestibleSurplus, error) {
 
 	var rcmInvestibleFund models.InvestibleSurplus
 
-
 	if userDetails.MonthlyInvestibleSurplus <= 0 {
 		rcmInvestibleFund.EmergencyFund = 0
-	} else if userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund  < 1000 {
+	} else if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund < 1000 {
 		rcmInvestibleFund.EmergencyFund = userDetails.MonthlyInvestibleSurplus
-	} else if userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund  >1000 {
+	} else if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund > 1000 {
 		rcmInvestibleFund.EmergencyFund = constants.RecommendedEmergencyFund * userDetails.MonthlyInvestibleSurplus
 	}
 
-	if userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund >=1000 {
+	if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund >= 1000 {
 		rcmInvestibleFund.InvestibleFund = userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund
 	} else {
 		rcmInvestibleFund.InvestibleFund = 0
 	}
 
-	return rcmInvestibleFund , nil
+	return rcmInvestibleFund, nil
 }
 
-func (u *ServiceConfig) CalculateCurrentPercentStats(userDetails *models.UserDetails) (models.CurrentPercentStats , error ){
+func (u *ServiceConfig) CalculateCurrentPercentStats(userDetails *models.UserDetails) (models.CurrentPercentStats, error) {
 
 	var currentStats models.CurrentPercentStats
 
-	currentStats.EssentialExpenses = userDetails.MonthlyEssentialExpense / userDetails.GrossMonthlyIncome *100
+	currentStats.EssentialExpenses = userDetails.MonthlyEssentialExpense / userDetails.GrossMonthlyIncome * 100
 
-	currentStats.NonEssentialExpenses = userDetails.MonthlyNonEssentialExpense / userDetails.GrossMonthlyIncome *100
+	currentStats.NonEssentialExpenses = userDetails.MonthlyNonEssentialExpense / userDetails.GrossMonthlyIncome * 100
 
-	currentStats.Savings = userDetails.MonthlySavings / userDetails.GrossMonthlyIncome *100
-
+	currentStats.Savings = userDetails.MonthlySavings / userDetails.GrossMonthlyIncome * 100
 
 	return currentStats, nil
 }
@@ -144,13 +137,13 @@ func (u *ServiceConfig) CalculateHealthSignal(currentStats *models.CurrentPercen
 	var count int = 0
 
 	if currentStats.EssentialExpenses <= 50 {
-		count +=1
+		count += 1
 	}
 	if currentStats.NonEssentialExpenses <= 30 {
-		count+=1
+		count += 1
 	}
 	if currentStats.Savings > 20 {
-		count+=1
+		count += 1
 	}
 
 	switch count {
@@ -165,17 +158,16 @@ func (u *ServiceConfig) CalculateHealthSignal(currentStats *models.CurrentPercen
 	return constants.HealthSignalAmber
 }
 
-func (u *ServiceConfig) CalculateIdealFinancialProfile(userDetails *models.UserDetails) (models.IdealPercentStats , error ) {
+func (u *ServiceConfig) CalculateIdealFinancialProfile(userDetails *models.UserDetails) (models.IdealPercentStats, error) {
 
 	var idealStats models.IdealPercentStats
 
-	idealStats.EssentialExpenses = userDetails.MonthlyEssentialExpense * constants.IdealMonthlyEssentialExpense /  100
+	idealStats.EssentialExpenses = userDetails.GrossMonthlyIncome * constants.IdealMonthlyEssentialExpense / 100
 
-	idealStats.NonEssentialExpenses = userDetails.MonthlyNonEssentialExpense * constants.IdealMonthlyNonEssentialExpense /  100
+	idealStats.NonEssentialExpenses = userDetails.GrossMonthlyIncome * constants.IdealMonthlyNonEssentialExpense / 100
 
-	idealStats.Savings = userDetails.MonthlySavings * constants.IdealMonthlySavings /  100
+	idealStats.Savings = userDetails.GrossMonthlyIncome * constants.IdealMonthlySavings / 100
 
-	return idealStats , nil
+	return idealStats, nil
 
 }
-

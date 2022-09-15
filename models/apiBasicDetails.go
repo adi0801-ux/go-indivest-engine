@@ -22,6 +22,6 @@ type UserBasicDetailsExpenses struct {
 type CalculationResponse struct {
 	InvestibleSurplus   InvestibleSurplus   `json:"investible_surplus"`
 	CurrentPercentStats CurrentPercentStats `json:"current_percent_stats"`
-	IdealPercentStats   IdealPercentStats   `json:"ideal_percent_stats"`
+	IdealPercentStats   IdealPercentStats   `json:"ideal_stats"`
 	HealthSignal        string              `json:"health_signal"`
 }
