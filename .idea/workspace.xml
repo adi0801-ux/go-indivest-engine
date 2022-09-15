@@ -8,16 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/basicDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/basicDetails.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/sandbox.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.env" beforeDir="false" afterPath="$PROJECT_DIR$/app.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/error.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-15.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app/log.2022-09-15.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redis/functions.go" beforeDir="false" afterPath="$PROJECT_DIR$/redis/functions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/config.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
