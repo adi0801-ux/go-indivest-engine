@@ -13,4 +13,5 @@ const (
 	SIP                             = "SIP"
 	DefaultSandboxWalletHoldings    = 100000
 	DefaultSIPActiveSatus           = 1
+	DefaultfloatPrecissionAccepted  = 0.0005
 )

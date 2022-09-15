@@ -410,3 +410,137 @@
 {"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 13:44:05"}
 {"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 13:44:05"}
 {"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 13:44:05"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:31:27"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:31:27"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:31:27"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:31:27"}
+{"caller":"/db/connector.go:31","level":"error","msg":"failed to connect to `host=db user=postgres database=postgres`: hostname resolving error (lookup db: no such host)","time":"2022-09-15 15:31:27"}
+{"caller":"/main.go:37","level":"fatal","msg":"failed to connect to `host=db user=postgres database=postgres`: hostname resolving error (lookup db: no such host)","time":"2022-09-15 15:31:27"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:31:40"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:31:40"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:31:40"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:31:40"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:31:41"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:31:41"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:31:42"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:31:42"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:36:07"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:36:07"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:36:07"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:36:07"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:36:08"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:36:08"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:36:08"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:36:08"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:38:39"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:38:39"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:38:39"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:38:39"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:38:41"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:38:41"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:38:41"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:38:41"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:39:14"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:39:14"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:39:14"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:39:14"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:39:15"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:39:15"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:39:15"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:39:15"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:41:10"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:41:11"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:41:11"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:49:25"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:49:25"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:49:25"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:49:25"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:49:26"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:49:26"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:49:26"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:49:26"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:51:44"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:51:45"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:51:45"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:53:13"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:53:14"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:53:14"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 15:59:23"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 15:59:23"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 15:59:23"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 15:59:23"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 15:59:24"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 15:59:24"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 15:59:24"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 15:59:24"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:04:14"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:04:14"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:04:14"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:04:14"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:04:15"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:04:15"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:04:15"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:04:15"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:08:03"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:08:03"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:08:03"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:08:03"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:08:04"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:08:04"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:08:04"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:08:04"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:09:32"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:09:32"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:09:32"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:09:32"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:09:33"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:09:33"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:09:33"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:09:33"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:14:13"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:14:13"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:14:13"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:14:13"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:14:15"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:14:15"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:14:16"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:14:16"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:15:02"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:15:02"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:15:02"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:15:02"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:15:03"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:15:03"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:15:03"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:15:03"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:16:43"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:16:43"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:16:43"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:16:43"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:16:44"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:16:44"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:16:45"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:16:45"}
+{"caller":"/main.go:19","level":"info","msg":"logger initialized","time":"2022-09-15 17:20:14"}
+{"caller":"/main.go:23","level":"info","msg":"config loading...","time":"2022-09-15 17:20:14"}
+{"caller":"/main.go:30","level":"info","msg":"config loaded","time":"2022-09-15 17:20:14"}
+{"caller":"/main.go:32","level":"info","msg":"database connecting....","time":"2022-09-15 17:20:14"}
+{"caller":"/main.go:47","level":"info","msg":"database connected","time":"2022-09-15 17:20:15"}
+{"caller":"/main.go:50","level":"info","msg":"redis connecting....","time":"2022-09-15 17:20:15"}
+{"caller":"/main.go:57","level":"info","msg":"redis connected","time":"2022-09-15 17:20:15"}
+{"caller":"/main.go:91","level":"info","msg":"api server initializing","time":"2022-09-15 17:20:15"}

@@ -117,3 +117,12 @@ func (s *HTTPServer) sandboxGetTransactions(c *fiber.Ctx) error {
 	SendSuccessResponse(c, fiber.StatusOK, 1, "SUCCESS", transactions)
 	return nil
 }
+
+func (s *HTTPServer) sandboxUserInvestmentAnalysis(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(string)
+
+	report := s.SandboxSrv.InvestmentAnalysis(userID)
+
+	SendSuccessResponse(c, fiber.StatusOK, 1, "SUCCESS", report)
+	return nil
+}

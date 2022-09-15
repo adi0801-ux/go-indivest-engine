@@ -50,6 +50,8 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 		sandbox.Post("/redeemMutualFund", s.sandboxRedeemMutualFund)
 
+		sandbox.Get("/investmentAnalysis", s.sandboxUserInvestmentAnalysis)
+
 	}
 }
 func (s *HTTPServer) HandleNotFound(router *fiber.App) {

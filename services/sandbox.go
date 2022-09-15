@@ -84,6 +84,8 @@ func (u *SandboxServiceConfig) OneTimePayment(userTransaction *models.BuyMutualF
 func (u *SandboxServiceConfig) CreateBuyMfTransaction(userTransaction *models.BuyMutualFund, w *models.UserWallet, nav float64, SipId string) error {
 	unitsAllocated := userTransaction.Amount / nav
 
+	unitsAllocated = utils.RoundOfTo2Decimal(unitsAllocated)
+
 	//deduct wallet balance
 	w.INR = w.INR - userTransaction.Amount
 

@@ -22,4 +22,12 @@ type Holdings struct {
 	CurrentValue float64 `json:"current_value"`
 }
 
-//structure for portfolio report
+// InvestmentAnalysis structure for portfolio report
+type InvestmentAnalysis struct {
+	SchemeCode     string
+	Units          float64
+	InvestedAmount float64
+	CurrentWorth   float64
+	PNL            float64
+	PNLPercentage  float64
+}

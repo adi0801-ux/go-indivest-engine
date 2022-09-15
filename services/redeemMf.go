@@ -32,6 +32,8 @@ func (u *SandboxServiceConfig) CreateRedeemMfTransaction(userTransaction *models
 	//	deduct holding
 	unitsDeducted := userTransaction.Amount / nav
 
+	unitsDeducted = utils.RoundOfTo2Decimal(unitsDeducted)
+
 	err := u.DeductHoldings(userTransaction, unitsDeducted)
 	if err != nil {
 		return err
