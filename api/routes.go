@@ -52,6 +52,10 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 		sandbox.Get("/investmentAnalysis", s.sandboxUserInvestmentAnalysis)
 
+		sandbox.Get("/userMfActivity", s.sandboxUserMfActivity)
+
+		sandbox.Get("/userInvestmentPanel", s.sandboxUserMfInvestmentPanel)
+
 	}
 }
 func (s *HTTPServer) HandleNotFound(router *fiber.App) {

@@ -29,6 +29,7 @@ func (d *Database) RunMigrations() (err error) {
 		&models.UserMFTransactions{},
 		&models.UserMFActiveSIP{},
 		&models.UserMFHoldings{},
+		&models.UserMFDailyReport{},
 	)
 
 	return err

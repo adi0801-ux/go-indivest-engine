@@ -126,3 +126,29 @@ func (s *HTTPServer) sandboxUserInvestmentAnalysis(c *fiber.Ctx) error {
 	SendSuccessResponse(c, fiber.StatusOK, 1, "SUCCESS", report)
 	return nil
 }
+
+func (s *HTTPServer) sandboxUserMfActivity(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(string)
+
+	activity, err := s.SandboxSrv.UserMfActivity(userID)
+	if err != nil {
+		errorResponse(c, http.StatusBadRequest, err)
+		return nil
+	}
+
+	SendSuccessResponse(c, fiber.StatusOK, 1, "SUCCESS", activity)
+	return nil
+}
+
+func (s *HTTPServer) sandboxUserMfInvestmentPanel(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(string)
+
+	activity, err := s.SandboxSrv.InvestmentPanel(userID)
+	if err != nil {
+		errorResponse(c, http.StatusBadRequest, err)
+		return nil
+	}
+
+	SendSuccessResponse(c, fiber.StatusOK, 1, "SUCCESS", activity)
+	return nil
+}

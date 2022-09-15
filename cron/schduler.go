@@ -33,8 +33,20 @@ func timer() {
 func (cron *Cron) InitializeScheduler() {
 	cron.SIPJobs()
 
+	cron.DailyReportJobs()
+
 	//list more jobs
 	cron.Sc.StartAsync()
+}
+
+func (cron *Cron) DailyReportJobs() {
+
+	job := cron.Sc.Every(1).Day().At("23:59")
+
+	_, err := job.Do(cron.DailyReport)
+	if err != nil {
+		return
+	}
 }
 
 func (cron *Cron) SIPJobs() {
@@ -53,6 +65,18 @@ func (cron *Cron) SIP() {
 	//	deduct wallet balance --> call service
 
 	err := cron.SandboxSrv.ProcessSIP()
+	if err != nil {
+		utils.Log.Error(err)
+		return
+	}
+
+}
+
+func (cron *Cron) DailyReport() {
+	//	 fetch all active SIP's where date is current date
+	//	deduct wallet balance --> call service
+
+	err := cron.SandboxSrv.DailyReport()
 	if err != nil {
 		utils.Log.Error(err)
 		return

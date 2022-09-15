@@ -24,6 +24,19 @@ func (d *Database) ReadUserWallet_(userId string) (*models.UserWallet, error) {
 	return u, err
 }
 
+func (d *Database) ReadAllUserWallets_() (*[]models.UserWallet, error) {
+	u := &[]models.UserWallet{}
+	err := d.store.Find(u).Error
+	if err != nil {
+		return u, err
+	}
+	if len(*u) == 0 {
+
+		return u, fmt.Errorf(constants.NoTransactionFound)
+	}
+	return u, nil
+}
+
 func (d *Database) UpdateUserWallet_(u *models.UserWallet) error {
 
 	result := d.store.Where("user_id = ?", u.UserID).Updates(u)
@@ -108,6 +121,27 @@ func (d *Database) ReadUserHoldings_(userId string) (*[]models.UserMFHoldings, e
 	}
 	if len(*u) == 0 {
 		return u, fmt.Errorf(constants.NoHoldingsFound)
+	}
+	return u, nil
+}
+
+//daily report
+
+func (d *Database) CreateMFDailyReport_(w *models.UserMFDailyReport) error {
+	result := d.store.Create(&w)
+	return result.Error
+}
+
+func (d *Database) ReadAllMFDailyReport_(userId string, daysLimit int) (*[]models.UserMFDailyReport, error) {
+	u := &[]models.UserMFDailyReport{}
+	//queryParam := strconv.Itoa(daysLimit) + " days"
+	err := d.store.Where("user_id = ? and created_at >= (now() - INTERVAL '6 days')", userId).Find(u).Error
+	if err != nil {
+		return u, err
+	}
+	if len(*u) == 0 {
+
+		return u, fmt.Errorf(constants.NoTransactionFound)
 	}
 	return u, nil
 }

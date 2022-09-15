@@ -24,10 +24,20 @@ type Holdings struct {
 
 // InvestmentAnalysis structure for portfolio report
 type InvestmentAnalysis struct {
-	SchemeCode     string
-	Units          float64
-	InvestedAmount float64
-	CurrentWorth   float64
-	PNL            float64
-	PNLPercentage  float64
+	SchemeCode     string  `json:"scheme_code"`
+	Units          float64 `json:"units"`
+	InvestedAmount float64 `json:"invested_amount"`
+	CurrentWorth   float64 `json:"current_worth"`
+	PNL            float64 `json:"pnl"`
+	PNLPercentage  float64 `json:"pnl_percentage"`
+}
+
+type UserMfActivity struct {
+	CurrentWorth float64 `json:"current_worth"`
+	Date         string  `json:"date"`
+}
+
+type UserMfInvestmentPanel struct {
+	CurrentWorth    float64 `json:"current_worth"`
+	TotalInvestment float64 `json:"total_investment"`
 }

@@ -42,7 +42,7 @@ type UserMFTransactions struct {
 	ID              int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	TransactionID   string    `gorm:"column:transaction_id;not null;unique" json:"transaction_id"`
 	SipID           string    `gorm:"column:sip_id;not null" json:"sip_id"`
-	CreatedAt       time.Time `gorm:"column:created_at;not null" json:"created_at"`
+	CreatedAt       time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
 	UserID          string    `gorm:"column:user_id;not null" json:"user_id"`
 	SchemeCode      string    `gorm:"column:scheme_code;not null" json:"scheme_code"`
 	FundUnits       float64   `gorm:"column:units;not null" json:"units"`
@@ -62,7 +62,7 @@ const TableNameUserMFActiveSIP = "public.user_mutual_fund_active_sip"
 // UserMFActiveSIP mapped from table <public.user_mutual_fund_active_sip>
 type UserMFActiveSIP struct {
 	ID         int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt  time.Time `gorm:"column:created_at;not null" json:"created_at"`
+	CreatedAt  time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
 	UserID     string    `gorm:"column:user_id;not null" json:"user_id"`
 	SipID      string    `gorm:"column:sip_id;not null" json:"sip_id"`
 	SchemeCode string    `gorm:"column:scheme_code;not null" json:"scheme_code"`
@@ -74,4 +74,20 @@ type UserMFActiveSIP struct {
 // TableName UserMFVirtualPortfolio's table name
 func (*UserMFActiveSIP) TableName() string {
 	return TableNameUserMFActiveSIP
+}
+
+const TableNameUserMFDailyReport = "public.user_mutual_fund_daily_report"
+
+// UserMFDailyReport mapped from table <public.user_mutual_fund_daily_report>
+type UserMFDailyReport struct {
+	ID              int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt       time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
+	UserID          string    `gorm:"column:user_id;not null" json:"user_id"`
+	SchemeCode      string    `gorm:"column:scheme_code;not null" json:"scheme_code"`
+	InvestmentWorth float64   `gorm:"column:investment_worth;not null" json:"investment_worth"`
+}
+
+// TableName UserMFDailyReport's table name
+func (*UserMFDailyReport) TableName() string {
+	return TableNameUserMFDailyReport
 }

@@ -38,6 +38,11 @@ func (s *SandboxRepository) ReadUserWallet(userId string) (*models.UserWallet, e
 	return s.Db.ReadUserWallet_(userId)
 }
 
+func (s *SandboxRepository) ReadAllUserWallets() (*[]models.UserWallet, error) {
+
+	return s.Db.ReadAllUserWallets_()
+}
+
 func (s *SandboxRepository) UpdateUserWallet(u *models.UserWallet) error {
 
 	return s.Db.UpdateUserWallet_(u)
@@ -77,4 +82,13 @@ func (s *SandboxRepository) ReadUserHolding(userId string, schemeCode string) (*
 
 func (s *SandboxRepository) ReadUserHoldings(userId string) (*[]models.UserMFHoldings, error) {
 	return s.Db.ReadUserHoldings_(userId)
+}
+
+// CreateMFDailyReport create daily report
+func (s *SandboxRepository) CreateMFDailyReport(w *models.UserMFDailyReport) error {
+	return s.Db.CreateMFDailyReport_(w)
+}
+
+func (s *SandboxRepository) ReadAllMFDailyReport(userId string, daysLimit int) (*[]models.UserMFDailyReport, error) {
+	return s.Db.ReadAllMFDailyReport_(userId, daysLimit)
 }
