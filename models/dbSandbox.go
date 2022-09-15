@@ -62,7 +62,7 @@ const TableNameUserMFActiveSIP = "public.user_mutual_fund_active_sip"
 // UserMFActiveSIP mapped from table <public.user_mutual_fund_active_sip>
 type UserMFActiveSIP struct {
 	ID         int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt  time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
+	CreatedAt  time.Time `gorm:"column:created_at;default:now()" json:"created_at"`
 	UserID     string    `gorm:"column:user_id;not null" json:"user_id"`
 	SipID      string    `gorm:"column:sip_id;not null" json:"sip_id"`
 	SchemeCode string    `gorm:"column:scheme_code;not null" json:"scheme_code"`
