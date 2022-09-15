@@ -71,6 +71,13 @@ func (d *Database) CreateUserSIP_(w *models.UserMFActiveSIP) error {
 	return result.Error
 }
 
+func (d *Database) FindAllUserSIPWithDate_(SipDate int) (*[]models.UserMFActiveSIP, error) {
+	u := &[]models.UserMFActiveSIP{}
+
+	result := d.store.Where("sip_date = ? and active = ?", SipDate, constants.DefaultSIPActiveSatus).Find(u)
+	return u, result.Error
+}
+
 func (d *Database) UpdateOrCreateUserHoldings_(w *models.UserMFHoldings) error {
 	result := d.store.Model(&w).Where("user_id = ? AND scheme_code = ?", w.UserID, w.SchemeCode).Updates(&w)
 	if result.RowsAffected == 0 {

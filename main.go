@@ -2,6 +2,7 @@ package main
 
 import (
 	"indivest-engine/api"
+	"indivest-engine/cron"
 	"indivest-engine/db"
 	"indivest-engine/redis"
 	"indivest-engine/repositories"
@@ -78,6 +79,12 @@ func main() {
 		SandboxRep: &sandboxRep,
 		RedisRep:   &redisRepo,
 	}
+
+	//create cron Reference
+
+	cronRef := cron.Cron{SandboxSrv: &sandboxSrv, Sc: cron.CreateScheduler()}
+	// run cron jobs
+	cronRef.InitializeScheduler()
 
 	//creating a config
 

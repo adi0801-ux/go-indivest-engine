@@ -62,6 +62,10 @@ func (s *SandboxRepository) CreateUserSIP(w *models.UserMFActiveSIP) error {
 	return s.Db.CreateUserSIP_(w)
 }
 
+func (s *SandboxRepository) FindAllUserSIPWithDate(SipDate int) (*[]models.UserMFActiveSIP, error) {
+	return s.Db.FindAllUserSIPWithDate_(SipDate)
+}
+
 // UpdateOrCreateUserHoldings create or update user holdings
 func (s *SandboxRepository) UpdateOrCreateUserHoldings(w *models.UserMFHoldings) error {
 	return s.Db.UpdateOrCreateUserHoldings_(w)

@@ -12,4 +12,5 @@ const (
 	OneTimePayment                  = "One-Time"
 	SIP                             = "SIP"
 	DefaultSandboxWalletHoldings    = 100000
+	DefaultSIPActiveSatus           = 1
 )

@@ -68,6 +68,7 @@ type UserMFActiveSIP struct {
 	SchemeCode string    `gorm:"column:scheme_code;not null" json:"scheme_code"`
 	SIPAmount  float64   `gorm:"column:sip_amount;not null" json:"sip_amount"`
 	SIPDate    int       `gorm:"column:sip_date;not null" json:"sip_date"`
+	Active     int       `gorm:"column:active;not null" json:"active"`
 }
 
 // TableName UserMFVirtualPortfolio's table name
