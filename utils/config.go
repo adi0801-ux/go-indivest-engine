@@ -13,6 +13,7 @@ type Config struct {
 	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
 	RedisUserName string `mapstructure:"REDIS_USERNAME"`
 	RedisDb       int    `mapstructure:"REDIS_DB"`
+	AuthApi       string `mapstructure:"AUTH_API"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {

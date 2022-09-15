@@ -8,19 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/cron/schduler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/redeemMf.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/sandboxUser.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/state.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/state.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/sandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-14.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app/log.2022-09-14.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dbSandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dbSandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/sandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/sandbox.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/basicDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/basicDetails.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/sandbox.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.env" beforeDir="false" afterPath="$PROJECT_DIR$/app.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/error.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-15.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app/log.2022-09-15.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redis/functions.go" beforeDir="false" afterPath="$PROJECT_DIR$/redis/functions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/config.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

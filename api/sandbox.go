@@ -17,6 +17,8 @@ func (s *HTTPServer) sandboxBuyMutualFund(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userTransaction.UserId = c.Locals("userId").(string)
+
 	err = s.SandboxSrv.BuyMutualFund(&userTransaction)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
@@ -36,6 +38,8 @@ func (s *HTTPServer) sandboxRedeemMutualFund(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userTransaction.UserId = c.Locals("userId").(string)
+
 	err = s.SandboxSrv.RedeemMutualFund(&userTransaction)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
@@ -51,7 +55,7 @@ func (s *HTTPServer) sandboxGetHolding(c *fiber.Ctx) error {
 	if schemeCode == "" {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError+" scheme_code"))
 	}
-	userID := "123"
+	userID := c.Locals("userId").(string)
 
 	holding, err := s.SandboxSrv.GetUserHolding(userID, schemeCode)
 	if err != nil {
@@ -65,7 +69,7 @@ func (s *HTTPServer) sandboxGetHolding(c *fiber.Ctx) error {
 
 func (s *HTTPServer) sandboxGetAllHolding(c *fiber.Ctx) error {
 
-	userID := "123"
+	userID := c.Locals("userId").(string)
 
 	holding, err := s.SandboxSrv.GetAllUserHoldings(userID)
 	if err != nil {
@@ -79,7 +83,7 @@ func (s *HTTPServer) sandboxGetAllHolding(c *fiber.Ctx) error {
 
 func (s *HTTPServer) sandboxGetWallet(c *fiber.Ctx) error {
 
-	userID := "123"
+	userID := c.Locals("userId").(string)
 
 	wallet, err := s.SandboxSrv.GetUserWallet(userID)
 	if err != nil {
@@ -95,7 +99,7 @@ func (s *HTTPServer) sandboxGetTransactions(c *fiber.Ctx) error {
 
 	schemeCode := c.Query("scheme_code")
 
-	userID := "123"
+	userID := c.Locals("userId").(string)
 
 	var transactions []models.UserMFTransactions
 	var err error

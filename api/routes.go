@@ -19,9 +19,9 @@ type HTTPServer struct {
 
 func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	rg := router.Group("/mfEngine")
+	rg.Get("/", s.healthCheck)
+	rg.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
-
-		rg.Get("/", s.healthCheck)
 
 		rg.Post("/api/basicDetailsLanguage", s.basicDetailsLanguageController)
 
@@ -33,8 +33,10 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	}
 
 	sandbox := router.Group("/mfSandbox/api")
+	sandbox.Get("/", s.healthCheck)
+	sandbox.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
-		sandbox.Get("/", s.healthCheck)
+		//sandbox.Get("/", s.healthCheck)
 
 		sandbox.Post("/buyMutualFund", s.sandboxBuyMutualFund)
 
