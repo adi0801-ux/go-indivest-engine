@@ -12,7 +12,20 @@ func (u *SandboxServiceConfig) InvestmentAnalysis(userID string) []models.Invest
 
 	allTransactions, err := u.GetUserAllTransactions(userID)
 	if err != nil {
+		utils.Log.Error(err)
 		return []models.InvestmentAnalysis{}
+	}
+
+	//get daily report yesterday -->
+	yesterdayActivity, err := u.SandboxRep.ReadAllMFDailyReport(userID, 1)
+	if err != nil {
+		utils.Log.Error(err)
+		return []models.InvestmentAnalysis{}
+	}
+	//store in map
+	yesterdayActivityMap := make(map[string]models.UserMFDailyReport)
+	for _, report := range *yesterdayActivity {
+		yesterdayActivityMap[report.SchemeCode] = report
 	}
 
 	//	group by scheme code
@@ -33,8 +46,15 @@ func (u *SandboxServiceConfig) InvestmentAnalysis(userID string) []models.Invest
 	var investmentAnalysis []models.InvestmentAnalysis
 	for s, m := range transactions {
 
-		investmentAnalysis = append(investmentAnalysis, u.GetTransactionPerSide(s, m))
+		singleInvestment := u.GetTransactionPerSide(s, m)
+
+		singleInvestment.DayChange = utils.RoundOfTo2Decimal(singleInvestment.CurrentWorth - yesterdayActivityMap[singleInvestment.SchemeCode].InvestmentWorth)
+
+		singleInvestment.DayChangePercentage = utils.RoundOfTo2Decimal(singleInvestment.DayChange / yesterdayActivityMap[singleInvestment.SchemeCode].InvestmentWorth)
+
+		investmentAnalysis = append(investmentAnalysis, singleInvestment)
 	}
+
 	return investmentAnalysis
 }
 

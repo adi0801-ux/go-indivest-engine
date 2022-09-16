@@ -9,7 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dbSandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dbSandbox.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/connector.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/connector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/sandbox.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/sandbox.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/userInvestment.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/userInvestment.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

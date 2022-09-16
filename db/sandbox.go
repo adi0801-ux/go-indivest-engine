@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
+	"strconv"
 )
 
 func (d *Database) CreateUserWallet_(w *models.UserWallet) error {
@@ -134,8 +135,8 @@ func (d *Database) CreateMFDailyReport_(w *models.UserMFDailyReport) error {
 
 func (d *Database) ReadAllMFDailyReport_(userId string, daysLimit int) (*[]models.UserMFDailyReport, error) {
 	u := &[]models.UserMFDailyReport{}
-	//queryParam := strconv.Itoa(daysLimit) + " days"
-	err := d.store.Where("user_id = ? and created_at >= (now() - INTERVAL '6 days')", userId).Find(u).Error
+	queryParam := strconv.Itoa(daysLimit)
+	err := d.store.Where("user_id = ? and created_at >= (now() - INTERVAL '"+queryParam+" days')", userId).Find(u).Error
 	if err != nil {
 		return u, err
 	}
