@@ -15,4 +15,8 @@ const (
 	DefaultSIPActiveSatus           = 1
 	DefaultfloatPrecissionAccepted  = 0.0005
 	DefaultActivityDayLimit         = 6
+	StartFullKyc                    = "full_kyc"
+	UploadFile                      = "upload_file"
+	ReadPanCard                     = "read_pan_card"
+	SubmitPanCard                   = "pan_card"
 )

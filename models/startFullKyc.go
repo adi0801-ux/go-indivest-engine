@@ -20,7 +20,6 @@ type StartFullKycAPI struct {
 type StartFullKycDB struct {
 }
 
-
 type UploadFile struct {
 	UserId     string                `json:"user_id"`
 	UploadFile *multipart.FileHeader `json:"upload_file"`
@@ -50,9 +49,10 @@ type SubmitPanCardAPI struct {
 type SubmitPanCardAPIResponse struct {
 }
 
-type ReadAddressProof struct {
-	UserId string `json:"user_id"`
-	AddressProofType constant(
-		home
-		)
-}
+//
+//type ReadAddressProof struct {
+//	UserId string `json:"user_id"`
+//	AddressProofType constant(
+//		home
+//		)
+//}

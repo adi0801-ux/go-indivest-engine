@@ -112,4 +112,4 @@ func (p *ServiceConfig) SubmitPanCard(submitPanCard *models.SubmitPanCard) (int,
 	return response.StatusCode, nil, nil
 }
 
-func (p *ServiceConfig)ReadAddressProof(readAddressProof *models.)
+//func (p *ServiceConfig)ReadAddressProof(readAddressProof *models.)
