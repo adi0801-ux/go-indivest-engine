@@ -208,7 +208,27 @@ func (p *ServiceConfig) SubmitInvestorDetails(submitInvestor *models.SubmitInves
 	err = json.NewDecoder(response.Body).Decode(&data)
 	if err != nil {
 		utils.Log.Error(err)
-		return response.StatusCode, nil, err
+		return http.StatusBadRequest, nil, err
 	}
 	return response.StatusCode, nil, nil
+}
+
+func (p *ServiceConfig) UploadSignature(uploadSignature *models.UploadSignature) (int, interface{}, error) {
+	baseModel := models.UploadSignatureAPI{}
+	baseModel.UserId = uploadSignature.UserId
+	baseModel.ImageUrl = uploadSignature.ImageUrl
+
+	response, err := p.TSAClient.SendPostRequest(constants.UploadSignature, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.UploadSignatureAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
 }
