@@ -221,6 +221,19 @@ type GenerateKycContractAPIResponse struct {
 	RandomNumber string     `json:"random_number"`
 }
 
+// executeVerification struct
+type ExecuteVerification struct {
+	UserId     string     `json:"user_id"`
+	OnBoarding OnBoarding `json:"on_boarding"`
+}
+type ExecuteVerificationAPI struct {
+	UserId     string     `json:"user_id"`
+	OnBoarding OnBoarding `json:"on_boarding"`
+}
+type ExecuteVerificationAPIResponse struct {
+	OnBoarding OnBoarding `json:"on_boarding"`
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`

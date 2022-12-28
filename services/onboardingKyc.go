@@ -329,3 +329,21 @@ func (p *ServiceConfig) GenerateKycContract(generateKycContract *models.Generate
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) ExecuteVerification(executeVerification *models.ExecuteVerification) (int, interface{}, error) {
+	baseModel := models.ExecuteVerificationAPI{}
+	baseModel.UserId = executeVerification.UserId
+	response, err := p.TSAClient.SendPostRequest(constants.ExecuteVerification, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.ExecuteVerificationAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
+}
