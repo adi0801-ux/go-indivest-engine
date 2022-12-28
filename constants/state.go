@@ -20,4 +20,5 @@ const (
 	ReadPanCard                     = "read_pan_card"
 	SubmitPanCard                   = "pan_card"
 	ReadAddressProof                = "read_address_proof"
+	SubmitAddressProof              = "address_proof"
 )

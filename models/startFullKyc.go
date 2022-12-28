@@ -93,6 +93,42 @@ type ReadAddressProofAPIResponse struct {
 	FathersName    string     `json:"fathers_name"`
 }
 
+// submit addressProof models
+type SubmitAddressProof struct {
+	AddressProofType string `json:"address_proof_type"`
+	Name             string `json:"name"`
+	ExpiryDate       string `json:"expiry_date"`
+	DateOfBirth      string `json:"date_of_birth"`
+	IssueDate        string `json:"issue_date"`
+	Address          string `json:"address"`
+	City             string `json:"city"`
+	State            string `json:"state"`
+	District         string `json:"district"`
+	PinCode          string `json:"pin_code"`
+	LicenceNumber    string `json:"licence_number"`
+	AadharUid        string `json:"aadhar_uid"`
+	PassportNumber   string `json:"passport_number"`
+	VoterIdNumber    string `json:"voter_id_number"`
+}
+type SubmitAddressProofAPI struct {
+	AddressProofType string `json:"address_proof_type"`
+	Name             string `json:"name"`
+	ExpiryDate       string `json:"expiry_date"`
+	DateOfBirth      string `json:"date_of_birth"`
+	IssueDate        string `json:"issue_date"`
+	Address          string `json:"address"`
+	City             string `json:"city"`
+	State            string `json:"state"`
+	District         string `json:"district"`
+	PinCode          string `json:"pin_code"`
+	LicenceNumber    string `json:"licence_number"`
+	AadharUid        string `json:"aadhar_uid"`
+	PassportNumber   string `json:"passport_number"`
+	VoterIdNumber    string `json:"voter_id_number"`
+}
+type SubmitAddressProofAPIResponse struct {
+}
+
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`
 	PanNumber        string `json:"pan_number"`

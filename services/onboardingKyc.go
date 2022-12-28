@@ -153,3 +153,35 @@ func (p *ServiceConfig) ReadAddressProof(readAddressProof *models.ReadAddressPro
 	}
 	return response.StatusCode, nil, nil
 }
+
+func (p *ServiceConfig) SubmitAddressProof(submitAddressProof *models.SubmitAddressProof) (int, interface{}, error) {
+	baseModel := models.SubmitAddressProofAPI{}
+	baseModel.AddressProofType = submitAddressProof.AddressProofType
+	baseModel.Name = submitAddressProof.Name
+	baseModel.ExpiryDate = submitAddressProof.ExpiryDate
+	baseModel.DateOfBirth = submitAddressProof.DateOfBirth
+	baseModel.IssueDate = submitAddressProof.IssueDate
+	baseModel.Address = submitAddressProof.Address
+	baseModel.City = submitAddressProof.City
+	baseModel.State = submitAddressProof.State
+	baseModel.District = submitAddressProof.District
+	baseModel.PinCode = submitAddressProof.PinCode
+	baseModel.LicenceNumber = submitAddressProof.LicenceNumber
+	baseModel.AadharUid = submitAddressProof.AadharUid
+	baseModel.PassportNumber = submitAddressProof.PassportNumber
+	baseModel.VoterIdNumber = submitAddressProof.VoterIdNumber
+
+	response, err := p.TSAClient.SendPostRequest(constants.SubmitAddressProof, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.SubmitPanCardAPIResponse
+	//converting struct to []bytes
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, nil
+}
