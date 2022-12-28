@@ -36,3 +36,11 @@ type ReadAddressProofDB struct {
 	ExpiryDate     string     `gorm:"column:expiry_date" json:"expiry_date"`
 	FathersName    string     `gorm:"fathers_name" json:"fathers_name"`
 }
+
+type StartVideoVerificationDB struct {
+	ID            int32      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt     time.Time  `gorm:"column:createdAt;not null;default:now()" json:"created_at"`
+	OnBoarding    OnBoarding `json:"on_boarding"`
+	TransactionId string     `json:"transaction_id"`
+	RandomNumber  string     `json:"random_number"`
+}

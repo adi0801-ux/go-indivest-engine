@@ -24,4 +24,5 @@ const (
 	SubmitInvestorDetails           = "form"
 	UploadSignature                 = "signature"
 	UploadSelfie                    = "selfie"
+	StartVideoVerification          = "start_video_verification"
 )

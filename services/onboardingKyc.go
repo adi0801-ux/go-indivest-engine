@@ -250,5 +250,33 @@ func (p *ServiceConfig) UploadSelfie(uploadSelfie *models.UploadSelfie) (int, in
 		return http.StatusBadRequest, nil, err
 	}
 	return response.StatusCode, nil, err
+}
 
+func (p *ServiceConfig) StartVideoVerification(startVideoVerification *models.StartVideoVerification) (int, interface{}, error) {
+	baseModel := models.StartVideoVerificationAPI{}
+	baseModel.UserId = startVideoVerification.UserId
+
+	response, err := p.TSAClient.SendPostRequest(constants.StartVideoVerification, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.StartVideoVerificationAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	startVideo := &models.StartVideoVerificationDB{
+		OnBoarding:    data.OnBoarding,
+		TransactionId: data.TransactionId,
+		RandomNumber:  data.RandomNumber,
+	}
+	err = p.StartVideoVerificationRepo.CreateVideoVerification(startVideo)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
 }

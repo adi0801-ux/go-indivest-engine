@@ -42,3 +42,16 @@ func (s *ReadAddressProofReposotry) CreateReadAddressProof(w *models.ReadAddress
 func (s *ReadAddressProofReposotry) ReadAddressProof(userId string) (*models.ReadAddressProofDB, error) {
 	return s.Db.ReadAddressProof_(userId)
 }
+
+// startVideoVerification Repo
+type StartVideoVerificationRepository struct {
+	Db *db.Database
+}
+
+func (s *StartVideoVerificationRepository) CreateVideoVerification(w *models.StartVideoVerificationDB) error {
+	return s.Db.CreatVideoVerification_(w)
+}
+func (s *StartVideoVerificationRepository) ReadVideoVerification(userId string) (*models.StartVideoVerificationDB, error) {
+	return s.Db.ReadVideoVerification_(userId)
+
+}

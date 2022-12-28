@@ -181,6 +181,19 @@ type UploadSelfieAPI struct {
 type UploadSelfieAPIResponse struct {
 }
 
+// startVideoVerification
+type StartVideoVerification struct {
+	UserId string `json:"user_id"`
+}
+type StartVideoVerificationAPI struct {
+	UserId string `json:"user_id"`
+}
+type StartVideoVerificationAPIResponse struct {
+	OnBoarding    OnBoarding `json:"on_boarding"`
+	TransactionId string     `json:"transaction_id"`
+	RandomNumber  string     `json:"random_number"`
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`
