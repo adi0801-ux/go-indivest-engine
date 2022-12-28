@@ -22,4 +22,5 @@ const (
 	ReadAddressProof                = "read_address_proof"
 	SubmitAddressProof              = "address_proof"
 	SubmitInvestorDetails           = "form"
+	UploadSignature                 = "signature"
 )

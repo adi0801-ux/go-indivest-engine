@@ -156,6 +156,19 @@ type SubmitInvestorDetailsAPI struct {
 type SubmitInvestorDetailsAPIResponse struct {
 }
 
+// uploadSignature
+type UploadSignature struct {
+	UserId   string `json:"user_id"`
+	ImageUrl string `json:"image_url"`
+}
+
+type UploadSignatureAPI struct {
+	UserId   string `json:"user_id"`
+	ImageUrl string `json:"image_url"`
+}
+type UploadSignatureAPIResponse struct {
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`
