@@ -129,6 +129,34 @@ type SubmitAddressProofAPI struct {
 type SubmitAddressProofAPIResponse struct {
 }
 
+// submitInvestors Details
+type SubmitInvestorDetails struct {
+	Gender                       string `json:"gender"`
+	MaritalStatus                string `json:"marital_status"`
+	OccupationDescription        string `json:"occupation_description"`
+	OccupationCode               string `json:"occupation_code"`
+	CitizenshipCode              string `json:"citizenship_code"`
+	CitizenshipCountry           string `json:"citizenship_country"`
+	ApplicationStatusCode        string `json:"application_status_code"`
+	ApplicationStatusDescription string `json:"application_status_description"`
+	AnnualIncome                 string `json:"annual_income"`
+}
+
+type SubmitInvestorDetailsAPI struct {
+	Gender                       string `json:"gender"`
+	MaritalStatus                string `json:"marital_status"`
+	OccupationDescription        string `json:"occupation_description"`
+	OccupationCode               string `json:"occupation_code"`
+	CitizenshipCode              string `json:"citizenship_code"`
+	CitizenshipCountry           string `json:"citizenship_country"`
+	ApplicationStatusCode        string `json:"application_status_code"`
+	ApplicationStatusDescription string `json:"application_status_description"`
+	AnnualIncome                 string `json:"annual_income"`
+}
+type SubmitInvestorDetailsAPIResponse struct {
+}
+
+// onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`
 	PanNumber        string `json:"pan_number"`

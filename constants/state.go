@@ -21,4 +21,5 @@ const (
 	SubmitPanCard                   = "pan_card"
 	ReadAddressProof                = "read_address_proof"
 	SubmitAddressProof              = "address_proof"
+	SubmitInvestorDetails           = "form"
 )

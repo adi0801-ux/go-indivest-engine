@@ -176,12 +176,39 @@ func (p *ServiceConfig) SubmitAddressProof(submitAddressProof *models.SubmitAddr
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	var data models.SubmitPanCardAPIResponse
+	var data models.SubmitAddressProofAPIResponse
 	//converting struct to []bytes
 	err = json.NewDecoder(response.Body).Decode(&data)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, nil
+}
+
+func (p *ServiceConfig) SubmitInvestorDetails(submitInvestor *models.SubmitInvestorDetails) (int, interface{}, error) {
+	baseModel := models.SubmitInvestorDetailsAPI{}
+	baseModel.Gender = submitInvestor.Gender
+	baseModel.MaritalStatus = submitInvestor.MaritalStatus
+	baseModel.OccupationDescription = submitInvestor.OccupationDescription
+	baseModel.OccupationCode = submitInvestor.OccupationCode
+	baseModel.CitizenshipCode = submitInvestor.CitizenshipCode
+	baseModel.CitizenshipCountry = submitInvestor.CitizenshipCountry
+	baseModel.ApplicationStatusCode = submitInvestor.ApplicationStatusCode
+	baseModel.ApplicationStatusDescription = submitInvestor.ApplicationStatusDescription
+	baseModel.AnnualIncome = submitInvestor.AnnualIncome
+
+	response, err := p.TSAClient.SendPostRequest(constants.SubmitInvestorDetails, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.SubmitInvestorDetailsAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return response.StatusCode, nil, err
 	}
 	return response.StatusCode, nil, nil
 }
