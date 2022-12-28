@@ -23,4 +23,5 @@ const (
 	SubmitAddressProof              = "address_proof"
 	SubmitInvestorDetails           = "form"
 	UploadSignature                 = "signature"
+	UploadSelfie                    = "selfie"
 )

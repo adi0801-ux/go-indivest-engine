@@ -169,6 +169,18 @@ type UploadSignatureAPI struct {
 type UploadSignatureAPIResponse struct {
 }
 
+// uploadSelfie added
+type UploadSelfie struct {
+	UserId   string `json:"user_id"`
+	ImageUrl string `json:"image_url"`
+}
+type UploadSelfieAPI struct {
+	UserId   string `json:"user_id"`
+	ImageUrl string `json:"image_url"`
+}
+type UploadSelfieAPIResponse struct {
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`

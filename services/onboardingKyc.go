@@ -232,3 +232,23 @@ func (p *ServiceConfig) UploadSignature(uploadSignature *models.UploadSignature)
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) UploadSelfie(uploadSelfie *models.UploadSelfie) (int, interface{}, error) {
+	baseModel := models.UploadSelfieAPI{}
+	baseModel.UserId = uploadSelfie.UserId
+	baseModel.ImageUrl = uploadSelfie.ImageUrl
+	response, err := p.TSAClient.SendPostRequest(constants.UploadSelfie, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.UploadSignatureAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
+
+}
