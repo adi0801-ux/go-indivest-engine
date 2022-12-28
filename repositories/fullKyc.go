@@ -55,3 +55,16 @@ func (s *StartVideoVerificationRepository) ReadVideoVerification(userId string) 
 	return s.Db.ReadVideoVerification_(userId)
 
 }
+
+// generateKycContractRepo
+type GenerateKycContractRepository struct {
+	Db *db.Database
+}
+
+func (s *GenerateKycContractRepository) CreateKycContract(w *models.GenerateKycContractDB) error {
+	return s.Db.CreateKycContract_(w)
+}
+func (s *GenerateKycContractRepository) ReadKycContract(userId string) (*models.GenerateKycContractDB, error) {
+	return s.Db.ReadKycContract_(userId)
+
+}

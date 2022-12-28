@@ -11,6 +11,7 @@ type ServiceConfig struct {
 	ReadPanCardRepo            *repositories.ReadPanCardRepository
 	ReadAddressProofRepo       *repositories.ReadAddressProofReposotry
 	StartVideoVerificationRepo *repositories.StartVideoVerificationRepository
+	GenerteKycContractRepo     *repositories.GenerateKycContractRepository
 }
 
 type SandboxServiceConfig struct {

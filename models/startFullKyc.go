@@ -208,6 +208,19 @@ type SubmitVideoVerificationAPI struct {
 type SubmitVideoVerificationAPIResponse struct {
 }
 
+// generateKycContract
+type GenerateKycContract struct {
+	UserId string `json:"user_id"`
+}
+type GenerateKycContractAPI struct {
+	UserId string `json:"user_id"`
+}
+type GenerateKycContractAPIResponse struct {
+	OnBoarding   OnBoarding `json:"on_boarding"`
+	Url          string     `json:"url"`
+	RandomNumber string     `json:"random_number"`
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`

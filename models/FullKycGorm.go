@@ -19,8 +19,8 @@ type StartFullKycDB struct {
 
 type ReadAddressProofDB struct {
 	ID             int32      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt      time.Time  `gorm:"column:createdAt;not null;default:now()" json:"created_at"`
-	OnBoarding     OnBoarding `gorm:"column:onboarding" json:"on_boarding"`
+	CreatedAt      time.Time  `gorm:"column:created_at;not null;default:now()" json:"created_at"`
+	OnBoarding     OnBoarding `gorm:"column:on_boarding" json:"on_boarding"`
 	AadharUid      string     `gorm:"column:aadhar_uid" json:"aadhar_uid"`
 	LicenceNumber  string     `gorm:"column:licence_number" json:"licence_number"`
 	PassportNumber string     `gorm:"column:passport_number" json:"passport_number"`
@@ -39,8 +39,17 @@ type ReadAddressProofDB struct {
 
 type StartVideoVerificationDB struct {
 	ID            int32      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt     time.Time  `gorm:"column:createdAt;not null;default:now()" json:"created_at"`
+	CreatedAt     time.Time  `gorm:"column:created_at;not null;default:now()" json:"created_at"`
 	OnBoarding    OnBoarding `json:"on_boarding"`
 	TransactionId string     `json:"transaction_id"`
 	RandomNumber  string     `json:"random_number"`
+}
+
+type GenerateKycContractDB struct {
+	ID           int32      `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt    time.Time  `gorm:"column:created_at;not null;default:now()" json:"created_at"`
+	OnBoarding   OnBoarding `gorm:"column:on_boarding" json:"on_boarding"`
+	Url          string     `gorm:"column:url" json:"url"`
+	RandomNumber string     `gorm:"column:random_number" json:"random_number"`
+	UserId       string     `gorm:"column:user_id" json:"user_id"`
 }

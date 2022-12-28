@@ -300,3 +300,32 @@ func (p *ServiceConfig) SubmitVideoVerification(submitVideoVerification *models.
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) GenerateKycContract(generateKycContract *models.GenerateKycContract) (int, interface{}, error) {
+	baseModel := models.GenerateKycContractAPI{}
+	baseModel.UserId = generateKycContract.UserId
+	response, err := p.TSAClient.SendPostRequest(constants.GenerateKycContract, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.GenerateKycContractAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	generateKycCont := &models.GenerateKycContractDB{
+		UserId:       generateKycContract.UserId,
+		OnBoarding:   data.OnBoarding,
+		Url:          data.Url,
+		RandomNumber: data.RandomNumber,
+	}
+	err = p.GenerteKycContractRepo.CreateKycContract(generateKycCont)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
+}
