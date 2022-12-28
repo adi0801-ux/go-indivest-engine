@@ -19,4 +19,5 @@ const (
 	UploadFile                      = "upload_file"
 	ReadPanCard                     = "read_pan_card"
 	SubmitPanCard                   = "pan_card"
+	ReadAddressProof                = "read_address_proof"
 )

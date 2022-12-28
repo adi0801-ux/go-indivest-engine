@@ -112,4 +112,44 @@ func (p *ServiceConfig) SubmitPanCard(submitPanCard *models.SubmitPanCard) (int,
 	return response.StatusCode, nil, nil
 }
 
-//func (p *ServiceConfig)ReadAddressProof(readAddressProof *models.)
+func (p *ServiceConfig) ReadAddressProof(readAddressProof *models.ReadAddressProof) (int, interface{}, error) {
+	baseModel := models.ReadAddressProofAPI{}
+	baseModel.UserId = readAddressProof.UserId
+	baseModel.AddressProofType = readAddressProof.AddressProofType
+	baseModel.ImageUrl = readAddressProof.ImageUrl
+
+	response, err := p.TSAClient.SendPostRequest(constants.ReadAddressProof, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.ReadAddressProofAPIResponse
+	//converting struct to []bytes
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	readAddProof := &models.ReadAddressProofDB{
+		AadharUid:      readAddressProof.UserId,
+		LicenceNumber:  data.LicenceNumber,
+		PassportNumber: data.PassportNumber,
+		VoterIdNumber:  data.VoterIdNumber,
+		Name:           data.Name,
+		DateOfBirth:    data.DateOfBirth,
+		PinCode:        data.PinCode,
+		Address:        data.Address,
+		District:       data.District,
+		City:           data.City,
+		State:          data.State,
+		IssueDate:      data.IssueDate,
+		ExpiryDate:     data.ExpiryDate,
+		FathersName:    data.FathersName,
+	}
+	err = p.ReadAddressProofRepo.CreateReadAddressProof(readAddProof)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, nil
+}

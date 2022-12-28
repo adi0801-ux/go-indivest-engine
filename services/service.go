@@ -5,10 +5,11 @@ import (
 )
 
 type ServiceConfig struct {
-	UserRep         *repositories.UserDetailsRepository
-	TSAClient       *repositories.TSAClient
-	FullKycRepo     *repositories.AddFullKyc
-	ReadPanCardRepo *repositories.ReadPanCardRepository
+	UserRep              *repositories.UserDetailsRepository
+	TSAClient            *repositories.TSAClient
+	FullKycRepo          *repositories.AddFullKyc
+	ReadPanCardRepo      *repositories.ReadPanCardRepository
+	ReadAddressProofRepo *repositories.ReadAddressProofReposotry
 }
 
 type SandboxServiceConfig struct {
