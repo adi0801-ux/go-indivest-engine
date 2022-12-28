@@ -25,4 +25,5 @@ const (
 	UploadSignature                 = "signature"
 	UploadSelfie                    = "selfie"
 	StartVideoVerification          = "start_video_verification"
+	SubmitVideoVerification         = "video_verification"
 )

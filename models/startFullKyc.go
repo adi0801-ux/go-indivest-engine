@@ -194,6 +194,20 @@ type StartVideoVerificationAPIResponse struct {
 	RandomNumber  string     `json:"random_number"`
 }
 
+// submitVideoVerification
+type SubmitVideoVerification struct {
+	UserId        string `json:"user_id"`
+	VideoUrl      string `json:"video_url"`
+	TransactionId string `json:"transaction_id"`
+}
+type SubmitVideoVerificationAPI struct {
+	UserId        string `json:"user_id"`
+	VideoUrl      string `json:"video_url"`
+	TransactionId string `json:"transaction_id"`
+}
+type SubmitVideoVerificationAPIResponse struct {
+}
+
 // onBoarding object struct
 type OnBoarding struct {
 	Uuid             string `json:"uuid"`

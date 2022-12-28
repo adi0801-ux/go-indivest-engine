@@ -280,3 +280,23 @@ func (p *ServiceConfig) StartVideoVerification(startVideoVerification *models.St
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) SubmitVideoVerification(submitVideoVerification *models.SubmitVideoVerification) (int, interface{}, error) {
+	baseModel := models.SubmitVideoVerificationAPI{}
+	baseModel.UserId = submitVideoVerification.UserId
+	baseModel.VideoUrl = submitVideoVerification.VideoUrl
+	baseModel.TransactionId = submitVideoVerification.TransactionId
+	response, err := p.TSAClient.SendPostRequest(constants.SubmitVideoVerification, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.SubmitVideoVerificationAPIResponse
+	//convert struct to []byte
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
+}
