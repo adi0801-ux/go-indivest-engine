@@ -30,4 +30,5 @@ const (
 	ExecuteVerification             = "execute_verification"
 	India                           = "101"
 	GetSip                          = "sips?account_uuid=<UUID>"
+	CreateSip                       = "sips"
 )
