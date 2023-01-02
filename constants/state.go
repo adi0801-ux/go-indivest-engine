@@ -31,4 +31,5 @@ const (
 	India                           = "101"
 	GetSip                          = "sips?account_uuid=<UUID>"
 	CreateSip                       = "sips"
+	GetDeposits                     = "deposits?account_uuid=<UUID>"
 )
