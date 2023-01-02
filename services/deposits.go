@@ -8,12 +8,12 @@ import (
 	"net/http"
 )
 
-func(p *ServiceConfig)GetDeposits(getDeposits *models.GetDeposits)(int, interface{}, error{
+func (p *ServiceConfig) GetDeposits(getDeposits *models.GetDeposits) (int, interface{}, error) {
 	baseModel := models.GetDepositsAPI{}
 	baseModel.AccountUuid = getDeposits.AccountUuid
 
-	response, err := p.TSAClient.SendPostRequest(constants.GetDeposits,&baseModel)
-	if err!=nil{
+	response, err := p.TSAClient.SendPostRequest(constants.GetDeposits, &baseModel)
+	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
@@ -27,5 +27,6 @@ func(p *ServiceConfig)GetDeposits(getDeposits *models.GetDeposits)(int, interfac
 	return response.StatusCode, nil, err
 }
 
-
-
+func (p *ServiceConfig) ShowDeposits() (int, interface{}, error) {
+	return 0, nil, nil
+}
