@@ -29,4 +29,5 @@ const (
 	GenerateKycContract             = "generate_contract"
 	ExecuteVerification             = "execute_verification"
 	India                           = "101"
+	GetSip                          = "sips?account_uuid=<UUID>"
 )
