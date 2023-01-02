@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+
 	err := utils.InitialiseLogger()
 	if err != nil {
 		log.Fatalln(err)

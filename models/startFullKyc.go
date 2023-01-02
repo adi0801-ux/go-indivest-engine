@@ -131,7 +131,7 @@ type SubmitAddressProofAPIResponse struct {
 
 // submitInvestors Details
 type SubmitInvestorDetails struct {
-	Gender                       string `json:"gender"`
+	Gender                       string `json:"gender" validate:"required,oneof='M','F',T"`
 	MaritalStatus                string `json:"marital_status"`
 	OccupationDescription        string `json:"occupation_description"`
 	OccupationCode               string `json:"occupation_code"`
@@ -236,36 +236,27 @@ type ExecuteVerificationAPIResponse struct {
 
 // onBoarding object struct
 type OnBoarding struct {
-	Uuid             string `json:"uuid"`
-	PanNumber        string `json:"pan_number"`
-	ExistingInvestor bool   `json:"existing_investor"`
-	Name             string `json:"name"`
-	DateOfBirth      string `json:"date_of_birth"`
-	Email            string `json:"email"`
-	PhoneNumber      string `json:"phone_number"`
-	KycStatus        struct {
-		Success string `json:"success"`
-		Failure string `json:"failure"`
-		Pending string `json:"pending"`
-	} `json:"Kyc_status"`
+	Uuid                 string `json:"uuid"`
+	PanNumber            string `json:"pan_number"`
+	ExistingInvestor     bool   `json:"existing_investor"`
+	Name                 string `json:"name"`
+	DateOfBirth          string `json:"date_of_birth"`
+	Email                string `json:"email"`
+	PhoneNumber          string `json:"phone_number"`
+	KycStatus            string `json:"Kyc_status" validate:"required, oneof='success','failure','pending'"`
 	PanCardImageUrl      string `json:"pan_card_image_url"`
 	FathersName          string `json:"fathers_name"`
 	AddressProofImageUrl string `json:"address_proof_image_url"`
-	AddressProofType     struct {
-		Aadhar   string `json:"aadhar"`
-		VoterId  string `json:"voter_id"`
-		Passport string `json:"passport"`
-		Licence  string `json:"licence"`
-	} `json:"address_proof_type"`
-	Address            string `json:"address"`
-	City               string `json:"city"`
-	Pincode            string `json:"pincode"`
-	SignatureImageUrl  string `json:"signature_image_url"`
-	SelfieImageUrl     string `json:"selfie_image_url"`
-	CancelledChequeUrl string `json:"cancelled_cheque_url"`
-	VideoUrl           string `json:"video_url"`
-	AnnualIncome       string `json:"annual_income"`
-	Gender             string `json:"gender"`
-	Occupation         string `json:"occupation"`
-	MaritalStatus      string `json:"marital_status"`
+	AddressProofType     string `json:"address_proof_type" validate:"required, oneof='aadhar','voter_id','passport','licence'"`
+	Address              string `json:"address"`
+	City                 string `json:"city"`
+	Pincode              string `json:"pincode"`
+	SignatureImageUrl    string `json:"signature_image_url"`
+	SelfieImageUrl       string `json:"selfie_image_url"`
+	CancelledChequeUrl   string `json:"cancelled_cheque_url"`
+	VideoUrl             string `json:"video_url"`
+	AnnualIncome         string `json:"annual_income"`
+	Gender               string `json:"gender"`
+	Occupation           string `json:"occupation"`
+	MaritalStatus        string `json:"marital_status"`
 }

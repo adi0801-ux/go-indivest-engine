@@ -193,7 +193,7 @@ func (p *ServiceConfig) SubmitInvestorDetails(submitInvestor *models.SubmitInves
 	baseModel.OccupationDescription = submitInvestor.OccupationDescription
 	baseModel.OccupationCode = submitInvestor.OccupationCode
 	baseModel.CitizenshipCode = submitInvestor.CitizenshipCode
-	baseModel.CitizenshipCountry = submitInvestor.CitizenshipCountry
+	baseModel.CitizenshipCountry = constants.India
 	baseModel.ApplicationStatusCode = submitInvestor.ApplicationStatusCode
 	baseModel.ApplicationStatusDescription = submitInvestor.ApplicationStatusDescription
 	baseModel.AnnualIncome = submitInvestor.AnnualIncome
@@ -269,7 +269,6 @@ func (p *ServiceConfig) StartVideoVerification(startVideoVerification *models.St
 		return http.StatusBadRequest, nil, err
 	}
 	startVideo := &models.StartVideoVerificationDB{
-		OnBoarding:    data.OnBoarding,
 		TransactionId: data.TransactionId,
 		RandomNumber:  data.RandomNumber,
 	}

@@ -28,4 +28,5 @@ const (
 	SubmitVideoVerification         = "video_verification"
 	GenerateKycContract             = "generate_contract"
 	ExecuteVerification             = "execute_verification"
+	India                           = "101"
 )
