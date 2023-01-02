@@ -25,3 +25,7 @@ func (p *ServiceConfig) GetSip(getSip *models.GetSip) (int, interface{}, error) 
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) ShowSip() (int, interface{}, error) {
+	return http.StatusOK, nil, nil
+}
