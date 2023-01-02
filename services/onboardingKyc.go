@@ -21,7 +21,7 @@ func (p *ServiceConfig) StartFullKyc(userDetails *models.StartFullKyc) (int, int
 	response, err := p.TSAClient.SendPostRequest(constants.StartFullKyc, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
-		//	return http.StatusBadRequest, err
+		return http.StatusBadRequest, nil, err
 	}
 	fullKyc := &models.StartFullKycDB{}
 
