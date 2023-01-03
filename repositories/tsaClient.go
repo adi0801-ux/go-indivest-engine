@@ -7,6 +7,7 @@ import (
 	"indivest-engine/utils"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -20,7 +21,39 @@ func CreateHttpClient() *http.Client {
 	client := &http.Client{Timeout: 20 * time.Second}
 	return client
 }
+func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response *http.Response, errResp error) {
+	method := http.MethodGet
+	URL := h.BaseUrl + endpoint
 
+	req, err := http.NewRequest(method, URL, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.URL.RawQuery = params.Encode()
+
+	//save to db
+	apiLog := &models.APILog{
+		RequestId: utils.GenerateID(),
+		CreatedAt: time.Time{},
+		Method:    method,
+		Endpoint:  endpoint,
+	}
+	err = h.LogRep.CreateApiLog(apiLog)
+	if err != nil {
+		utils.Log.Error(err)
+		return nil, err
+	}
+	response, errResp = h.callTSA(req, apiLog.RequestId)
+	apiLog.ResponseCode = response.StatusCode
+	apiLog.ResponseDate = time.Now().String()
+	err = h.LogRep.UpdateApiLog(apiLog)
+	if err != nil {
+		utils.Log.Error(err)
+		return response, err
+	}
+	return response, errResp
+
+}
 func (h *TSAClient) SendPostRequest(endpoint string, body interface{}) (response *http.Response, errResp error) {
 	method := http.MethodPost
 	URL := h.BaseUrl + endpoint

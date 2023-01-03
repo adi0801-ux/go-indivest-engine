@@ -31,5 +31,10 @@ const (
 	India                           = "101"
 	GetSip                          = "sips?account_uuid=<UUID>"
 	CreateSip                       = "sips"
-	GetDeposits                     = "deposits?account_uuid=<UUID>"
+	GetDeposits                     = "deposits?"
+	CreateDeposit                   = "deposits"
+	Payout                          = "N"
+	Reinvest                        = "Y"
+	Growth                          = "Z"
+	Bonus                           = "B"
 )
