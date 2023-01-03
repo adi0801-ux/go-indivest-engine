@@ -6,12 +6,15 @@ import (
 	"indivest-engine/models"
 	"indivest-engine/utils"
 	"net/http"
+	"net/url"
 )
 
 func (p *ServiceConfig) GetSip(getSip *models.GetSip) (int, interface{}, error) {
 	baseModel := models.GetSipAPI{}
 	baseModel.AccountUuid = getSip.AccountUuid
-	response, err := p.TSAClient.SendPostRequest(constants.GetSip, &baseModel)
+	params := url.Values{}
+	params.Add("account_uuid", getSip.AccountUuid)
+	response, err := p.TSAClient.SendGetRequest(constants.GetSip, params)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
