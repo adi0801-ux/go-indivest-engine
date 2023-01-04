@@ -35,6 +35,27 @@ type CreateDepositAPIResponse struct {
 	Url     string  `json:"url"`
 }
 
+// createBasketOfDeposits
+type CreateBasketOfDeposits struct {
+	PaymentRedirectUrl   string    `json:"payment_redirect_url"`
+	AccountUuid          string    `json:"account_uuid"`
+	OnBoardingUuid       string    `json:"onBoarding_uuid"`
+	PartnerTransactionId string    `json:"partner_transaction_id"`
+	DepositsParts        [2]string `json:"deposits_parts"`
+}
+type CreateBasketOfDepositsAPI struct {
+	PaymentRedirectUrl   string    `json:"payment_redirect_url"`
+	AccountUuid          string    `json:"account_uuid"`
+	OnBoardingUuid       string    `json:"onBoarding_uuid"`
+	PartnerTransactionId string    `json:"partner_transaction_id"`
+	DepositsParts        [2]string `json:"deposits_parts"`
+}
+type CreateBasketOfDepositsAPIResponse struct {
+	Deposit Deposit `json:"deposit"`
+	Url     string  `json:"url"`
+}
+
+// OBJECT Deposit
 type Deposit struct {
 	Uuid                   string    `json:"uuid"`
 	FundCode               string    `json:"fund_code"`

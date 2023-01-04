@@ -29,7 +29,7 @@ const (
 	GenerateKycContract             = "generate_contract"
 	ExecuteVerification             = "execute_verification"
 	India                           = "101"
-	GetSip                          = "sips?account_uuid=<UUID>"
+	GetSip                          = "sips?"
 	CreateSip                       = "sips"
 	GetDeposits                     = "deposits?"
 	CreateDeposit                   = "deposits"
@@ -37,4 +37,5 @@ const (
 	Reinvest                        = "Y"
 	Growth                          = "Z"
 	Bonus                           = "B"
+	CreateBasketOfDeposits          = "create_basket"
 )

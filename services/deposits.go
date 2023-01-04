@@ -56,3 +56,26 @@ func (p *ServiceConfig) CreateDeposit(createDeposit *models.CreateDeposit) (int,
 	}
 	return response.StatusCode, nil, err
 }
+
+func (p *ServiceConfig) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBasketOfDeposits) (int, interface{}, error) {
+	baseModel := models.CreateBasketOfDepositsAPI{}
+	baseModel.PaymentRedirectUrl = createBasketOfDeposit.PaymentRedirectUrl
+	baseModel.AccountUuid = createBasketOfDeposit.AccountUuid
+	baseModel.OnBoardingUuid = createBasketOfDeposit.OnBoardingUuid
+	baseModel.PartnerTransactionId = createBasketOfDeposit.PartnerTransactionId
+	baseModel.DepositsParts = createBasketOfDeposit.DepositsParts
+
+	response, err := p.TSAClient.SendPostRequest(constants.CreateBasketOfDeposits, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data models.CreateBasketOfDepositsAPIResponse
+	//converting struct to []bytes
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, nil, err
+}
