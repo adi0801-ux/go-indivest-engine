@@ -71,7 +71,7 @@ func (s *HTTPServer) AuthorizeMiddleware(AuthApi string) fiber.Handler {
 
 		err = c.Next()
 		if err != nil {
-			utils.Log.Error(err)
+			utils.Log.Debug(err)
 			return nil
 		}
 

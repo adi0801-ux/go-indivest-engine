@@ -1,0 +1,10 @@
+{"client_ip":"127.0.0.1","latency_time(ms)":250693,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 21:34:00"}
+{"client_ip":"127.0.0.1","latency_time(ms)":67694,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":200,"time":"2023-01-11 21:34:16"}
+{"client_ip":"127.0.0.1","latency_time(ms)":375313,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 21:58:49"}
+{"client_ip":"127.0.0.1","latency_time(ms)":53630,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 21:59:06"}
+{"client_ip":"127.0.0.1","latency_time(ms)":223690,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:02:25"}
+{"client_ip":"127.0.0.1","latency_time(ms)":205046,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:03:48"}
+{"client_ip":"127.0.0.1","latency_time(ms)":52179,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:03:54"}
+{"client_ip":"127.0.0.1","latency_time(ms)":195153,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:04:34"}
+{"client_ip":"127.0.0.1","latency_time(ms)":173269,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:05:00"}
+{"client_ip":"127.0.0.1","latency_time(ms)":229060,"level":"info","msg":"","req_method":"POST","req_uri":"/mfEngine/api/basicDetailsLanguage","status_code":400,"time":"2023-01-11 22:05:37"}

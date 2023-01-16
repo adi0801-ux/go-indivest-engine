@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//Log to file
+// Log to file
 func LoggerToFile() fiber.Handler {
 
 	logFilePath := "logs/api"
@@ -22,10 +22,11 @@ func LoggerToFile() fiber.Handler {
 	writeMap := createLogWriter(fileName)
 
 	lfHook := lfshook.NewHook(writeMap, &logrus.JSONFormatter{
-		TimestampFormat:"2006-01-02 15:04:05",
+		TimestampFormat: "2006-01-02 15:04:05",
 	})
 
 	//New hook
+	//log.Hooks.Add(lfHook)
 	log.AddHook(lfHook)
 
 	return func(c *fiber.Ctx) error {
@@ -55,13 +56,12 @@ func LoggerToFile() fiber.Handler {
 
 		//Log format
 		log.WithFields(logrus.Fields{
-			"status_code"  : statusCode,
-			"latency_time(ms)" : latencyTime,
-			"client_ip"    : clientIP,
-			"req_method"   : reqMethod,
-			"req_uri"      : reqUri,
+			"status_code":      statusCode,
+			"latency_time(ms)": latencyTime,
+			"client_ip":        clientIP,
+			"req_method":       reqMethod,
+			"req_uri":          reqUri,
 		}).Info()
 		return nil
 	}
 }
-

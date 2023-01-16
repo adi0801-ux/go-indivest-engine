@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"indivest-engine/services"
 	"indivest-engine/utils"
 )
@@ -58,13 +59,14 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 	}
 }
-func (s *HTTPServer) HandleNotFound(router *fiber.App) {
 
-	// 404 Handler
-	router.Use(func(c *fiber.Ctx) error {
-		return c.SendStatus(404) // => 404 "Not Found"
-	})
-}
+//func (s *HTTPServer) HandleNotFound(router *fiber.App) {
+//
+//	// 404 Handler
+//	router.Use(func(c *fiber.Ctx) error {
+//		return c.SendStatus(404) // => 404 "Not Found"
+//	})
+//}
 
 // GetNewServer creates a new Http server and setup routing
 func GetNewServer(
@@ -80,13 +82,14 @@ func GetNewServer(
 	router := fiber.New()
 
 	// Add API Logger to Router
-	//router.Use(utils.LoggerToFile(), recover.New())
+	router.Use(utils.LoggerToFile())
+	router.Use(recover.New())
 	//router.Use(helmet.New())
 
 	// Setup Routes here:
 	httpServer.RegisterRoutes(router)
 
-	httpServer.HandleNotFound(router)
+	//httpServer.HandleNotFound(router)
 
 	httpServer.router = router
 	return httpServer

@@ -18,7 +18,7 @@ var Log *logrus.Logger
 func InitialiseLogger() error {
 	var err error
 	Log, err = NewLogger()
-	if err!=nil{
+	if err != nil {
 		fmt.Println(err)
 		return err
 	}
@@ -35,7 +35,6 @@ func NewLogger() (*logrus.Logger, error) {
 
 	log.SetReportCaller(true)
 
-
 	//Set rotatelogs
 	writeMap := createLogWriter(fileName)
 
@@ -44,17 +43,14 @@ func NewLogger() (*logrus.Logger, error) {
 		FieldMap: logrus.FieldMap{
 			logrus.FieldKeyFile: "caller",
 		},
-		TimestampFormat:"2006-01-02 15:04:05",
+		TimestampFormat: "2006-01-02 15:04:05",
 	})
 
 	//New hook
 	log.AddHook(lfHook)
 
-
-
 	return log, nil
 }
-
 
 func caller() func(*runtime.Frame) (function string, file string) {
 	return func(f *runtime.Frame) (function string, file string) {
@@ -63,13 +59,14 @@ func caller() func(*runtime.Frame) (function string, file string) {
 		return "", fmt.Sprintf("%s:%d", strings.TrimPrefix(f.File, p), f.Line)
 	}
 }
+
 type Logwriter map[logrus.Level]io.Writer
 
-func createLogWriter(fileName string )  lfshook.WriterMap {
+func createLogWriter(fileName string) lfshook.WriterMap {
 	//Set rotatelogs
 	logWriter, _ := rotatelogs.New(
 		//Split file name
-		fileName + ".%Y-%m-%d.log",
+		fileName+".%Y-%m-%d.log",
 
 		//Generate soft chain, point to the latest log file
 

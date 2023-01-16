@@ -9,10 +9,21 @@
   <component name="ChangeListManager">
     <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/connector.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/connector.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/sandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/sandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/userInvestment.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/userInvestment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/basicDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/basicDetails.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.env" beforeDir="false" afterPath="$PROJECT_DIR$/app.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/api/log.2022-08-26.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/api/log.2022-08-29.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/api/log.2022-08-30.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-14.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-15.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/app/log.2022-09-16.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/redis/functions.go" beforeDir="false" afterPath="$PROJECT_DIR$/redis/functions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/apilog.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/apilog.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/log.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +64,7 @@
     &quot;configurable..is.expanded&quot;: &quot;false&quot;,
     &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/rachitkawar&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/rachitkawar/Novostack/indivest/indivest-engine-go&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -80,7 +91,7 @@
         <option name="IS_IGNORE_MISSING_FILES" value="false" />
         <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
         <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
       </EXTENSION>
       <kind value="PACKAGE" />
