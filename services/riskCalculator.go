@@ -6,19 +6,19 @@ import (
 	"indivest-engine/models"
 )
 
-func (u *ServiceConfig) AddLanguage(language *models.UserBasicDetailsLanguage) error {
+func (p *RiskCalculatorService) AddLanguage(language *models.UserBasicDetailsLanguage) error {
 
 	var userDetails models.UserDetails
 	userDetails.UserID = language.UserId
 	userDetails.Language = language.Language
 
-	err := u.UserRep.CreateOrUpdateUserDetails(&userDetails)
+	err := p.UserRep.CreateOrUpdateUserDetails(&userDetails)
 
 	return err
 
 }
 
-func (u *ServiceConfig) AddIncome(Income *models.UserBasicDetailsIncome) error {
+func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome) error {
 
 	var userDetails models.UserDetails
 
@@ -27,14 +27,14 @@ func (u *ServiceConfig) AddIncome(Income *models.UserBasicDetailsIncome) error {
 	userDetails.GrossMonthlyIncome = Income.Income
 	userDetails.Profession = Income.Profession
 
-	err := u.UserRep.UpdateUserDetails(&userDetails)
+	err := p.UserRep.UpdateUserDetails(&userDetails)
 
 	return err
 }
 
-func (u *ServiceConfig) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (calcResp models.CalculationResponse, err error) {
+func (p *RiskCalculatorService) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (calcResp models.CalculationResponse, err error) {
 
-	userDetails, err := u.UserRep.ReadUserDetails(Expenses.UserId)
+	userDetails, err := p.UserRep.ReadUserDetails(Expenses.UserId)
 	if err != nil {
 		return calcResp, err
 	}
@@ -54,41 +54,41 @@ func (u *ServiceConfig) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (
 		return calcResp, fmt.Errorf("monthly_savings is more than monthly_investments (not possible)")
 	}
 
-	err = u.UserRep.UpdateUserDetails(userDetails)
+	err = p.UserRep.UpdateUserDetails(userDetails)
 	if err != nil {
 		return calcResp, err
 	}
-	return u.CalculateUserInformation(userDetails)
+	return p.CalculateUserInformation(userDetails)
 }
 
-func (u *ServiceConfig) GetUserInformation(UserId string) (calcResp models.CalculationResponse, err error) {
-	userDetails, err := u.UserRep.ReadUserDetails(UserId)
+func (p *RiskCalculatorService) GetUserInformation(UserId string) (calcResp models.CalculationResponse, err error) {
+	userDetails, err := p.UserRep.ReadUserDetails(UserId)
 	if err != nil {
 		return calcResp, err
 	}
 
-	return u.CalculateUserInformation(userDetails)
+	return p.CalculateUserInformation(userDetails)
 
 }
 
-func (u *ServiceConfig) CalculateUserInformation(userDetails *models.UserDetails) (calcResp models.CalculationResponse, err error) {
+func (p *RiskCalculatorService) CalculateUserInformation(userDetails *models.UserDetails) (calcResp models.CalculationResponse, err error) {
 
-	surplus, err := u.CalculateRecommendedInvestibleSurplus(userDetails)
+	surplus, err := p.CalculateRecommendedInvestibleSurplus(userDetails)
 	if err != nil {
 		return calcResp, err
 	}
 	calcResp.InvestibleSurplus = surplus
 
-	stats, err := u.CalculateCurrentPercentStats(userDetails)
+	stats, err := p.CalculateCurrentPercentStats(userDetails)
 	if err != nil {
 		return calcResp, err
 	}
 	calcResp.CurrentPercentStats = stats
 
-	signal := u.CalculateHealthSignal(&stats)
+	signal := p.CalculateHealthSignal(&stats)
 	calcResp.HealthSignal = signal
 
-	idealStats, err := u.CalculateIdealFinancialProfile(userDetails)
+	idealStats, err := p.CalculateIdealFinancialProfile(userDetails)
 	if err != nil {
 		return calcResp, err
 	}
@@ -98,7 +98,7 @@ func (u *ServiceConfig) CalculateUserInformation(userDetails *models.UserDetails
 
 }
 
-func (u *ServiceConfig) CalculateRecommendedInvestibleSurplus(userDetails *models.UserDetails) (models.InvestibleSurplus, error) {
+func (p *RiskCalculatorService) CalculateRecommendedInvestibleSurplus(userDetails *models.UserDetails) (models.InvestibleSurplus, error) {
 
 	var rcmInvestibleFund models.InvestibleSurplus
 
@@ -119,7 +119,7 @@ func (u *ServiceConfig) CalculateRecommendedInvestibleSurplus(userDetails *model
 	return rcmInvestibleFund, nil
 }
 
-func (u *ServiceConfig) CalculateCurrentPercentStats(userDetails *models.UserDetails) (models.CurrentPercentStats, error) {
+func (p *RiskCalculatorService) CalculateCurrentPercentStats(userDetails *models.UserDetails) (models.CurrentPercentStats, error) {
 
 	var currentStats models.CurrentPercentStats
 
@@ -132,7 +132,7 @@ func (u *ServiceConfig) CalculateCurrentPercentStats(userDetails *models.UserDet
 	return currentStats, nil
 }
 
-func (u *ServiceConfig) CalculateHealthSignal(currentStats *models.CurrentPercentStats) string {
+func (p *RiskCalculatorService) CalculateHealthSignal(currentStats *models.CurrentPercentStats) string {
 
 	var count int = 0
 
@@ -158,7 +158,7 @@ func (u *ServiceConfig) CalculateHealthSignal(currentStats *models.CurrentPercen
 	return constants.HealthSignalAmber
 }
 
-func (u *ServiceConfig) CalculateIdealFinancialProfile(userDetails *models.UserDetails) (models.IdealPercentStats, error) {
+func (p *RiskCalculatorService) CalculateIdealFinancialProfile(userDetails *models.UserDetails) (models.IdealPercentStats, error) {
 
 	var idealStats models.IdealPercentStats
 

@@ -24,7 +24,7 @@ func (s *HTTPServer) basicDetailsLanguageController(c *fiber.Ctx) error {
 	basicDetails.UserId = c.Locals("userId").(string)
 
 	//basic details can be used here
-	err = s.Srv.AddLanguage(&basicDetails)
+	err = s.RiskSrv.AddLanguage(&basicDetails)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
 		return nil
@@ -48,7 +48,7 @@ func (s *HTTPServer) basicDetailsIncomeController(c *fiber.Ctx) error {
 	basicDetails.UserId = c.Locals("userId").(string)
 
 	//basic details can be used here
-	err = s.Srv.AddIncome(&basicDetails)
+	err = s.RiskSrv.AddIncome(&basicDetails)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
 		return nil
@@ -72,7 +72,7 @@ func (s *HTTPServer) basicDetailsExpensesController(c *fiber.Ctx) error {
 	basicDetails.UserId = c.Locals("userId").(string)
 
 	//basic details can be used here
-	data, err := s.Srv.AddExpenses(&basicDetails)
+	data, err := s.RiskSrv.AddExpenses(&basicDetails)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
 		return nil
@@ -91,7 +91,7 @@ func (s *HTTPServer) basicDetailsReportController(c *fiber.Ctx) error {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 	}
 
-	data, err := s.Srv.GetUserInformation(userId)
+	data, err := s.RiskSrv.GetUserInformation(userId)
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err)
 		return nil

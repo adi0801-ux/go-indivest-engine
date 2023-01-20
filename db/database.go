@@ -32,6 +32,14 @@ func (d *Database) RunMigrations() (err error) {
 		&models.UserMFDailyReport{},
 	)
 
+	err = d.store.AutoMigrate(
+		&models.APILog{},
+		&models.OnboardingObjectDB{},
+		&models.BankAccountDB{},
+		&models.OccupationDB{},
+		&models.ReadPanCardDB{},
+	)
+
 	return err
 }
 

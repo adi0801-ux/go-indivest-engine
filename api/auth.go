@@ -63,7 +63,7 @@ func (s *HTTPServer) AuthorizeMiddleware(AuthApi string) fiber.Handler {
 			c.Locals("userId", AuthResp.Data.UserId)
 			err := c.Next()
 			if err != nil {
-				utils.Log.Error(err)
+				utils.Log.Warn(err)
 				return nil
 			}
 

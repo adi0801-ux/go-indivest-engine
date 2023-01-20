@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/recover"
 	"indivest-engine/services"
 	"indivest-engine/utils"
 )
@@ -14,12 +13,13 @@ type HTTPServer struct {
 	router     *fiber.App
 	config     *utils.Config
 	validator  *validator.Validate
-	Srv        *services.ServiceConfig
+	RiskSrv    *services.RiskCalculatorService
 	SandboxSrv *services.SandboxServiceConfig
+	MfSrv      *services.MFService
 }
 
 func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
-	rg := router.Group("/mfEngine")
+	rg := router.Group("/riskCalculator")
 	rg.Get("/", s.healthCheck)
 	rg.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
@@ -58,6 +58,39 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		sandbox.Get("/userInvestmentPanel", s.sandboxUserMfInvestmentPanel)
 
 	}
+
+	mfEngine := router.Group("/mfEngine/api")
+	mfEngine.Get("/", s.healthCheck)
+	mfEngine.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+	{
+		mfKyc := mfEngine.Group("/kyc")
+		{
+			mfKyc.Get("/status", s.CheckIfKycDoneController)
+			mfKyc.Post("/start", s.StartFullKycController)
+			mfKyc.Post("/addBank", s.AddBankAccountController)
+			mfKyc.Get("/occupationStatus", s.GetOccupationsController)
+			//to test
+			mfKyc.Get("/genderCodes", s.GetGenderCodesController)
+			mfKyc.Get("/martialStatus", s.GetMaritalStatusCodesController)
+			mfKyc.Get("/countryCodes", s.GetCountryCodesController)
+			mfKyc.Get("/annualIncome", s.GetAnnualIncomeLevelController)
+			// --
+			mfKyc.Post("/addDetails", s.AddPersonalDetailsController)
+			mfKyc.Post("/uploadPan", s.UploadPanCardController)
+			mfKyc.Post("/verifyPan", s.SubmitPanCardController)
+			//	to test
+			mfKyc.Post("/uploadAadhaar", s.UploadAadhaarCardController)
+			mfKyc.Post("/verifyAadhaar", s.SubmitAadhaarCardController)
+			mfKyc.Post("/submitDetails", s.SubmitInvestorDetailsController)
+			mfKyc.Post("/uploadSignature", s.UploadSignatureController)
+			mfKyc.Post("/uploadSelfie", s.UploadSelfieController)
+			mfKyc.Post("/startVideoVerification", s.StartVideoVerificationController)
+			mfKyc.Post("/uploadVideoVerification", s.SubmitVideoVerificationController)
+			mfKyc.Post("/signContract", s.GenerateKYCContractController)
+			mfKyc.Post("/executeContract", s.ExecuteKYCVerificationController)
+		}
+
+	}
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {
@@ -70,20 +103,21 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 // GetNewServer creates a new Http server and setup routing
 func GetNewServer(
-	Srv *services.ServiceConfig,
+	RiskSrv *services.RiskCalculatorService,
 	SandBoxSrv *services.SandboxServiceConfig,
+	MfSrv *services.MFService,
 
 	config *utils.Config) *HTTPServer {
 
 	validate := validator.New()
 
-	httpServer := &HTTPServer{config: config, validator: validate, Srv: Srv, SandboxSrv: SandBoxSrv}
+	httpServer := &HTTPServer{config: config, validator: validate, RiskSrv: RiskSrv, MfSrv: MfSrv, SandboxSrv: SandBoxSrv}
 
 	router := fiber.New()
 
 	// Add API Logger to Router
 	router.Use(utils.LoggerToFile())
-	router.Use(recover.New())
+	//router.Use(recover.New())
 	//router.Use(helmet.New())
 
 	// Setup Routes here:

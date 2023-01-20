@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+
 	err := utils.InitialiseLogger()
 	if err != nil {
 		log.Fatalln(err)
@@ -65,19 +66,37 @@ func main() {
 	sandboxRep := repositories.SandboxRepository{
 		Db: store,
 	}
+	SavvyRepo := repositories.SavvyRepository{
+		Db: store,
+	}
 
 	redisRepo := repositories.RedisRepository{
 		Db: redisStore,
 	}
+	TSARepo := repositories.TSAClient{Client: repositories.CreateHttpClient(),
+		LogRep:  &repositories.ApiLogsRepository{Db: store},
+		BaseUrl: config.SavvyUrl,
+		Token:   &config.SavvyToken,
+	}
 
 	//Create a service Reference
-	Srv := services.ServiceConfig{
+	RiskSrv := services.RiskCalculatorService{
 		UserRep: &userRep,
 	}
 
 	sandboxSrv := services.SandboxServiceConfig{
 		SandboxRep: &sandboxRep,
 		RedisRep:   &redisRepo,
+	}
+
+	MfSrv := services.MFService{
+		TSAClient: &TSARepo,
+		SavvyRepo: &SavvyRepo,
+		//FullKycRepo:                nil,
+		//ReadPanCardRepo:            nil,
+		//ReadAddressProofRepo:       nil,
+		//StartVideoVerificationRepo: nil,
+		//GenerateKycContractRepo:    nil,
 	}
 
 	//create cron Reference
@@ -90,7 +109,7 @@ func main() {
 
 	utils.Log.Info("api server initializing")
 	//Create HTTP Server
-	server := api.GetNewServer(&Srv, &sandboxSrv, config)
+	server := api.GetNewServer(&RiskSrv, &sandboxSrv, &MfSrv, config)
 
 	err = server.StartServer(config.ServerAddress)
 	if err != nil {
