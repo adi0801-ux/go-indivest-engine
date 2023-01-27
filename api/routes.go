@@ -19,18 +19,18 @@ type HTTPServer struct {
 }
 
 func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
-	rg := router.Group("/riskCalculator")
+	rg := router.Group("/riskCalculator/api")
 	rg.Get("/", s.healthCheck)
 	rg.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
 
-		rg.Post("/api/basicDetailsLanguage", s.basicDetailsLanguageController)
+		rg.Post("/basicDetailsLanguage", s.basicDetailsLanguageController)
 
-		rg.Post("/api/basicDetailsIncome", s.basicDetailsIncomeController)
+		rg.Post("/basicDetailsIncome", s.basicDetailsIncomeController)
 
-		rg.Post("/api/basicDetailsExpenses", s.basicDetailsExpensesController)
+		rg.Post("/basicDetailsExpenses", s.basicDetailsExpensesController)
 
-		rg.Get("/api/basicDetailsReport", s.basicDetailsReportController)
+		rg.Get("/basicDetailsReport", s.basicDetailsReportController)
 	}
 
 	sandbox := router.Group("/mfSandbox/api")
@@ -92,11 +92,11 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 	}
 
-	funds := router.Group("/funds")
+	funds := router.Group("/funds/api")
 	{
-		funds.Get("/api/listFundHouses", s.fundHousesController)
-		funds.Get("/api/fundDetails", s.fundDetailsController)
-		funds.Get("/api/fundInfo", s.fundInfoController)
+		funds.Get("/listFundHouses", s.fundHousesController)
+		funds.Get("/fundDetails", s.fundDetailsController)
+		funds.Get("/fundInfo", s.fundInfoController)
 	}
 }
 

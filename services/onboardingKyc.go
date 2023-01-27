@@ -276,7 +276,6 @@ func (p *MFService) StartFullKyc(userDetails *models.StartFullKyc) (int, interfa
 	if onBoardingObject.ExistingInvestor == "1" {
 		return http.StatusBadRequest, nil, fmt.Errorf("user already an investor")
 	}
-
 	baseModel := models.StartFullKycAPI{}
 	baseModel.Onboarding.Name = userDetails.Name
 	baseModel.Onboarding.Email = userDetails.Email

@@ -48,7 +48,6 @@ const (
 )
 
 func GenerateFullKycURL(uuid string) string {
-
 	return StartFullKycPrefix + uuid + StartFullKycSuffix
 }
 
@@ -64,7 +63,7 @@ func GenerateAddPersonalDetailsURL(uuid string) string {
 
 func GenerateUploadFileURL(uuid string) string {
 
-	return StartFullKycPrefix + uuid + ReadPanCardSuffix
+	return StartFullKycPrefix + uuid + UploadFile
 }
 
 func GenerateReadPanCardURL(uuid string) string {
