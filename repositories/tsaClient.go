@@ -215,7 +215,7 @@ func (h *TSAClient) callTSA(req *http.Request, RequestId string) (*http.Response
 func (h *TSAClient) callPostFormTSA(req *http.Request, RequestId string, header string) (*http.Response, error) {
 	req.Header.Add("Content-Type", header)
 	req.Header.Add("Request-Id", RequestId)
-
+	req.Header.Add("Authorization", "Bearer "+*h.Token)
 	res, err := h.Client.Do(req)
 	if err != nil {
 		utils.Log.Error(err)
