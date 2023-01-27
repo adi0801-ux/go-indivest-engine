@@ -91,6 +91,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		}
 
 	}
+
+	funds := router.Group("/funds")
+	{
+		funds.Get("/api/listFundHouses", s.fundHousesController)
+		funds.Get("/api/fundDetails", s.fundDetailsController)
+		funds.Get("/api/fundInfo", s.fundInfoController)
+	}
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {

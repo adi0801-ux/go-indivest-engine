@@ -577,7 +577,7 @@ func (p *MFService) SubmitAadhaarCardImage(submitAadhaarCardImage *models.Submit
 	baseModel.Onboarding.Pincode = submitAadhaarCardImage.PinCode
 	baseModel.Onboarding.AadhaarUid = submitAadhaarCardImage.AadharUid
 
-	response, err := p.TSAClient.SendPostRequest(constants.SubmitAddressProof, &baseModel)
+	response, err := p.TSAClient.SendPostRequest(constants.GenerateSubmitAadharCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err

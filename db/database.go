@@ -40,6 +40,11 @@ func (d *Database) RunMigrations() (err error) {
 		&models.ReadPanCardDB{},
 	)
 
+	err = d.store.AutoMigrate(
+		&models.FundsSupported{},
+		&models.FundHousesSupported{},
+	)
+
 	return err
 }
 

@@ -22,8 +22,6 @@ const (
 	ReadPanCardSuffix               = "/read_pan_card"
 	SubmitPanCardSuffix             = "/pan_card"
 	UploadFile                      = "/upload_file"
-	ReadPanCard                     = "read_pan_card"
-	SubmitPanCard                   = "pan_card"
 	ReadAadhaarSuffix               = "/read_address_proof"
 	SubmitAddressProof              = "address_proof"
 	SubmitInvestorDetails           = "/form"
@@ -45,6 +43,8 @@ const (
 	CreateBasketOfDeposits          = "create_basket"
 	RedirectURLAfterKyc             = "https://example.com/redirect"
 	DefaultAMCCode                  = "MOF"
+	ListAMCEndpoint                 = "/amcs"
+	FundDetailsEndpoint             = "/funds"
 )
 
 func GenerateFullKycURL(uuid string) string {
@@ -74,12 +74,17 @@ func GenerateReadPanCardURL(uuid string) string {
 
 func GenerateSubmitPanCardURL(uuid string) string {
 
-	return StartFullKycPrefix + uuid + UploadFile
+	return StartFullKycPrefix + uuid + SubmitPanCardSuffix
 }
 
 func GenerateReadAadharCardURL(uuid string) string {
 
 	return StartFullKycPrefix + uuid + ReadAadhaarSuffix
+}
+
+func GenerateSubmitAadharCardURL(uuid string) string {
+
+	return StartFullKycPrefix + uuid + SubmitAddressProof
 }
 
 func GenerateInvestorDetailsURL(uuid string) string {
