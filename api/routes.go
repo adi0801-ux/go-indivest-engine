@@ -98,6 +98,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		funds.Get("/api/fundDetails", s.fundDetailsController)
 		funds.Get("/api/fundInfo", s.fundInfoController)
 	}
+
+	accounts := router.Group("/accounts")
+	accounts.Get("/", s.healthCheck)
+	accounts.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+	{
+		accounts.Get("/showAccounts", s.ShowAccountDetails)
+	}
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {

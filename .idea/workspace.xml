@@ -7,19 +7,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eb4e86-40ee-4fe9-8a39-ff05939d6948" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/models/funds.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/fundInfo.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/fundInfo.go" afterDir="false" />
+    <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/error.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/state.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/state.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/database.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/videoVerification.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/fundInfo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/recommendation.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/sandbox.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/sandbox.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/onboardingKyc.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/onboardingKyc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.env" beforeDir="false" afterPath="$PROJECT_DIR$/app.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +30,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GoLibraries">
-    <option name="indexEntireGoPath" value="true" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -49,29 +39,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
-    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/rachitkawar/Novostack/indivest/indivest-engine-go&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.goide.configuration.GoProjectSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "configurable..is.expanded": "false",
+    "configurable.GoLibrariesConfigurable.is.expanded": "true",
+    "go.import.settings.migrated": "true",
+    "last_opened_file_path": "/Users/adityachauhan",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.goide.configuration.GoProjectSettingsConfigurable"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/models" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build indivest-engine">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="shepays" />
       <working_directory value="$PROJECT_DIR$" />
@@ -81,7 +76,7 @@
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
-    <configuration name="go build indivest-engine" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <configuration name="go build indivest-engine" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
       <working_directory value="$PROJECT_DIR$" />
       <EXTENSION ID="net.ashald.envfile">
         <option name="IS_ENABLED" value="false" />
@@ -100,6 +95,25 @@
       <output_directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="go build validator.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="indivest-engine-go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <kind value="FILE" />
+      <package value="indivest-engine" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/validator.go" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="shepays" />
       <working_directory value="$PROJECT_DIR$" />
@@ -110,6 +124,11 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build validator.go" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
