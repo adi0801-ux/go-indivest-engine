@@ -12,5 +12,5 @@ func (s *HTTPServer) ShowAccountDetails(c *fiber.Ctx) error {
 	if userId == "" {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 	}
-
+	return nil
 }
