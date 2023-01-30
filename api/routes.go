@@ -105,6 +105,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	{
 		accounts.Get("/showAccounts", s.ShowAccountDetailsController)
 	}
+	withdrawls := router.Group("withdrawals")
+	withdrawls.Get("/", s.healthCheck)
+	withdrawls.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+	{
+		withdrawls.Get("/", s.CreateWithdrawlController)
+	}
+
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {

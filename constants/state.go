@@ -46,6 +46,7 @@ const (
 	ListAMCEndpoint                 = "/amcs"
 	FundDetailsEndpoint             = "/funds"
 	ShowAccounts                    = "/secure/accounts/"
+	CreateWithdrawls                = "/secure/withdrawals/"
 )
 
 func GenerateFullKycURL(uuid string) string {
