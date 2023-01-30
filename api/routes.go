@@ -103,7 +103,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	accounts.Get("/", s.healthCheck)
 	accounts.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
-		accounts.Get("/showAccounts", s.ShowAccountDetails)
+		accounts.Get("/showAccounts", s.ShowAccountDetailsController)
 	}
 }
 

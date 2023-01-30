@@ -45,10 +45,10 @@ const (
 	DefaultAMCCode                  = "MOF"
 	ListAMCEndpoint                 = "/amcs"
 	FundDetailsEndpoint             = "/funds"
+	ShowAccounts                    = "/secure/accounts/"
 )
 
 func GenerateFullKycURL(uuid string) string {
-
 	return StartFullKycPrefix + uuid + StartFullKycSuffix
 }
 
@@ -64,7 +64,7 @@ func GenerateAddPersonalDetailsURL(uuid string) string {
 
 func GenerateUploadFileURL(uuid string) string {
 
-	return StartFullKycPrefix + uuid + ReadPanCardSuffix
+	return StartFullKycPrefix + uuid + UploadFile
 }
 
 func GenerateReadPanCardURL(uuid string) string {
@@ -116,4 +116,8 @@ func GenerateKYCContractURL(uuid string) string {
 
 func GenerateKYCContractVerifyURL(uuid string) string {
 	return StartFullKycPrefix + uuid + ExecuteVerification
+}
+
+func GenerateShowAccountsURL(uuid string) string {
+	return ShowAccounts + uuid
 }

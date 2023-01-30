@@ -7,7 +7,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="37d17b69-2f4f-439c-95fb-1c19ec2f2861" name="Changes" comment="" />
+=======
+    <list default="true" id="a1eb4e86-40ee-4fe9-8a39-ff05939d6948" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/state.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/state.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/tsaClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/tsaClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/onboardingKyc.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/onboardingKyc.go" afterDir="false" />
+    </list>
+>>>>>>> development
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
