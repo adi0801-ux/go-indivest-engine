@@ -12,3 +12,6 @@ type AccountRepository struct {
 func (s *AccountRepository) CreateShowAccount(m *models.ShowAccountDB) error {
 	return s.Db.CreateShowAccount_(m)
 }
+func (s *AccountRepository) ReadShowAccount(userId string) (*models.ShowAccountDB, error) {
+	return s.Db.ReadShowAccount_(userId)
+}
