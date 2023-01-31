@@ -34,7 +34,7 @@ const (
 	India                           = "101"
 	GetSip                          = "sips?"
 	CreateSip                       = "sips"
-	GetDeposits                     = "deposits?"
+	GetDeposits                     = "/deposits"
 	CreateDeposit                   = "deposits"
 	Payout                          = "N"
 	Reinvest                        = "Y"
