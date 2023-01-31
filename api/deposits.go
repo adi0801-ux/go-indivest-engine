@@ -23,6 +23,7 @@ func (s *HTTPServer) GetDepositsController(c *fiber.Ctx) error {
 		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
 		return nil
 	}
+	c.Redirect(s.config.RedirectUrl, 302)
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
