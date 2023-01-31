@@ -45,8 +45,9 @@ const (
 	DefaultAMCCode                  = "MOF"
 	ListAMCEndpoint                 = "/amcs"
 	FundDetailsEndpoint             = "/funds"
-	ShowAccounts                    = "/secure/accounts/"
-	CreateWithdrawls                = "/withdrawals/"
+	ShowAccounts                    = "/accounts/"
+	CreateWithdrawals               = "/withdrawals"
+	VerifyOtp                       = "/verify_otp"
 )
 
 func GenerateFullKycURL(uuid string) string {
@@ -121,4 +122,7 @@ func GenerateKYCContractVerifyURL(uuid string) string {
 
 func GenerateShowAccountsURL(uuid string) string {
 	return ShowAccounts + uuid
+}
+func GenerateVerifyWithdrawalOtpUrl(uuid string) string {
+	return CreateWithdrawals + uuid + VerifyOtp
 }

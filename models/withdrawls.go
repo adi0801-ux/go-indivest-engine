@@ -18,3 +18,14 @@ type CreateWithdrawalAPI struct {
 }
 type CreateWithdrawlAPIResponse struct {
 }
+
+// verifyWithdrawalOtp
+type VerifyWithdrawalOtp struct {
+	UserId string `json:"user_id"`
+	Otp    string `json:"otp"`
+}
+type VerifyWithdrawalOtpAPI struct {
+	Otp string `json:"otp"`
+}
+type VerifyWithdrawOtpAPIResponse struct {
+}
