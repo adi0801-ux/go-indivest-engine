@@ -8,17 +8,17 @@ import (
 	"net/http"
 )
 
-func (p *MFService) CreateWithdrawl(createWithdrawls *models.CreateWithdrawls) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadShowAccount(createWithdrawls.UserId)
+func (p *MFService) CreateWithdrawal(createWithdrawals *models.CreateWithdrawals) (int, interface{}, error) {
+	userDtls, err := p.ShowAccountRepo.ReadShowAccount(createWithdrawals.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
 
-	baseModel := models.CreateWithdrawlAPI{}
-	baseModel.Amount = createWithdrawls.Amount
-	baseModel.FundCode = createWithdrawls.FundCode
-	baseModel.AccountUuid = userDtls.AcntUuid
-	baseModel.PartnerTransactionId = createWithdrawls.PartnerTransactionId
+	baseModel := models.CreateWithdrawalAPI{}
+	baseModel.Widrawal.Amount = createWithdrawals.Amount
+	baseModel.Widrawal.FundCode = createWithdrawals.FundCode
+	baseModel.Widrawal.AccountUuid = userDtls.AcntUuid
+	baseModel.Widrawal.PartnerTransactionId = createWithdrawals.PartnerTransactionId
 	response, err := p.TSAClient.SendPostRequest(constants.CreateWithdrawls, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)

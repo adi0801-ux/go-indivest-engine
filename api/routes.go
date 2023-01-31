@@ -105,11 +105,11 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	{
 		accounts.Get("/showAccounts", s.ShowAccountDetailsController)
 	}
-	withdrawls := router.Group("withdrawals")
-	withdrawls.Get("/", s.healthCheck)
-	withdrawls.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+	withdrawals := router.Group("/withdrawals")
+	withdrawals.Get("/", s.healthCheck)
+	withdrawals.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
-		withdrawls.Get("/", s.CreateWithdrawlController)
+		withdrawals.Get("/", s.CreateWithdrawalController)
 	}
 	deposits := router.Group("/deposits")
 	deposits.Get("/", s.healthCheck)
