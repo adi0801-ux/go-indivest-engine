@@ -9,6 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a1eb4e86-40ee-4fe9-8a39-ff05939d6948" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/mfKyc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/mfKyc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/state.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/state.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/database.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/startFullKyc.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/startFullKyc.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/tsaClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/tsaClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/onboardingKyc.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/onboardingKyc.go" afterDir="false" />

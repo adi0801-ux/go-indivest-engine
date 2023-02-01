@@ -19,7 +19,7 @@ type TSAClient struct {
 }
 
 func CreateHttpClient() *http.Client {
-	client := &http.Client{Timeout: 20 * time.Second}
+	client := &http.Client{Timeout: 40 * time.Second}
 	return client
 }
 func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response *http.Response, errResp error) {

@@ -513,12 +513,23 @@ func (p *MFService) UploadAadhaarCardImage(uploadAadhaar *models.UploadAadhaarCa
 	}
 
 	//upload the pan card
-	uploadFile := models.UploadFile{
+	uploadFileAddharFront := models.UploadFile{
 		UUID:       onBoardingObject.Uuid,
-		UploadFile: uploadAadhaar.AadhaarCard,
+		UploadFile: uploadAadhaar.AadhaarCardFront,
 	}
 
-	uploadObject, err := p.UploadFile(uploadFile)
+	uploadObjectAddharFront, err := p.UploadFile(uploadFileAddharFront)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	uploadFileAddharBack := models.UploadFile{
+		UUID:       onBoardingObject.Uuid,
+		UploadFile: uploadAadhaar.AadhaarCardBack,
+	}
+
+	uploadObjectAddharBack, err := p.UploadFile(uploadFileAddharBack)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -526,7 +537,7 @@ func (p *MFService) UploadAadhaarCardImage(uploadAadhaar *models.UploadAadhaarCa
 
 	baseModel := models.UploadAadhaarCardAPI{}
 	baseModel.Onboarding.AddressProofType = "aadhaar"
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
+	baseModel.Onboarding.ImageUrls = []string{uploadObjectAddharFront.File, uploadObjectAddharBack.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateReadAadharCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -760,7 +771,7 @@ func (p *MFService) StartVideoVerification(startVideoVerification *models.StartV
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	return response.StatusCode, map[string]string{"random_number": data.RandomNumber}, err
 }
 
 // step 11 SubmitVideoVerification
@@ -842,7 +853,7 @@ func (p *MFService) GenerateKycContract(generateKycContract *models.GenerateKycC
 		return http.StatusBadRequest, nil, err
 	}
 
-	return response.StatusCode, data, err
+	return response.StatusCode, map[string]string{"esign_url": data.Url}, err
 }
 
 // step 13 ExecuteVerification

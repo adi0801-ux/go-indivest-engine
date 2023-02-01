@@ -131,8 +131,9 @@ type ReadPanCardAPIResponse struct {
 }
 
 type UploadAadhaarCard struct {
-	AadhaarCard *multipart.FileHeader `json:"pan_card"`
-	UserId      string                `json:"user_id"`
+	AadhaarCardFront *multipart.FileHeader `json:"aadhar_card_front"`
+	AadhaarCardBack  *multipart.FileHeader `json:"aadhar_card_back"`
+	UserId           string                `json:"user_id"`
 }
 
 type UploadAadhaarCardAPI struct {
@@ -256,8 +257,8 @@ type SubmitAadhaarCardImageAPIResponse struct {
 // submitInvestors Details
 type SubmitInvestorDetails struct {
 	UserId                       string `json:"user_id"`
-	Gender                       string `json:"gender" validate:"required,oneof='M','F',T"`
-	MaritalStatus                string `json:"marital_status" validate:"required,oneof='MARRIED','UNMARRIED',OTHERS"`
+	Gender                       string `json:"gender"`
+	MaritalStatus                string `json:"marital_status"`
 	OccupationDescription        string `json:"occupation_description"`
 	OccupationCode               string `json:"occupation_code"`
 	CitizenshipCode              string `json:"citizenship_code"`
