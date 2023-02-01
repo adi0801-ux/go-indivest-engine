@@ -90,6 +90,23 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			mfKyc.Post("/executeContract", s.ExecuteKYCVerificationController)
 		}
 
+		accounts := router.Group("/accounts")
+		accounts.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		{
+			accounts.Get("/", s.ShowAccountDetailsController)
+		}
+		withdrawals := router.Group("/withdrawals")
+		withdrawals.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		{
+			withdrawals.Post("/", s.CreateWithdrawalController)
+			withdrawals.Post("/verify_otp", s.VerifyWithdrawalOtpController)
+		}
+		deposits := router.Group("/deposits")
+		deposits.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		{
+			deposits.Get("/", s.GetDepositsController)
+		}
+
 	}
 
 	funds := router.Group("/funds/api")
@@ -98,6 +115,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		funds.Get("/fundDetails", s.fundDetailsController)
 		funds.Get("/fundInfo", s.fundInfoController)
 	}
+
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {
@@ -144,4 +162,5 @@ func (s *HTTPServer) StartServer(a string) error {
 func (s *HTTPServer) healthCheck(c *fiber.Ctx) error {
 	SendSuccessResponse(c, fiber.StatusOK, 1, "Alive!", nil)
 	return nil
+
 }

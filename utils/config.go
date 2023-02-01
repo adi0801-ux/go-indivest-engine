@@ -16,6 +16,7 @@ type Config struct {
 	AuthApi       string `mapstructure:"AUTH_API"`
 	SavvyUrl      string `mapstructure:"SAVVY_URL"`
 	SavvyToken    string `mapstructure:"SAVVY_TOKEN"`
+	RedirectUrl   string `mapstructure:"REDIRECT_URL"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {

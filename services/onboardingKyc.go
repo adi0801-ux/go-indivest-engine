@@ -206,8 +206,15 @@ func (p *MFService) AddPersonalDetails(userDetails *models.AddPersonalDetails) (
 	baseModel.Onboarding.City = userDetails.City
 	baseModel.Onboarding.Pincode = userDetails.Pincode
 	baseModel.Onboarding.DateOfBirth = userDetails.DateOfBirth
-	baseModel.Onboarding.Occupation = userDetails.Occupation
-
+	baseModel.Onboarding.Occupation = userDetails.OccupationCode
+	baseModel.Onboarding.Fatca.FatcaBirthCountryCode = userDetails.BirthCountryCode
+	baseModel.Onboarding.Fatca.FatcaCitizenshipCountryCode = userDetails.CitizenshipCountryCode
+	baseModel.Onboarding.Fatca.FatcaTaxCountryCode = userDetails.TaxCountryCode
+	baseModel.Onboarding.Fatca.FatcaPlaceOfBirth = userDetails.PlaceOfBirth
+	baseModel.Onboarding.Fatca.FatcaAddressType = userDetails.AddressType
+	baseModel.Onboarding.Fatca.FatcaOccupation = userDetails.Occupation
+	baseModel.Onboarding.Fatca.FatcaGrossIncome = userDetails.GrossIncome
+	baseModel.Onboarding.Fatca.FatcaSourceWealth = userDetails.SourceWealth
 	response, err := p.TSAClient.SendPutRequest(constants.GenerateAddPersonalDetailsURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)

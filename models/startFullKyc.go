@@ -28,12 +28,20 @@ type AddBankAccountAPI struct {
 }
 
 type AddPersonalDetails struct {
-	Address     string `json:"address"`
-	City        string `json:"city"`
-	Pincode     string `json:"pincode"`
-	DateOfBirth string `json:"date_of_birth"`
-	Occupation  string `json:"occupation"`
-	UserId      string `json:"user_id"`
+	Address                string `json:"address"`
+	City                   string `json:"city"`
+	Pincode                string `json:"pincode"`
+	DateOfBirth            string `json:"date_of_birth"`
+	OccupationCode         string `json:"occupation_code"`
+	UserId                 string `json:"user_id"`
+	BirthCountryCode       string `json:"birth_country_code"`
+	CitizenshipCountryCode string `json:"citizenship_country_code"`
+	TaxCountryCode         string `json:"tax_country_code"`
+	PlaceOfBirth           string `json:"place_of_birth"`
+	AddressType            string `json:"address_type"`
+	Occupation             string `json:"occupation"`
+	GrossIncome            string `json:"gross_income"`
+	SourceWealth           string `json:"source_wealth"`
 }
 
 type AddPersonalDetailsAPI struct {
@@ -43,6 +51,16 @@ type AddPersonalDetailsAPI struct {
 		Pincode     string `json:"pincode"`
 		DateOfBirth string `json:"date_of_birth"`
 		Occupation  string `json:"occupation"`
+		Fatca       struct {
+			FatcaBirthCountryCode       string `json:"fatca_birth_country_code"`
+			FatcaCitizenshipCountryCode string `json:"fatca_citizenship_country_code"`
+			FatcaTaxCountryCode         string `json:"fatca_tax_country_code"`
+			FatcaPlaceOfBirth           string `json:"fatca_place_of_birth"`
+			FatcaAddressType            string `json:"fatca_address_type"`
+			FatcaOccupation             string `json:"fatca_occupation"`
+			FatcaGrossIncome            string `json:"fatca_gross_income"`
+			FatcaSourceWealth           string `json:"fatca_source_wealth"`
+		} `json:"fatca"`
 	} `json:"onboarding"`
 }
 type AddBankAccountAPIResponse struct {
@@ -257,8 +275,8 @@ type SubmitAadhaarCardImageAPIResponse struct {
 // submitInvestors Details
 type SubmitInvestorDetails struct {
 	UserId                       string `json:"user_id"`
-	Gender                       string `json:"gender"`
-	MaritalStatus                string `json:"marital_status"`
+	Gender                       string `json:"gender" validate:"oneof=M F T"`
+	MaritalStatus                string `json:"marital_status" validate:"required,oneof=MARRIED UNMARRIED OTHERS"`
 	OccupationDescription        string `json:"occupation_description"`
 	OccupationCode               string `json:"occupation_code"`
 	CitizenshipCode              string `json:"citizenship_code"`
@@ -378,11 +396,11 @@ type OnBoarding struct {
 	DateOfBirth          string `json:"date_of_birth"`
 	Email                string `json:"email"`
 	PhoneNumber          string `json:"phone_number"`
-	KycStatus            string `json:"Kyc_status" validate:"required, oneof='success','failure','pending'"`
+	KycStatus            string `json:"Kyc_status" validate:"required, oneof=success failure pending"`
 	PanCardImageUrl      string `json:"pan_card_image_url"`
 	FathersName          string `json:"fathers_name"`
 	AddressProofImageUrl string `json:"address_proof_image_url"`
-	AddressProofType     string `json:"address_proof_type" validate:"required, oneof='aadhar','voter_id','passport','licence'"`
+	AddressProofType     string `json:"address_proof_type" validate:"required, oneof=aadhar voter_id passport licence"`
 	Address              string `json:"address"`
 	City                 string `json:"city"`
 	Pincode              string `json:"pincode"`

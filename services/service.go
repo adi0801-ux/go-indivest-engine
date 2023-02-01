@@ -14,6 +14,7 @@ type SandboxServiceConfig struct {
 }
 
 type MFService struct {
-	TSAClient *repositories.TSAClient
-	SavvyRepo *repositories.SavvyRepository
+	TSAClient       *repositories.TSAClient
+	SavvyRepo       *repositories.SavvyRepository
+	ShowAccountRepo *repositories.AccountRepository
 }
