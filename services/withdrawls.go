@@ -41,7 +41,7 @@ func (p *MFService) CreateWithdrawal(createWithdrawals *models.CreateWithdrawals
 	baseModel.Widrawal.Amount = createWithdrawals.Amount
 	baseModel.Widrawal.FundCode = createWithdrawals.FundCode
 	baseModel.Widrawal.AccountUuid = userDtls.AcntUuid
-	baseModel.Widrawal.PartnerTransactionId = createWithdrawals.PartnerTransactionId
+	baseModel.Widrawal.PartnerTransactionId = utils.GeneratePartnerTransactionID()
 	response, err := p.TSAClient.SendPostRequest(constants.CreateWithdrawals, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)

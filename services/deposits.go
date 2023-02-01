@@ -35,13 +35,18 @@ func (p *MFService) ShowDeposits() (int, interface{}, error) {
 }
 
 func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, interface{}, error) {
+	// check if account uuid already present or not
+	//if not then don't send in api request
+
+	//two cases
+
 	baseModel := models.CreateDepositAPI{}
 	baseModel.Amount = createDeposit.Amount
 	baseModel.FundCode = createDeposit.FundCode
 	baseModel.PaymentRedirectUrl = createDeposit.PaymentRedirectUrl
 	baseModel.AccountUuid = createDeposit.AccountUuid
 	baseModel.OnBoardingUuid = createDeposit.OnBoardingUuid
-	baseModel.PartnerTransactionId = createDeposit.PartnerTransactionId
+	baseModel.PartnerTransactionId = utils.GeneratePartnerTransactionID()
 
 	response, err := p.TSAClient.SendPostRequest(constants.CreateDeposit, &baseModel)
 	if err != nil {
