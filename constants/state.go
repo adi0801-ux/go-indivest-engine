@@ -23,7 +23,7 @@ const (
 	SubmitPanCardSuffix             = "/pan_card"
 	UploadFile                      = "/upload_file"
 	ReadAadhaarSuffix               = "/read_address_proof"
-	SubmitAddressProof              = "address_proof"
+	SubmitAddressProof              = "/address_proof"
 	SubmitInvestorDetails           = "/form"
 	UploadSignature                 = "/signature"
 	UploadSelfie                    = "/selfie"

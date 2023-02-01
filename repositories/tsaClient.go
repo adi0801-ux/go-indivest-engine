@@ -19,7 +19,7 @@ type TSAClient struct {
 }
 
 func CreateHttpClient() *http.Client {
-	client := &http.Client{Timeout: 20 * time.Second}
+	client := &http.Client{Timeout: 40 * time.Second}
 	return client
 }
 func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response *http.Response, errResp error) {
@@ -239,14 +239,13 @@ func (h *TSAClient) SendPostFormRequest(endpoint string, body *bytes.Buffer, hea
 		utils.Log.Error(err)
 		return nil, err
 	}
-	req, err := http.NewRequest(method, URL, body)
+	req, err := http.NewRequest(method, URL, bytes.NewReader(body.Bytes()))
 	if err != nil {
 		return nil, err
 	}
 	response, errResp = h.callPostFormTSA(req, apiLog.RequestId, header)
 	respBytes, _ := ioutil.ReadAll(response.Body)
 	response.Body = ioutil.NopCloser(bytes.NewBuffer(respBytes))
-
 	//	update in db
 	apiLog.Response = string(respBytes)
 	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusCreated {

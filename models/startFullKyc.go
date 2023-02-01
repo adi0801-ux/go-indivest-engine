@@ -105,7 +105,7 @@ type UploadFile struct {
 }
 
 type UploadFileAPI struct {
-	Url string `json:"string"`
+	File string `json:"File"`
 }
 
 // submitPanCard api model
@@ -149,8 +149,9 @@ type ReadPanCardAPIResponse struct {
 }
 
 type UploadAadhaarCard struct {
-	AadhaarCard *multipart.FileHeader `json:"pan_card"`
-	UserId      string                `json:"user_id"`
+	AadhaarCardFront *multipart.FileHeader `json:"aadhar_card_front"`
+	AadhaarCardBack  *multipart.FileHeader `json:"aadhar_card_back"`
+	UserId           string                `json:"user_id"`
 }
 
 type UploadAadhaarCardAPI struct {

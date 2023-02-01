@@ -230,14 +230,21 @@ func (s *HTTPServer) UploadAadhaarCardController(c *fiber.Ctx) error {
 	var uploadAadhaarCard models.UploadAadhaarCard
 
 	//get file
-	file, err := c.FormFile("aadhaar_card")
+	AadhaarCardFront, err := c.FormFile("aadhaar_card_front")
+	if err != nil {
+		utils.Log.Error(err)
+		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), err)
+		return nil
+	}
+	AadhaarCardBack, err := c.FormFile("aadhaar_card_back")
 	if err != nil {
 		utils.Log.Error(err)
 		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), err)
 		return nil
 	}
 
-	uploadAadhaarCard.AadhaarCard = file
+	uploadAadhaarCard.AadhaarCardFront = AadhaarCardFront
+	uploadAadhaarCard.AadhaarCardBack = AadhaarCardBack
 	uploadAadhaarCard.UserId = c.Locals("userId").(string)
 
 	responseCode, data, err := s.MfSrv.UploadAadhaarCardImage(&uploadAadhaarCard)
@@ -357,13 +364,6 @@ func (s *HTTPServer) StartVideoVerificationController(c *fiber.Ctx) error {
 	userID := c.Locals("userId").(string)
 
 	var startVideoVerification models.StartVideoVerification
-
-	customErrors, err := ValidateRequest[models.StartVideoVerification](s, c, &startVideoVerification)
-	if err != nil {
-		utils.Log.Error(err)
-		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
-		return nil
-	}
 
 	startVideoVerification.UserId = userID
 

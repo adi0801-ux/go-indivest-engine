@@ -372,6 +372,12 @@ func (p *MFService) UploadFile(uploadFile models.UploadFile) (models.UploadFileA
 	}
 
 	header := writer.FormDataContentType()
+	err = writer.Close()
+	if err != nil {
+		utils.Log.Error(err)
+		return models.UploadFileAPI{}, err
+	}
+
 	response, err := p.TSAClient.SendPostFormRequest(constants.GenerateUploadFileURL(uploadFile.UUID), payload, header)
 	if err != nil {
 		utils.Log.Error(err)
@@ -413,7 +419,7 @@ func (p *MFService) UploadPanCardImage(uploadPan *models.UploadPanCard) (int, in
 	}
 
 	baseModel := models.ReadPanCardAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateReadPanCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
@@ -514,12 +520,23 @@ func (p *MFService) UploadAadhaarCardImage(uploadAadhaar *models.UploadAadhaarCa
 	}
 
 	//upload the pan card
-	uploadFile := models.UploadFile{
+	uploadFileAddharFront := models.UploadFile{
 		UUID:       onBoardingObject.Uuid,
-		UploadFile: uploadAadhaar.AadhaarCard,
+		UploadFile: uploadAadhaar.AadhaarCardFront,
 	}
 
-	uploadObject, err := p.UploadFile(uploadFile)
+	uploadObjectAddharFront, err := p.UploadFile(uploadFileAddharFront)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	uploadFileAddharBack := models.UploadFile{
+		UUID:       onBoardingObject.Uuid,
+		UploadFile: uploadAadhaar.AadhaarCardBack,
+	}
+
+	uploadObjectAddharBack, err := p.UploadFile(uploadFileAddharBack)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -527,7 +544,7 @@ func (p *MFService) UploadAadhaarCardImage(uploadAadhaar *models.UploadAadhaarCa
 
 	baseModel := models.UploadAadhaarCardAPI{}
 	baseModel.Onboarding.AddressProofType = "aadhaar"
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObjectAddharFront.File, uploadObjectAddharBack.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateReadAadharCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -663,7 +680,7 @@ func (p *MFService) UploadSignature(uploadSignature *models.UploadSignature) (in
 	}
 
 	baseModel := models.UploadSignatureAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateUploadSignatureURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -707,7 +724,7 @@ func (p *MFService) UploadSelfie(uploadSelfie *models.UploadSelfie) (int, interf
 	}
 
 	baseModel := models.UploadSelfieAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateUploadSelfieURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -761,7 +778,7 @@ func (p *MFService) StartVideoVerification(startVideoVerification *models.StartV
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	return response.StatusCode, map[string]string{"random_number": data.RandomNumber}, err
 }
 
 // step 11 SubmitVideoVerification
@@ -798,7 +815,7 @@ func (p *MFService) SubmitVideoVerification(submitVideoVerification *models.Subm
 
 	baseModel := models.SubmitVideoVerificationAPI{}
 	baseModel.Onboarding.TransactionId = startVideo.TransactionId
-	baseModel.Onboarding.VideoUrl = uploadObject.Url
+	baseModel.Onboarding.VideoUrl = uploadObject.File
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateSubmitVideoVerificationURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -843,7 +860,7 @@ func (p *MFService) GenerateKycContract(generateKycContract *models.GenerateKycC
 		return http.StatusBadRequest, nil, err
 	}
 
-	return response.StatusCode, data, err
+	return response.StatusCode, map[string]string{"esign_url": data.Url}, err
 }
 
 // step 13 ExecuteVerification

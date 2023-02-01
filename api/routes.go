@@ -84,7 +84,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			mfKyc.Post("/submitDetails", s.SubmitInvestorDetailsController)
 			mfKyc.Post("/uploadSignature", s.UploadSignatureController)
 			mfKyc.Post("/uploadSelfie", s.UploadSelfieController)
-			mfKyc.Post("/startVideoVerification", s.StartVideoVerificationController)
+			mfKyc.Get("/startVideoVerification", s.StartVideoVerificationController)
 			mfKyc.Post("/uploadVideoVerification", s.SubmitVideoVerificationController)
 			mfKyc.Post("/signContract", s.GenerateKYCContractController)
 			mfKyc.Post("/executeContract", s.ExecuteKYCVerificationController)
