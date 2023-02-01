@@ -365,6 +365,12 @@ func (p *MFService) UploadFile(uploadFile models.UploadFile) (models.UploadFileA
 	}
 
 	header := writer.FormDataContentType()
+	err = writer.Close()
+	if err != nil {
+		utils.Log.Error(err)
+		return models.UploadFileAPI{}, err
+	}
+
 	response, err := p.TSAClient.SendPostFormRequest(constants.GenerateUploadFileURL(uploadFile.UUID), payload, header)
 	if err != nil {
 		utils.Log.Error(err)
@@ -406,7 +412,7 @@ func (p *MFService) UploadPanCardImage(uploadPan *models.UploadPanCard) (int, in
 	}
 
 	baseModel := models.ReadPanCardAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateReadPanCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
@@ -520,7 +526,7 @@ func (p *MFService) UploadAadhaarCardImage(uploadAadhaar *models.UploadAadhaarCa
 
 	baseModel := models.UploadAadhaarCardAPI{}
 	baseModel.Onboarding.AddressProofType = "aadhaar"
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateReadAadharCardURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -656,7 +662,7 @@ func (p *MFService) UploadSignature(uploadSignature *models.UploadSignature) (in
 	}
 
 	baseModel := models.UploadSignatureAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateUploadSignatureURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -700,7 +706,7 @@ func (p *MFService) UploadSelfie(uploadSelfie *models.UploadSelfie) (int, interf
 	}
 
 	baseModel := models.UploadSelfieAPI{}
-	baseModel.Onboarding.ImageUrls = []string{uploadObject.Url}
+	baseModel.Onboarding.ImageUrls = []string{uploadObject.File}
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateUploadSelfieURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
@@ -791,7 +797,7 @@ func (p *MFService) SubmitVideoVerification(submitVideoVerification *models.Subm
 
 	baseModel := models.SubmitVideoVerificationAPI{}
 	baseModel.Onboarding.TransactionId = startVideo.TransactionId
-	baseModel.Onboarding.VideoUrl = uploadObject.Url
+	baseModel.Onboarding.VideoUrl = uploadObject.File
 
 	response, err := p.TSAClient.SendPostRequest(constants.GenerateSubmitVideoVerificationURL(onBoardingObject.Uuid), &baseModel)
 	if err != nil {
