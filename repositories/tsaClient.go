@@ -239,14 +239,13 @@ func (h *TSAClient) SendPostFormRequest(endpoint string, body *bytes.Buffer, hea
 		utils.Log.Error(err)
 		return nil, err
 	}
-	req, err := http.NewRequest(method, URL, body)
+	req, err := http.NewRequest(method, URL, bytes.NewReader(body.Bytes()))
 	if err != nil {
 		return nil, err
 	}
 	response, errResp = h.callPostFormTSA(req, apiLog.RequestId, header)
 	respBytes, _ := ioutil.ReadAll(response.Body)
 	response.Body = ioutil.NopCloser(bytes.NewBuffer(respBytes))
-
 	//	update in db
 	apiLog.Response = string(respBytes)
 	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusCreated {

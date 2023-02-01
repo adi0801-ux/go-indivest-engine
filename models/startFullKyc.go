@@ -87,7 +87,7 @@ type UploadFile struct {
 }
 
 type UploadFileAPI struct {
-	Url string `json:"string"`
+	File string `json:"File"`
 }
 
 // submitPanCard api model
