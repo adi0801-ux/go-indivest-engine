@@ -4,7 +4,7 @@ import "time"
 
 // getDeposit api models
 type GetDeposits struct {
-	AccountUuid string `json:"account_uuid"`
+	UserId string `json:"user_id"`
 }
 type GetDepositsAPI struct {
 	AccountUuid string `json:"account_uuid"`

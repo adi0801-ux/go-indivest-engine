@@ -34,7 +34,7 @@ const (
 	India                           = "101"
 	GetSip                          = "sips?"
 	CreateSip                       = "sips"
-	GetDeposits                     = "deposits?"
+	GetDeposits                     = "/deposits"
 	CreateDeposit                   = "deposits"
 	Payout                          = "N"
 	Reinvest                        = "Y"
@@ -45,6 +45,9 @@ const (
 	DefaultAMCCode                  = "MOF"
 	ListAMCEndpoint                 = "/amcs"
 	FundDetailsEndpoint             = "/funds"
+	ShowAccounts                    = "/accounts/"
+	CreateWithdrawals               = "/withdrawals"
+	VerifyOtp                       = "/verify_otp"
 )
 
 func GenerateFullKycURL(uuid string) string {
@@ -115,4 +118,11 @@ func GenerateKYCContractURL(uuid string) string {
 
 func GenerateKYCContractVerifyURL(uuid string) string {
 	return StartFullKycPrefix + uuid + ExecuteVerification
+}
+
+func GenerateShowAccountsURL(uuid string) string {
+	return ShowAccounts + uuid
+}
+func GenerateVerifyWithdrawalOtpUrl(uuid string) string {
+	return CreateWithdrawals + uuid + VerifyOtp
 }

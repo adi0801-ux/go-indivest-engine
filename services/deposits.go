@@ -10,10 +10,11 @@ import (
 )
 
 func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface{}, error) {
+	userDtls, err := p.ShowAccountRepo.ReadShowAccount(getDeposits.UserId)
 	baseModel := models.GetDepositsAPI{}
-	baseModel.AccountUuid = getDeposits.AccountUuid
+	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
-	params.Add("account_uuid", getDeposits.AccountUuid)
+	params.Add("account_uuid", userDtls.AcntUuid)
 	response, err := p.TSAClient.SendGetRequest(constants.GetDeposits, params)
 	if err != nil {
 		utils.Log.Error(err)
