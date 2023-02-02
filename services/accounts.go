@@ -9,6 +9,7 @@ import (
 	"net/url"
 )
 
+//Accounts API
 func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface{}, error) {
 	userInfo, err := p.SavvyRepo.ReadOnboardingObject(userIdDtls.UserId)
 	//baseModel := models.ShowAccountAPI{}
