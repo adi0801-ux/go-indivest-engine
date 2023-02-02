@@ -38,3 +38,6 @@ type CreateSipAPI struct {
 }
 type CreateSipAPIResponse struct {
 }
+
+type CreateSipLocal struct {
+}

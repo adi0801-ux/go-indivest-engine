@@ -19,6 +19,9 @@ type CreateWithdrawalAPI struct {
 type CreateWithdrawlAPIResponse struct {
 }
 
+type CreateWithdrawalLocal struct {
+}
+
 // verifyWithdrawalOtp
 type VerifyWithdrawalOtp struct {
 	UserId string `json:"user_id"`

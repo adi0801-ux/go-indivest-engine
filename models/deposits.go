@@ -35,6 +35,11 @@ type CreateDepositAPIResponse struct {
 	Url     string  `json:"url"`
 }
 
+type CreateDepositLocal struct {
+	Deposit Deposit `json:"deposit"`
+	Url     string  `json:"url"`
+}
+
 // createBasketOfDeposits
 type CreateBasketOfDeposits struct {
 	PaymentRedirectUrl   string    `json:"payment_redirect_url"`
