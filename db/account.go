@@ -6,12 +6,12 @@ import (
 	"indivest-engine/models"
 )
 
-func (d *Database) CreateShowAccount_(m *models.ShowAccountDB) error {
+func (d *Database) CreateAccount_(m *models.ShowAccountDB) error {
 	result := d.store.Create(&m)
 	return result.Error
 }
 
-func (d *Database) ReadShowAccount_(userId string) (*models.ShowAccountDB, error) {
+func (d *Database) ReadAccount_(userId string) (*models.ShowAccountDB, error) {
 	u := &models.ShowAccountDB{}
 	err := d.store.Where("user_id = ?", userId).Find(u).Error
 	if u.CreatedAt.String() == constants.StartDateTime {

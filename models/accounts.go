@@ -8,6 +8,8 @@ type ShowAccount struct {
 type ShowAccountAPIResponse struct {
 	AcntUuid string `json:"acnt_uuid"`
 }
+
+// ShowAccountDB gorm model
 type ShowAccountDB struct {
 	ID        int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`

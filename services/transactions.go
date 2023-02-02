@@ -9,9 +9,9 @@ import (
 	"net/url"
 )
 
-//Deposits API
+// Deposits API
 func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadShowAccount(getDeposits.UserId)
+	userDtls, err := p.ShowAccountRepo.ReadAccount(getDeposits.UserId)
 	baseModel := models.GetDepositsAPI{}
 	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
@@ -85,7 +85,7 @@ func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBa
 //Withdrawal API
 
 func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadShowAccount(verifyOtp.UserId)
+	userDtls, err := p.ShowAccountRepo.ReadAccount(verifyOtp.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
@@ -108,7 +108,7 @@ func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (
 
 }
 func (p *MFService) CreateWithdrawal(createWithdrawals *models.CreateWithdrawals) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadShowAccount(createWithdrawals.UserId)
+	userDtls, err := p.ShowAccountRepo.ReadAccount(createWithdrawals.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}

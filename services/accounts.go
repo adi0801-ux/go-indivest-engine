@@ -9,7 +9,7 @@ import (
 	"net/url"
 )
 
-//Accounts API
+// Accounts API
 func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface{}, error) {
 	userInfo, err := p.SavvyRepo.ReadOnboardingObject(userIdDtls.UserId)
 	//baseModel := models.ShowAccountAPI{}
@@ -35,7 +35,7 @@ func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface
 		AcntUuid: data.AcntUuid,
 	}
 	//create Db for show account
-	err = p.ShowAccountRepo.CreateShowAccount(account)
+	err = p.ShowAccountRepo.CreateAccount(account)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
