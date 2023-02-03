@@ -21,6 +21,7 @@ type CreateDeposit struct {
 	AccountUuid          string    `json:"account_uuid"`
 	OnBoardingUuid       string    `json:"on_boarding_uuid"`
 	PartnerTransactionId string    `json:"partner_transaction_id"`
+	UserId               string    `json:"user_id"`
 }
 type CreateDepositAPI struct {
 	Amount               string    `json:"amount"`

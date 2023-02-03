@@ -4,6 +4,7 @@ import "time"
 
 // GetSip models
 type GetSip struct {
+	UserId      string `json:"user_id"`
 	AccountUuid string `json:"account_uuid"`
 }
 

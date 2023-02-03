@@ -36,11 +36,15 @@ func (p *MFService) ShowDeposits() (int, interface{}, error) {
 }
 
 func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, interface{}, error) {
+	userDtls, err := p.ShowAccountRepo.ReadAccount(createDeposit.UserId)
+	if err != nil && err.Error() != constants.UserNotFound {
+		return http.StatusBadRequest, nil, err
+	}
 	baseModel := models.CreateDepositAPI{}
 	baseModel.Amount = createDeposit.Amount
 	baseModel.FundCode = createDeposit.FundCode
 	baseModel.PaymentRedirectUrl = createDeposit.PaymentRedirectUrl
-	baseModel.AccountUuid = createDeposit.AccountUuid
+	baseModel.AccountUuid = userDtls.AcntUuid
 	baseModel.OnBoardingUuid = createDeposit.OnBoardingUuid
 	baseModel.PartnerTransactionId = createDeposit.PartnerTransactionId
 
