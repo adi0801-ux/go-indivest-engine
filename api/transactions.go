@@ -11,7 +11,7 @@ import (
 
 //DEPOSITS
 
-//GetDeposits API
+// GetDeposits API
 func (s *HTTPServer) GetDepositsController(c *fiber.Ctx) error {
 	//userId from the bearer token
 	userId := c.Locals("userId").(string)
@@ -32,10 +32,30 @@ func (s *HTTPServer) GetDepositsController(c *fiber.Ctx) error {
 }
 
 //ShowDeposits API
+//func (s *HTTPServer) ShowDepositsController(c *fiber.Ctx) error {
+//
+//}
 
-//CreateDeposits API
+// CreateDeposits API
+func (s *HTTPServer) CreateDepositsController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	baseModel := models.CreateDeposit{}
+	baseModel.UserId = userId
+	responseCode, data, err := s.MfSrv.CreateDeposit(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
 
-//Withdrawal API
+// Withdrawal API
 func (s *HTTPServer) CreateWithdrawalController(c *fiber.Ctx) error {
 	//userId from the bearer token
 	userId := c.Locals("userId").(string)
@@ -62,6 +82,53 @@ func (s *HTTPServer) VerifyWithdrawalOtpController(c *fiber.Ctx) error {
 	baseModel := models.VerifyWithdrawalOtp{}
 	baseModel.UserId = userId
 	responseCode, data, err := s.MfSrv.VerifyWithdrawalOtp(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+//Systematic Investment Plan Controllers
+
+// Get Sip
+func (s *HTTPServer) GetSip(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	baseModel := models.GetSip{}
+	baseModel.UserId = userId
+	responseCode, data, err := s.MfSrv.GetSip(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+// Create Sip
+func (s *HTTPServer) CreateSipController(c *fiber.Ctx) error {
+	baseModel := models.CreateSip{}
+	responseCode, data, err := s.MfSrv.CreateSip(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+// get sip
+func (s *HTTPServer) GetSipController(c *fiber.Ctx) error {
+	baseModel := models.GetSip{}
+	responseCode, data, err := s.MfSrv.GetSip(&baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)

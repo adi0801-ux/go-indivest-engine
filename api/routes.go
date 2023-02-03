@@ -105,6 +105,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		deposits.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 		{
 			deposits.Get("/", s.GetDepositsController)
+			deposits.Post("/", s.CreateDepositsController)
+		}
+		sip := router.Group("/sips")
+		sip.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		{
+			sip.Get("/", s.GetSipController)
+			sip.Post("/create", s.CreateSipController)
 		}
 
 	}
