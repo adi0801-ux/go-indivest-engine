@@ -65,6 +65,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	{
 		mfKyc := mfEngine.Group("/kyc")
 		{
+
 			mfKyc.Get("/status", s.CheckIfKycDoneController)
 			mfKyc.Post("/start", s.StartFullKycController)
 			mfKyc.Post("/addBank", s.AddBankAccountController)
@@ -90,28 +91,25 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			mfKyc.Post("/executeContract", s.ExecuteKYCVerificationController)
 		}
 
-		accounts := router.Group("/accounts")
-		accounts.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		accounts := mfEngine.Group("/accounts")
 		{
 			accounts.Get("/", s.ShowAccountDetailsController)
-		}
-		withdrawals := router.Group("/withdrawals")
-		withdrawals.Use(s.AuthorizeMiddleware(s.config.AuthApi))
-		{
-			withdrawals.Post("/", s.CreateWithdrawalController)
-			withdrawals.Post("/verify_otp", s.VerifyWithdrawalOtpController)
-		}
-		deposits := router.Group("/deposits")
-		deposits.Use(s.AuthorizeMiddleware(s.config.AuthApi))
-		{
-			deposits.Get("/", s.GetDepositsController)
-			deposits.Post("/", s.CreateDepositsController)
-		}
-		sip := router.Group("/sips")
-		sip.Use(s.AuthorizeMiddleware(s.config.AuthApi))
-		{
-			sip.Get("/", s.GetSipController)
-			sip.Post("/create", s.CreateSipController)
+			accounts.Get("/holdings", s.GetHoldingsController)
+			withdrawals := accounts.Group("/withdrawals")
+			{
+				withdrawals.Post("/create", s.CreateWithdrawalController)
+				withdrawals.Post("/verify_otp", s.VerifyWithdrawalOtpController)
+			}
+			deposits := accounts.Group("/deposits")
+			{
+				deposits.Get("/", s.GetDepositsController)
+				deposits.Post("/create", s.CreateDepositsController)
+			}
+			sip := accounts.Group("/sips")
+			{
+				sip.Get("/", s.GetSipController)
+				sip.Post("/create", s.CreateSipController)
+			}
 		}
 
 	}

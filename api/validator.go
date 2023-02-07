@@ -27,7 +27,6 @@ func ValidateRequest[C any](s *HTTPServer, c *fiber.Ctx, requestBody *C) ([]IErr
 			return []IError{customError}, fmt.Errorf(customError.Message)
 		}
 		te, _ := err.(*json.UnmarshalTypeError)
-
 		customError := IError{
 			Type:    "DataType Error",
 			Field:   te.Field,
