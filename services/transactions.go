@@ -7,6 +7,7 @@ import (
 	"indivest-engine/utils"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 // Deposits API
@@ -36,18 +37,27 @@ func (p *MFService) ShowDeposits() (int, interface{}, error) {
 }
 
 func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, interface{}, error) {
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createDeposit.UserId)
+
 	userDtls, err := p.ShowAccountRepo.ReadAccount(createDeposit.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
+		userDtls.AcntUuid = ""
 		return http.StatusBadRequest, nil, err
 	}
 	baseModel := models.CreateDepositAPI{}
-	baseModel.Amount = createDeposit.Amount
-	baseModel.FundCode = createDeposit.FundCode
-	baseModel.PaymentRedirectUrl = createDeposit.PaymentRedirectUrl
-	baseModel.AccountUuid = userDtls.AcntUuid
-	baseModel.OnBoardingUuid = createDeposit.OnBoardingUuid
-	baseModel.PartnerTransactionId = createDeposit.PartnerTransactionId
 
+	baseModel.Deposit.Amount = createDeposit.Amount
+	baseModel.Deposit.FundCode = createDeposit.FundCode
+	//baseModel.PaymentRedirectUrl = p.config.PaymentRedirectUrl
+
+	if userDtls.AcntUuid == "" {
+		//acntuuid is not present
+		baseModel.Deposit.OnboardingUuid = onboardingObject.Uuid
+	} else {
+		//acntuuid is present
+		baseModel.Deposit.AccountUuid = userDtls.AcntUuid
+		baseModel.Deposit.OnboardingUuid = onboardingObject.Uuid
+	}
 	response, err := p.TSAClient.SendPostRequest(constants.CreateDeposit, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
@@ -60,8 +70,39 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	if userDtls.AcntUuid == "" {
+		userDtls := &models.ShowAccountDB{}
+		userDtls.AcntUuid = data.Deposit.Uuid
+		userDtls.UserId = createDeposit.UserId
+		err = p.ShowAccountRepo.CreateAccount(userDtls)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+	}
+
+	createDB := &models.CreateDepositsDb{
+		UserId:            createDeposit.UserId,
+		FundCode:          data.Deposit.FundCode,
+		Amount:            data.Deposit.Amount,
+		PaymentStatus:     "payment initiated",
+		TransactionStatus: "transaction initiated",
+		CreatedAt:         time.Now().UTC(),
+	}
+	//create update query
+	err = p.SavvyRepo.CreateDeposits(createDB)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	return response.StatusCode, map[string]string{"payment_url": data.Url}, nil
 }
+
+// if status code was 200 ,
+// create an entry in db for deposits against user id , --> fields fund code , amount  , payment status , transaction status , created_at , updated_at , payment_confirmation_time , asset_allocation_time
+
+//return the payment url  {"payment_link":{url}}
 
 func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBasketOfDeposits) (int, interface{}, error) {
 	baseModel := models.CreateBasketOfDepositsAPI{}
@@ -89,14 +130,14 @@ func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBa
 //Withdrawal API
 
 func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadAccount(verifyOtp.UserId)
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(verifyOtp.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
 
 	baseModel := models.VerifyWithdrawalOtpAPI{}
-	baseModel.Otp = verifyOtp.Otp
-	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(userDtls.AcntUuid), &baseModel)
+	baseModel.Withdrawal.Otp = verifyOtp.Otp
+	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(onboardingObject.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -111,17 +152,18 @@ func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (
 	return response.StatusCode, nil, nil
 
 }
-func (p *MFService) CreateWithdrawal(createWithdrawals *models.CreateWithdrawals) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadAccount(createWithdrawals.UserId)
-	if err != nil && err.Error() != constants.UserNotFound {
+func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals) (int, interface{}, error) {
+	userDtls, err := p.ShowAccountRepo.ReadAccount(createWithdrawal.UserId)
+	if err != nil {
+		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
 
 	baseModel := models.CreateWithdrawalAPI{}
-	baseModel.Widrawal.Amount = createWithdrawals.Amount
-	baseModel.Widrawal.FundCode = createWithdrawals.FundCode
-	baseModel.Widrawal.AccountUuid = userDtls.AcntUuid
-	baseModel.Widrawal.PartnerTransactionId = createWithdrawals.PartnerTransactionId
+	baseModel.Withdrawal.Amount = createWithdrawal.Amount
+	baseModel.Withdrawal.FundCode = createWithdrawal.FundCode
+	baseModel.Withdrawal.AccountUuid = userDtls.AcntUuid
+	baseModel.Withdrawal.PartnerTransactionId = utils.GeneratePartnerTransactionID()
 	response, err := p.TSAClient.SendPostRequest(constants.CreateWithdrawals, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
@@ -140,10 +182,14 @@ func (p *MFService) CreateWithdrawal(createWithdrawals *models.CreateWithdrawals
 //Sip API
 
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
+	userDtls, err := p.ShowAccountRepo.ReadAccount(getSip.UserId)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
 	baseModel := models.GetSipAPI{}
-	baseModel.AccountUuid = getSip.AccountUuid
+	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
-	params.Add("account_uuid", getSip.AccountUuid)
+	params.Add("account_uuid", userDtls.AcntUuid)
 	response, err := p.TSAClient.SendGetRequest(constants.GetSip, params)
 	if err != nil {
 		utils.Log.Error(err)
@@ -164,28 +210,91 @@ func (p *MFService) ShowSip() (int, interface{}, error) {
 }
 
 func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, error) {
+
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createSip.UserId)
+
+	userDtls, err := p.ShowAccountRepo.ReadAccount(createSip.UserId)
+	if err != nil && err.Error() != constants.UserNotFound {
+		userDtls.AcntUuid = ""
+		return http.StatusBadRequest, nil, err
+		//	set account uuid as empty
+		//	update on completion
+		//	case 1 when account id not preset  , call the deposit api and save the account uuid in db of userAccDtls(something like that)
+	}
 	baseModel := models.CreateSipAPI{}
-	baseModel.Amount = createSip.Amount
-	baseModel.FundCode = createSip.FundCode
-	baseModel.AccountUuid = createSip.AccountUuid
-	baseModel.OnBoardingUuid = createSip.OnBoardingUuid
-	baseModel.PartnerTransactionId = createSip.PartnerTransactionId
-	baseModel.StartDate = createSip.StartDate
-	baseModel.EndDate = createSip.EndDate
-	baseModel.Frequency = createSip.Frequency
-	baseModel.MandateRedirectUrl = createSip.MandateRedirectUrl
+
+	baseModel.Sip.Amount = createSip.Amount
+	baseModel.Sip.FundCode = createSip.FundCode
+	baseModel.Sip.PartnerTransactionId = utils.GeneratePartnerTransactionID()
+	baseModel.Sip.StartDate = createSip.StartDate
+	baseModel.Sip.EndDate = createSip.EndDate
+	baseModel.Sip.Frequency = "monthly"
+	baseModel.Sip.MandateRedirectUrl = "p.config.RedirectUrl"
+	if userDtls.AcntUuid == "" {
+		//acntuuid is not present
+		baseModel.Sip.OnboardingUuid = onboardingObject.Uuid
+	} else {
+		//acntuuid is present
+		baseModel.Sip.AccountUuid = userDtls.AcntUuid
+	}
 
 	response, err := p.TSAClient.SendPostRequest(constants.CreateSip, &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	var data models.CreateSipAPIResponse
+	var data models.CreateSipApiResponse
 	//converting struct to []bytes
 	err = json.NewDecoder(response.Body).Decode(&data)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	createDB := &models.CreateSipDb{
+		UserId:        createSip.UserId,
+		StartDate:     data.Sip.StartDate,
+		EndDate:       data.Sip.EndDate,
+		Frequency:     data.Sip.Frequency,
+		FundCode:      data.Sip.FundCode,
+		Amount:        data.Sip.Amount,
+		Uuid:          data.Sip.Uuid,
+		CreatedAt:     time.Time{},
+		UpdatedAt:     time.Now(),
+		PaymentStatus: "Payment Pending",
+	}
+	//create query
+	err = p.SavvyRepo.CreateSip(createDB)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return response.StatusCode, map[string]string{"payments url": data.Url}, err
+}
+
+func (p *MFService) RequestStatusCode(requestStatus string) (int, interface{}, error) {
+	if requestStatus == "SUCCESS" {
+		return http.StatusOK, requestStatus, nil
+	} else if requestStatus == "FAILURE" {
+		return http.StatusBadRequest, requestStatus, nil
+	} else {
+		return 0, requestStatus, nil
+	}
+}
+
+func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {
+
+	params := url.Values{}
+	params.Add("amc_code", holdings.AmcCode)
+	response, err := p.TSAClient.SendGetRequest(constants.GenerateHoldingsURL(holdings.FundCode), params)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var data interface{}
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, data, nil
 }
