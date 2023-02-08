@@ -21,6 +21,30 @@ type AuthVerificationResp struct {
 	Error interface{} `json:"error"`
 }
 
+func (s *HTTPServer) WebhookAuthenticationMiddleware() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		apiKey := c.GetReqHeaders()["x-api-key"]
+
+		if apiKey == "" {
+
+			errorResponse(c, http.StatusUnauthorized, fmt.Errorf("no x-api-key in header provided"))
+
+			return nil
+		}
+		if apiKey == s.config.XApiKey {
+			err := c.Next()
+			if err != nil {
+				utils.Log.Warn(err)
+				return nil
+			}
+		} else {
+			errorResponse(c, http.StatusUnauthorized, fmt.Errorf("incorrect x-api-key in header provided"))
+			return nil
+		}
+
+		return nil
+	}
+}
 func (s *HTTPServer) AuthorizeMiddleware(AuthApi string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		clientToken := c.GetReqHeaders()["Authorization"]

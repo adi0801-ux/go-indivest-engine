@@ -142,10 +142,10 @@ func (p *MFService) AddBankAccount(userDetails *models.AddBankAccount) (int, int
 
 	//check the exsisting investor status
 	onBoardingObject, err := p.SavvyRepo.ReadOnboardingObject(userDetails.UserId)
+
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
-
 	if onBoardingObject.ExistingInvestor == "0" {
 		return http.StatusBadRequest, nil, fmt.Errorf("user kyc required")
 	}
@@ -162,6 +162,37 @@ func (p *MFService) AddBankAccount(userDetails *models.AddBankAccount) (int, int
 	var data models.AddBankAccountAPIResponse
 	//converting struct to []bytes
 	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	//saving onboarding fields
+	onboardingDb := &models.OnboardingObjectDB{
+		Uuid:                 data.Onboarding.Uuid,
+		PanNumber:            data.Onboarding.PanNumber,
+		ExistingInvestor:     "",
+		Name:                 data.Onboarding.Name,
+		Email:                data.Onboarding.Email,
+		PhoneNumber:          data.Onboarding.PhoneNumber,
+		DateOfBirth:          data.Onboarding.DateOfBirth,
+		KycStatus:            data.Onboarding.KycStatus,
+		PanCardImageUrl:      data.Onboarding.PanCardImageUrl,
+		FathersName:          data.Onboarding.FathersName,
+		AddressProofImageUrl: data.Onboarding.AddressProofImageUrl,
+		AddressProofType:     data.Onboarding.AddressProofType,
+		Address:              data.Onboarding.Address,
+		City:                 data.Onboarding.City,
+		Pincode:              data.Onboarding.Pincode,
+		SignatureImageUrl:    data.Onboarding.SignatureImageUrl,
+		SelfieImageUrl:       data.Onboarding.SelfieImageUrl,
+		CancelledChequeUrl:   data.Onboarding.CancelledChequeUrl,
+		VideoUrl:             data.Onboarding.VideoUrl,
+		AnnualIncome:         data.Onboarding.AnnualIncome,
+		Gender:               data.Onboarding.Gender,
+		Occupation:           data.Onboarding.Occupation,
+		MaritalStatus:        data.Onboarding.MaritalStatus,
+	}
+	err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingDb)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err

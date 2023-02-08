@@ -6,17 +6,20 @@ import (
 )
 
 type Config struct {
-	DSN           string `mapstructure:"DSN"`
-	GINMode       string `mapstructure:"GIN_MODE"`
-	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
-	RedisAddress  string `mapstructure:"REDIS_ADDRESS"`
-	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
-	RedisUserName string `mapstructure:"REDIS_USERNAME"`
-	RedisDb       int    `mapstructure:"REDIS_DB"`
-	AuthApi       string `mapstructure:"AUTH_API"`
-	SavvyUrl      string `mapstructure:"SAVVY_URL"`
-	SavvyToken    string `mapstructure:"SAVVY_TOKEN"`
-	RedirectUrl   string `mapstructure:"REDIRECT_URL"`
+	DSN                string `mapstructure:"DSN"`
+	GINMode            string `mapstructure:"GIN_MODE"`
+	ServerAddress      string `mapstructure:"SERVER_ADDRESS"`
+	RedisAddress       string `mapstructure:"REDIS_ADDRESS"`
+	RedisPassword      string `mapstructure:"REDIS_PASSWORD"`
+	RedisUserName      string `mapstructure:"REDIS_USERNAME"`
+	RedisDb            int    `mapstructure:"REDIS_DB"`
+	AuthApi            string `mapstructure:"AUTH_API"`
+	SavvyUrl           string `mapstructure:"SAVVY_URL"`
+	SavvyToken         string `mapstructure:"SAVVY_TOKEN"`
+	RedirectUrl        string `mapstructure:"REDIRECT_URL"`
+	PaymentRedirectUrl string `mapstructure:"PAYMENT_REDIRECT_URL"`
+	SecretKey          string `mapstructure:"SECRET_KEY"`
+	XApiKey            string `mapstructure:"X_API_KEY"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {

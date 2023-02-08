@@ -2,6 +2,7 @@ package services
 
 import (
 	"indivest-engine/repositories"
+	"indivest-engine/utils"
 )
 
 type RiskCalculatorService struct {
@@ -17,4 +18,5 @@ type MFService struct {
 	TSAClient       *repositories.TSAClient
 	SavvyRepo       *repositories.SavvyRepository
 	ShowAccountRepo *repositories.AccountRepository
+	config          *utils.Config
 }

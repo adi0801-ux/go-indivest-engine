@@ -69,6 +69,9 @@ func main() {
 	SavvyRepo := repositories.SavvyRepository{
 		Db: store,
 	}
+	ShowAccRepo := repositories.AccountRepository{
+		Db: store,
+	}
 
 	redisRepo := repositories.RedisRepository{
 		Db: redisStore,
@@ -90,8 +93,9 @@ func main() {
 	}
 
 	MfSrv := services.MFService{
-		TSAClient: &TSARepo,
-		SavvyRepo: &SavvyRepo,
+		TSAClient:       &TSARepo,
+		SavvyRepo:       &SavvyRepo,
+		ShowAccountRepo: &ShowAccRepo,
 		//FullKycRepo:                nil,
 		//ReadPanCardRepo:            nil,
 		//ReadAddressProofRepo:       nil,
