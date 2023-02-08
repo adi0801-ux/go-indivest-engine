@@ -23,7 +23,8 @@ type AuthVerificationResp struct {
 
 func (s *HTTPServer) WebhookAuthenticationMiddleware() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		apiKey := c.GetReqHeaders()["x-api-key"]
+		fmt.Println(c.GetReqHeaders())
+		apiKey := c.GetReqHeaders()["X-Api-Key"]
 
 		if apiKey == "" {
 
