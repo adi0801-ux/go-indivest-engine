@@ -44,3 +44,7 @@ func RoundOfTo2Decimal(f float64) float64 {
 
 	return math.Round(f*100) / 100
 }
+
+func GeneratePartnerTransactionID() string {
+	return "PART_TRANS_" + GenerateID()
+}

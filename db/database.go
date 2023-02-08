@@ -39,6 +39,9 @@ func (d *Database) RunMigrations() (err error) {
 		&models.OccupationDB{},
 		&models.ReadPanCardDB{},
 		&models.StartVideoVerificationDB{},
+		&models.ShowAccountDB{},
+		&models.CreateDepositsDb{},
+		&models.CreateSipDb{},
 	)
 
 	err = d.store.AutoMigrate(
