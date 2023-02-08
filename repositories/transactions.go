@@ -13,3 +13,16 @@ func (s *SavvyRepository) ReadDeposits(userId string) (*models.CreateDepositsDb,
 func (s *SavvyRepository) CreateSip(w *models.CreateSipDb) error {
 	return s.Db.CreateSip_(w)
 }
+
+func (s *SavvyRepository) CreateWithdrawal(w *models.CreateWithdrawalDb) error {
+	return s.Db.CreateWithdrawal_(w)
+}
+
+func (s *SavvyRepository) ReadWithdrawal(withdrwalId string) (*models.CreateWithdrawalDb, error) {
+	return s.Db.ReadWithdrawal_(withdrwalId)
+
+}
+
+func (s *SavvyRepository) UpdateWithdrawal(m *models.CreateWithdrawalDb) error {
+	return s.Db.UpdateWithdrawal(m)
+}

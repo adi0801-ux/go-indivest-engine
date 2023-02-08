@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
@@ -130,14 +131,15 @@ func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBa
 //Withdrawal API
 
 func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (int, interface{}, error) {
-	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(verifyOtp.UserId)
+	withdrawal, err := p.SavvyRepo.ReadWithdrawal(verifyOtp.WithdrawalId)
+	fmt.Print(withdrawal.Uuid)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
 
 	baseModel := models.VerifyWithdrawalOtpAPI{}
 	baseModel.Withdrawal.Otp = verifyOtp.Otp
-	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(onboardingObject.Uuid), &baseModel)
+	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(withdrawal.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -149,6 +151,14 @@ func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
+
+	withdrawal.WithdrawalStatus = constants.WithdrawalComplete
+	err = p.SavvyRepo.UpdateWithdrawal(withdrawal)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+
 	return response.StatusCode, nil, nil
 
 }
@@ -176,7 +186,17 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, nil
+	createWithdrawals := &models.CreateWithdrawalDb{
+		UserId:           createWithdrawal.UserId,
+		Uuid:             data.Withdrawal.Uuid,
+		Amount:           data.Withdrawal.Amount,
+		FundCode:         data.Withdrawal.FundCode,
+		FundName:         data.Withdrawal.FundName,
+		WithdrawalStatus: constants.WithdrawalInitiated,
+		WithdrawlId:      utils.GenerateWithdrwalId(),
+	}
+	err = p.SavvyRepo.CreateWithdrawal(createWithdrawals)
+	return response.StatusCode, map[string]string{"withdrawal_id": createWithdrawals.WithdrawlId}, nil
 }
 
 //Sip API
