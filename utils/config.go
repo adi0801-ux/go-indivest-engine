@@ -18,6 +18,7 @@ type Config struct {
 	SavvyToken         string `mapstructure:"SAVVY_TOKEN"`
 	RedirectUrl        string `mapstructure:"REDIRECT_URL"`
 	PaymentRedirectUrl string `mapstructure:"PAYMENT_REDIRECT_URL"`
+	SecretKey          string `mapstructure:"SECRET_KEY"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {

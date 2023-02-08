@@ -51,6 +51,12 @@ const (
 	Funds                           = "/funds"
 	Holdings                        = "/holdings"
 	PaymentStatus                   = "paymentInitialised"
+	WebhooksCreateOnboardings       = "onboardings.create"
+	WebhooksCreateDeposits          = "deposits.create"
+	WebhooksDepositsStatusUpdate    = "deposits.status.update"
+	WebhooksCreateAccounts          = "accounts.create"
+	WebhooksCreateWithdrawals       = "withdrawals.create"
+	WebhooksWithdrawalStatusUpdate  = "withdrawals.status.update"
 )
 
 func GenerateFullKycURL(uuid string) string {

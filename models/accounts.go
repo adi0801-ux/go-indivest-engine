@@ -17,3 +17,14 @@ type ShowAccountDB struct {
 	Uuid      string    `gorm:"column:uuid" json:"uuid"`
 	AcntUuid  string    `gorm:"column:acnt_uuid" json:"acnt_uuid"`
 }
+
+type Webhook struct {
+	Event       string      `json:"event"`
+	SentAt      string      `json:"sent_at"`
+	Payload     interface{} `json:"payload"`
+	Signature   string      `json:"signature"`
+	RedirectUrl string      `json:"redirect_url"`
+}
+
+type WebhooksAPI struct {
+}
