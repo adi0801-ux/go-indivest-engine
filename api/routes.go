@@ -121,6 +121,12 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		funds.Get("/fundInfo", s.fundInfoController)
 	}
 
+	webhook := router.Group("mfEngine/webhooks")
+	webhook.Use(s.WebhookAuthenticationMiddleware())
+	{
+		webhook.Use("/savvy", s.ConnectWebhooksController)
+	}
+
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {
