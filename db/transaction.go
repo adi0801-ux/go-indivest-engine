@@ -25,6 +25,14 @@ func (d *Database) CreateSip_(m *models.CreateSipDb) error {
 	return result.Error
 }
 
+func (d *Database) ReadSip_(userId string) (*models.CreateSipDb, error) {
+	u := &models.CreateSipDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
 func (d *Database) CreateWithdrawal_(m *models.CreateWithdrawalDb) error {
 	result := d.store.Create(&m)
 	return result.Error
@@ -32,6 +40,15 @@ func (d *Database) CreateWithdrawal_(m *models.CreateWithdrawalDb) error {
 func (d *Database) ReadWithdrawal_(withdrwalId string) (*models.CreateWithdrawalDb, error) {
 	u := &models.CreateWithdrawalDb{}
 	err := d.store.Where("withdrawal_id = ?", withdrwalId).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
+
+func (d *Database) ReadWithdrawalAll_(userId string) (*models.CreateWithdrawalDb, error) {
+	u := &models.CreateWithdrawalDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
 	if u.CreatedAt.String() == constants.StartDateTime {
 		return u, fmt.Errorf(constants.UserNotFound)
 	}
