@@ -93,8 +93,9 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 
 		accounts := mfEngine.Group("/accounts")
 		{
-			accounts.Get("/", s.ShowAccountDetailsController)
+			accounts.Get("/show", s.ShowAccountDetailsController)
 			accounts.Get("/holdings", s.GetHoldingsController)
+			accounts.Get("/transactions", s.GetTransactionController)
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)

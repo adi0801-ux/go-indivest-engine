@@ -19,12 +19,7 @@ func (s *HTTPServer) GetDepositsController(c *fiber.Ctx) error {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 	}
 	baseModel := models.GetDeposits{}
-	customErrors, err := ValidateRequest[models.GetDeposits](s, c, &baseModel)
-	if err != nil {
-		utils.Log.Error(err)
-		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
-		return nil
-	}
+
 	baseModel.UserId = userId
 	responseCode, data, err := s.MfSrv.GetDeposits(&baseModel)
 	if err != nil {
@@ -152,12 +147,7 @@ func (s *HTTPServer) GetSipController(c *fiber.Ctx) error {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 	}
 	baseModel := models.GetSip{}
-	customErrors, err := ValidateRequest[models.GetSip](s, c, &baseModel)
-	if err != nil {
-		utils.Log.Error(err)
-		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
-		return nil
-	}
+
 	baseModel.UserId = userId
 	responseCode, data, err := s.MfSrv.GetSip(&baseModel)
 	if err != nil {
@@ -178,6 +168,29 @@ func (s *HTTPServer) GetHoldingsController(c *fiber.Ctx) error {
 		return nil
 	}
 	responseCode, data, err := s.MfSrv.GetHoldings(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+func (s *HTTPServer) GetTransactionController(c *fiber.Ctx) error {
+
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	fmt.Println(userId)
+	baseModel := models.GetTransaction{}
+
+	baseModel.UserId = userId
+	//fmt.Println(baseModel.UserId)
+
+	responseCode, data, err := s.MfSrv.GetTransactions(&baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)
