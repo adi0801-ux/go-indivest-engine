@@ -42,7 +42,9 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 
 	userDtls, err := p.ShowAccountRepo.ReadAccount(createDeposit.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
+		userDtls.UserId = ""
 		userDtls.AcntUuid = ""
+		userDtls.AmcId = ""
 		return http.StatusBadRequest, nil, err
 	}
 	baseModel := models.CreateDepositAPI{}
@@ -51,8 +53,8 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 	baseModel.Deposit.FundCode = createDeposit.FundCode
 	//baseModel.PaymentRedirectUrl = p.config.PaymentRedirectUrl
 
-	if userDtls.AcntUuid == "" {
-		//acntuuid is not present
+	if userDtls.AcntUuid == "" && userDtls.AmcId == "" {
+		//acntuuid and amcId not present
 		baseModel.Deposit.OnboardingUuid = onboardingObject.Uuid
 	} else {
 		//acntuuid is present
@@ -317,4 +319,17 @@ func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, err
 		return http.StatusBadRequest, nil, err
 	}
 	return http.StatusOK, data, nil
+}
+
+func (p *MFService) GetTransactions(transDtls *models.GetTransaction) (int, interface{}, error) {
+	fmt.Println("HI THERE")
+	fmt.Println(transDtls.UserId)
+	withdrawals, err := p.SavvyRepo.ReadWithdrawalAll(transDtls.UserId)
+	deposits, err := p.SavvyRepo.ReadDeposits(transDtls.UserId)
+	sips, err := p.SavvyRepo.ReadSip(transDtls.UserId)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+
+	return http.StatusOK, map[string]interface{}{"sip_details": sips, "withdrawl_details": withdrawals, "deposits": deposits}, nil
 }
