@@ -10,6 +10,13 @@ func (s *SavvyRepository) ReadDeposits(userId string) (*models.CreateDepositsDb,
 	return s.Db.ReadDeposits_(userId)
 }
 
+func (s *SavvyRepository) ReadDepositsByUUID(uuid string) (*models.CreateDepositsDb, error) {
+	return s.Db.ReadDepositsByUUID_(uuid)
+}
+func (s *SavvyRepository) CreateOrUpdateDeposit(m *models.CreateDepositsDb) error {
+	return s.Db.CreateOrUpdateDeposit_(m)
+}
+
 func (s *SavvyRepository) CreateSip(w *models.CreateSipDb) error {
 	return s.Db.CreateSip_(w)
 }

@@ -5,6 +5,7 @@ import (
 )
 
 type CreateDepositsDb struct {
+	Uuid                    string    `gorm:"column:uuid" json:"uuid"`
 	FundCode                string    `gorm:"column:fund_code" json:"fund_code"`
 	Amount                  float64   `gorm:"column:amount" json:"amount"`
 	PaymentStatus           string    `gorm:"column:payment_status" json:"payment_status"`

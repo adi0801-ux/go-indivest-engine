@@ -20,6 +20,24 @@ func (d *Database) ReadDeposits_(userId string) (*models.CreateDepositsDb, error
 	return u, err
 }
 
+func (d *Database) ReadDepositsByUUID_(uuid string) (*models.CreateDepositsDb, error) {
+	u := &models.CreateDepositsDb{}
+	err := d.store.Where("uuid = ?", uuid).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
+func (d *Database) CreateOrUpdateDeposit_(w *models.CreateDepositsDb) error {
+	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
+	if result.RowsAffected == 0 {
+		result = d.store.Create(&w)
+		return result.Error
+	}
+
+	return result.Error
+}
+
 func (d *Database) CreateSip_(m *models.CreateSipDb) error {
 	result := d.store.Create(&m)
 	return result.Error

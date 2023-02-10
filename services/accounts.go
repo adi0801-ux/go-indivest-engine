@@ -1,14 +1,13 @@
 package services
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
 	"encoding/json"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 // Accounts API
@@ -32,12 +31,12 @@ func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface
 		return http.StatusBadRequest, nil, err
 	}
 	account := &models.ShowAccountDB{
-		UserId:   userInfo.UserId,
-		Uuid:     userInfo.Uuid,
+		UserId: userInfo.UserId,
+		//Uuid:     userInfo.Uuid,
 		AcntUuid: data.AcntUuid,
 	}
 	//create Db for show account
-	err = p.ShowAccountRepo.CreateAccount(account)
+	err = p.SavvyRepo.CreateAccount(account)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -46,35 +45,83 @@ func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface
 }
 
 func (p *MFService) ConnectWebhooks(webhooks *models.Webhook) (int, interface{}, error) {
-	//verify payload
-	// check if signature is hash of payload -->
-	h := hmac.New(sha256.New, []byte(p.config.SecretKey))
 
-	// Write Data to it
-	b, err := json.Marshal(webhooks.Payload)
-	if err != nil {
-		utils.Log.Error(err)
-		return http.StatusBadRequest, nil, err
-	}
-	h.Write([]byte(b))
-
-	// Get result and encode as hexadecimal string
-	sha := h.Sum(nil)
-
-	if !hmac.Equal([]byte(webhooks.Signature), sha) {
-		//	not from savvy ,  return
-	}
 	utils.Log.Info(webhooks.Event, webhooks.Payload)
 
 	if webhooks.Event == constants.WebhooksCreateDeposits {
-		_ = webhooks.Payload.(models.CreateDeposit)
+		webhookPayload := webhooks.Payload.(models.WebhookDepositsCreate)
+		//onboardinguuid or uuid
+		//onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(webhookPayload.Deposit.Uuid)
+		depositObject, err := p.SavvyRepo.ReadDepositsByUUID(webhookPayload.Deposit.Uuid)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+		depositObject.PaymentStatus = "Payment Initiated"
+		err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+		// will get this only once
+		// get account by userId and amc id
+		account := &models.ShowAccountDB{
+			UserId:   depositObject.UserId,
+			AmcId:    strconv.Itoa(webhookPayload.Deposit.Fund.AmcId),
+			AcntUuid: webhookPayload.Deposit.AccountUuid,
+		}
+
+		_, err = p.SavvyRepo.ReadAccountWithAmcId(account.UserId, account.AmcId)
+		if err != nil {
+			if err.Error() == constants.UserNotFound {
+				//	add the account
+				err = p.SavvyRepo.CreateOrUpdateAccount(account)
+				if err != nil {
+					utils.Log.Error(err)
+					return http.StatusBadRequest, nil, err
+				}
+			} else {
+				utils.Log.Error(err)
+				return http.StatusBadRequest, nil, err
+			}
+		}
+
+		//	we need to update status for the transaction occured
 
 	} else if webhooks.Event == constants.WebhooksCreateOnboardings {
-		_ = webhooks.Payload.(models.CheckKYCUserAPI)
+		webhooks := webhooks.Payload.(models.WebhookOnboardingCreate)
+		onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(webhooks.Uuid)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+		onboardingObject.OnboardingStatus = "Onboarding Object Created"
+		err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
 
 	} else if webhooks.Event == constants.WebhooksDepositsStatusUpdate {
 		//which is depositStatusUpdate
-		_ = webhooks.Payload.(models.Webhook)
+		webhookPayload := webhooks.Payload.(models.WebhookDepositsCreate)
+
+		depositObject, err := p.SavvyRepo.ReadDepositsByUUID(webhookPayload.Deposit.Uuid)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+		if webhookPayload.Deposit.Status == "created" {
+			depositObject.PaymentStatus = "Payment Transaction Success"
+		} else {
+			webhookPayload.Deposit.Status = "Payment Transaction Filed"
+		}
+
+		err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
 
 	} else if webhooks.Event == constants.WebhooksCreateAccounts {
 		//which is the createAccount api? is it the AddBankAccount under Onboarding
