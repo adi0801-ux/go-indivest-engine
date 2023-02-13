@@ -87,6 +87,7 @@ type OnboardingObjectDB struct {
 	Gender               string    `gorm:"column:gender" json:"gender"`
 	Occupation           string    `gorm:"column:occupation" json:"occupation"`
 	MaritalStatus        string    `gorm:"column:marital_status" json:"marital_status"`
+	OnboardingStatus     string    `gorm:"column:onboarding_status" json:"onboarding_status"`
 }
 
 func (o *OnboardingObjectDB) TableName() string {

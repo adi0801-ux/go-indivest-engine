@@ -1,17 +1,23 @@
 package repositories
 
 import (
-	"indivest-engine/db"
 	"indivest-engine/models"
 )
 
-type AccountRepository struct {
-	Db *db.Database
-}
+//type AccountRepository struct {
+//	Db *db.Database
+//}
 
-func (s *AccountRepository) CreateAccount(m *models.ShowAccountDB) error {
+func (s *SavvyRepository) CreateAccount(m *models.ShowAccountDB) error {
 	return s.Db.CreateAccount_(m)
 }
-func (s *AccountRepository) ReadAccount(userId string) (*models.ShowAccountDB, error) {
+func (s *SavvyRepository) ReadAccount(userId string) (*models.ShowAccountDB, error) {
 	return s.Db.ReadAccount_(userId)
+}
+
+func (s *SavvyRepository) CreateOrUpdateAccount(m *models.ShowAccountDB) error {
+	return s.Db.CreateOrUpdateAccount_(m)
+}
+func (s *SavvyRepository) ReadAccountWithAmcId(userId string, AmcId string) (*models.ShowAccountDB, error) {
+	return s.Db.ReadAccountWithAmcId_(userId, AmcId)
 }

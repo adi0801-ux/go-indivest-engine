@@ -16,6 +16,9 @@ func (s *SavvyRepository) CreateOnboardingObject(m *models.OnboardingObjectDB) e
 func (s *SavvyRepository) ReadOnboardingObject(userId string) (*models.OnboardingObjectDB, error) {
 	return s.Db.ReadOnboardingObject_(userId)
 }
+func (s *SavvyRepository) ReadOnboardingObjectByUUID(uuid string) (*models.OnboardingObjectDB, error) {
+	return s.Db.ReadOnboardingObjectByUUID_(uuid)
+}
 
 func (s *SavvyRepository) UpdateOrCreateOnboardingObject(m *models.OnboardingObjectDB) error {
 	return s.Db.UpdateOrCreateOnboardingObject_(m)
