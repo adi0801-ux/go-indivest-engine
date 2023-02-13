@@ -42,6 +42,7 @@ func (d *Database) RunMigrations() (err error) {
 		&models.ShowAccountDB{},
 		&models.CreateDepositsDb{},
 		&models.CreateSipDb{},
+		&models.CreateWithdrawalDb{},
 	)
 
 	err = d.store.AutoMigrate(

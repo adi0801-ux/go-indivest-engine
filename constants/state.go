@@ -46,17 +46,19 @@ const (
 	ListAMCEndpoint                 = "/amcs"
 	FundDetailsEndpoint             = "/funds"
 	ShowAccounts                    = "/accounts/"
-	CreateWithdrawals               = "/withdrawals"
+	CreateWithdrawals               = "/withdrawals/"
 	VerifyOtp                       = "/verify_otp"
 	Funds                           = "/funds"
 	Holdings                        = "/holdings"
 	PaymentStatus                   = "paymentInitialised"
 	WebhooksCreateOnboardings       = "onboardings.create"
 	WebhooksCreateDeposits          = "deposits.create"
-	WebhooksDepositsStatusUpdate    = "deposits.status.update"
+	WebhooksStatusUpdateDeposits    = "deposits.status.update"
 	WebhooksCreateAccounts          = "accounts.create"
 	WebhooksCreateWithdrawals       = "withdrawals.create"
-	WebhooksWithdrawalStatusUpdate  = "withdrawals.status.update"
+	WebhooksStatusUpdateWithdrawal  = "withdrawals.status.update"
+	WithdrawalInitiated             = "Withdrawal Initiated"
+	WithdrawalComplete              = "Withdrawal Complete"
 )
 
 func GenerateFullKycURL(uuid string) string {
@@ -133,7 +135,7 @@ func GenerateShowAccountsURL(uuid string) string {
 	return ShowAccounts + uuid
 }
 func GenerateVerifyWithdrawalOtpUrl(uuid string) string {
-	return CreateWithdrawals + "/" + uuid + VerifyOtp
+	return CreateWithdrawals + uuid + VerifyOtp
 }
 func GenerateHoldingsURL(fundCode string) string {
 	return Funds + "/" + fundCode + Holdings

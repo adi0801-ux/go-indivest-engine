@@ -32,7 +32,6 @@ type CreateDepositAPIResponse struct {
 	Deposit Deposit `json:"deposit"`
 	Url     string  `json:"url"`
 }
-
 type CreateDepositLocal struct {
 	Deposit Deposit `json:"deposit"`
 	Url     string  `json:"url"`
@@ -92,17 +91,26 @@ type CreateWithdrawalAPI struct {
 		PartnerTransactionId string `json:"partner_transaction_id"`
 	} `json:"withdrawal"`
 }
-
 type CreateWithdrawlAPIResponse struct {
+	Withdrawal struct {
+		Uuid      string      `json:"uuid"`
+		Amount    string      `json:"amount"`
+		FundCode  string      `json:"fund_code"`
+		FundName  string      `json:"fund_name"`
+		Units     interface{} `json:"units"`
+		Status    interface{} `json:"status"`
+		CreatedAt string      `json:"created_at"`
+	} `json:"withdrawal"`
 }
 
 type CreateWithdrawalLocal struct {
 }
 
-// verifyWithdrawalOtp
+// VerifyWithdrawalOtp
 type VerifyWithdrawalOtp struct {
-	UserId string `json:"user_id"`
-	Otp    string `json:"otp"`
+	UserId       string `json:"user_id"`
+	WithdrawalId string `json:"withdrawal_id"`
+	Otp          string `json:"otp"`
 }
 type VerifyWithdrawalOtpAPI struct {
 	Withdrawal struct {
@@ -110,6 +118,15 @@ type VerifyWithdrawalOtpAPI struct {
 	} `json:"withdrawal"`
 }
 type VerifyWithdrawOtpAPIResponse struct {
+	Withdrawal struct {
+		Uuid      string      `json:"uuid"`
+		Amount    string      `json:"amount"`
+		FundCode  string      `json:"fund_code"`
+		FundName  string      `json:"fund_name"`
+		Units     interface{} `json:"units"`
+		Status    interface{} `json:"status"`
+		CreatedAt string      `json:"created_at"`
+	} `json:"withdrawal"`
 }
 
 //SIP models
@@ -204,4 +221,9 @@ type Holding struct {
 type HoldingApi struct {
 	FundCode string `json:"fund_code"`
 	AmcCode  string `json:"amc_code"`
+}
+
+// GetTransaction model
+type GetTransaction struct {
+	UserId string `json:"user_id"`
 }

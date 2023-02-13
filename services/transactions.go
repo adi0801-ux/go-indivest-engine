@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
@@ -12,7 +13,7 @@ import (
 
 // Deposits API
 func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadAccount(getDeposits.UserId)
+	userDtls, err := p.SavvyRepo.ReadAccount(getDeposits.UserId)
 	baseModel := models.GetDepositsAPI{}
 	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
@@ -39,9 +40,11 @@ func (p *MFService) ShowDeposits() (int, interface{}, error) {
 func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, interface{}, error) {
 	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createDeposit.UserId)
 
-	userDtls, err := p.ShowAccountRepo.ReadAccount(createDeposit.UserId)
+	userDtls, err := p.SavvyRepo.ReadAccount(createDeposit.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
+		userDtls.UserId = ""
 		userDtls.AcntUuid = ""
+		userDtls.AmcId = ""
 		return http.StatusBadRequest, nil, err
 	}
 	baseModel := models.CreateDepositAPI{}
@@ -50,11 +53,11 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 	baseModel.Deposit.FundCode = createDeposit.FundCode
 	//baseModel.PaymentRedirectUrl = p.config.PaymentRedirectUrl
 
-	if userDtls.AcntUuid == "" {
-		//acntuuid is not present
+	if userDtls.AcntUuid == "" && userDtls.AmcId == "" {
+		//userId and amcId not present
 		baseModel.Deposit.OnboardingUuid = onboardingObject.Uuid
 	} else {
-		//acntuuid is present
+		//acntUuid is present
 		baseModel.Deposit.AccountUuid = userDtls.AcntUuid
 		baseModel.Deposit.OnboardingUuid = onboardingObject.Uuid
 	}
@@ -74,7 +77,7 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 		userDtls := &models.ShowAccountDB{}
 		userDtls.AcntUuid = data.Deposit.Uuid
 		userDtls.UserId = createDeposit.UserId
-		err = p.ShowAccountRepo.CreateAccount(userDtls)
+		err = p.SavvyRepo.CreateAccount(userDtls)
 		if err != nil {
 			utils.Log.Error(err)
 			return http.StatusBadRequest, nil, err
@@ -82,6 +85,7 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 	}
 
 	createDB := &models.CreateDepositsDb{
+		Uuid:              data.Deposit.Uuid,
 		UserId:            createDeposit.UserId,
 		FundCode:          data.Deposit.FundCode,
 		Amount:            data.Deposit.Amount,
@@ -130,14 +134,15 @@ func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBa
 //Withdrawal API
 
 func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (int, interface{}, error) {
-	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(verifyOtp.UserId)
+	withdrawal, err := p.SavvyRepo.ReadWithdrawal(verifyOtp.WithdrawalId)
+	fmt.Print(withdrawal.Uuid)
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
 
 	baseModel := models.VerifyWithdrawalOtpAPI{}
 	baseModel.Withdrawal.Otp = verifyOtp.Otp
-	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(onboardingObject.Uuid), &baseModel)
+	response, err := p.TSAClient.SendPostRequest(constants.GenerateVerifyWithdrawalOtpUrl(withdrawal.Uuid), &baseModel)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -149,11 +154,19 @@ func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
+
+	withdrawal.WithdrawalStatus = constants.WithdrawalComplete
+	err = p.SavvyRepo.UpdateWithdrawal(withdrawal)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+
 	return response.StatusCode, nil, nil
 
 }
 func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadAccount(createWithdrawal.UserId)
+	userDtls, err := p.SavvyRepo.ReadAccount(createWithdrawal.UserId)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
@@ -176,13 +189,23 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, nil
+	createWithdrawals := &models.CreateWithdrawalDb{
+		UserId:           createWithdrawal.UserId,
+		Uuid:             data.Withdrawal.Uuid,
+		Amount:           data.Withdrawal.Amount,
+		FundCode:         data.Withdrawal.FundCode,
+		FundName:         data.Withdrawal.FundName,
+		WithdrawalStatus: constants.WithdrawalInitiated,
+		WithdrawlId:      utils.GenerateWithdrawalId(),
+	}
+	err = p.SavvyRepo.CreateWithdrawal(createWithdrawals)
+	return response.StatusCode, map[string]string{"withdrawal_id": createWithdrawals.WithdrawlId}, nil
 }
 
 //Sip API
 
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
-	userDtls, err := p.ShowAccountRepo.ReadAccount(getSip.UserId)
+	userDtls, err := p.SavvyRepo.ReadAccount(getSip.UserId)
 	if err != nil {
 		return http.StatusBadRequest, nil, err
 	}
@@ -213,7 +236,7 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 
 	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createSip.UserId)
 
-	userDtls, err := p.ShowAccountRepo.ReadAccount(createSip.UserId)
+	userDtls, err := p.SavvyRepo.ReadAccount(createSip.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		userDtls.AcntUuid = ""
 		return http.StatusBadRequest, nil, err
@@ -297,4 +320,15 @@ func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, err
 		return http.StatusBadRequest, nil, err
 	}
 	return http.StatusOK, data, nil
+}
+
+func (p *MFService) GetTransactions(transDtls *models.GetTransaction) (int, interface{}, error) {
+	withdrawals, err := p.SavvyRepo.ReadWithdrawalAll(transDtls.UserId)
+	deposits, err := p.SavvyRepo.ReadDeposits(transDtls.UserId)
+	sips, err := p.SavvyRepo.ReadSip(transDtls.UserId)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+
+	return http.StatusOK, map[string]interface{}{"sip_details": sips, "withdrawl_details": withdrawals, "deposits": deposits}, nil
 }

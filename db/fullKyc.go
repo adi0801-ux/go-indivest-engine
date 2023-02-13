@@ -20,6 +20,15 @@ func (d *Database) ReadOnboardingObject_(userId string) (*models.OnboardingObjec
 	return u, err
 }
 
+func (d *Database) ReadOnboardingObjectByUUID_(uuid string) (*models.OnboardingObjectDB, error) {
+	u := &models.OnboardingObjectDB{}
+	err := d.store.Where("uuid = ?", uuid).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
+
 func (d *Database) UpdateOrCreateOnboardingObject_(w *models.OnboardingObjectDB) error {
 	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
 	if result.RowsAffected == 0 {
