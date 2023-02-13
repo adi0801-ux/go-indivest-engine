@@ -40,7 +40,7 @@ type CreateWithdrawalDb struct {
 	FundCode         string    `gorm:"column:fund_code" json:"fund_code"`
 	FundName         string    `gorm:"column:fund_name" json:"fund_name"`
 	WithdrawalStatus string    `gorm:"withdrawal_status" json:"withdrawal_status"`
-	WithdrawlId      string    `gorm:"withdrawal_id" json:"withdrawal_id"`
+	WithdrawalId     string    `gorm:"withdrawal_id" json:"withdrawal_id"`
 	UserId           string    `gorm:"user_id" json:"user_id"`
 	AmcId            string    `gorm:"amc_id" json:"amc_id"`
 }

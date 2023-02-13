@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
@@ -13,6 +14,7 @@ import (
 // Accounts API
 func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface{}, error) {
 	userInfo, err := p.SavvyRepo.ReadOnboardingObject(userIdDtls.UserId)
+	fmt.Print(userInfo.UserId)
 	//baseModel := models.ShowAccountAPI{}
 	//data, err := p.SavvyRepo.ReadAllAccounts()
 	params := url.Values{}

@@ -135,8 +135,8 @@ func (p *MFService) CreateBasketOfDeposit(createBasketOfDeposit *models.CreateBa
 
 func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (int, interface{}, error) {
 	withdrawal, err := p.SavvyRepo.ReadWithdrawal(verifyOtp.WithdrawalId)
-	fmt.Print(withdrawal.Uuid)
-	if err != nil && err.Error() != constants.UserNotFound {
+	if err != nil {
+		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
 
@@ -166,6 +166,7 @@ func (p *MFService) VerifyWithdrawalOtp(verifyOtp *models.VerifyWithdrawalOtp) (
 
 }
 func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals) (int, interface{}, error) {
+	fmt.Print(createWithdrawal.UserId)
 	userDtls, err := p.SavvyRepo.ReadAccount(createWithdrawal.UserId)
 	if err != nil {
 		utils.Log.Error(err)
@@ -196,15 +197,16 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 		FundCode:         data.Withdrawal.FundCode,
 		FundName:         data.Withdrawal.FundName,
 		WithdrawalStatus: constants.WithdrawalInitiated,
-		WithdrawlId:      utils.GenerateWithdrawalId(),
+		WithdrawalId:     utils.GenerateWithdrawalId(),
 	}
 	err = p.SavvyRepo.CreateWithdrawal(createWithdrawals)
-	return response.StatusCode, map[string]string{"withdrawal_id": createWithdrawals.WithdrawlId}, nil
+	return response.StatusCode, map[string]string{"withdrawal_id": createWithdrawals.WithdrawalId}, nil
 }
 
 //Sip API
 
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
+	fmt.Println(getSip.UserId)
 	userDtls, err := p.SavvyRepo.ReadAccount(getSip.UserId)
 	if err != nil {
 		return http.StatusBadRequest, nil, err
