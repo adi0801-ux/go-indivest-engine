@@ -19,9 +19,11 @@ func GenerateSipID() string {
 func GenerateTransactionID() string {
 	return "TRANS_" + GenerateID()
 }
+
 func GenerateWithdrwalId() string {
 	return "WITH_" + GenerateID()
 }
+
 func GetCurrentDate() int {
 
 	currentTime := time.Now()
