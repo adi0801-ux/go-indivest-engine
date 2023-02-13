@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
@@ -46,93 +47,199 @@ func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface
 
 func (p *MFService) ConnectWebhooks(webhooks *models.Webhook) (int, interface{}, error) {
 
-	utils.Log.Info(webhooks.Event, webhooks.Payload)
-
 	if webhooks.Event == constants.WebhooksCreateDeposits {
-		webhookPayload := webhooks.Payload.(models.WebhookDepositsCreate)
-		//onboardinguuid or uuid
-		//onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(webhookPayload.Deposit.Uuid)
-		depositObject, err := p.SavvyRepo.ReadDepositsByUUID(webhookPayload.Deposit.Uuid)
+		err := p.depositCreateWebhook(webhooks.Payload)
 		if err != nil {
-			utils.Log.Error(err)
 			return http.StatusBadRequest, nil, err
 		}
-		depositObject.PaymentStatus = "Payment Initiated"
-		err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+	} else if webhooks.Event == constants.WebhooksStatusUpdateDeposits {
+		err := p.depositStatusUpdateWebhook(webhooks.Payload)
 		if err != nil {
-			utils.Log.Error(err)
 			return http.StatusBadRequest, nil, err
 		}
-		// will get this only once
-		// get account by userId and amc id
-		account := &models.ShowAccountDB{
-			UserId:   depositObject.UserId,
-			AmcId:    strconv.Itoa(webhookPayload.Deposit.Fund.AmcId),
-			AcntUuid: webhookPayload.Deposit.AccountUuid,
-		}
-
-		_, err = p.SavvyRepo.ReadAccountWithAmcId(account.UserId, account.AmcId)
-		if err != nil {
-			if err.Error() == constants.UserNotFound {
-				//	add the account
-				err = p.SavvyRepo.CreateOrUpdateAccount(account)
-				if err != nil {
-					utils.Log.Error(err)
-					return http.StatusBadRequest, nil, err
-				}
-			} else {
-				utils.Log.Error(err)
-				return http.StatusBadRequest, nil, err
-			}
-		}
-
-		//	we need to update status for the transaction occured
-
 	} else if webhooks.Event == constants.WebhooksCreateOnboardings {
-		webhooks := webhooks.Payload.(models.WebhookOnboardingCreate)
-		onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(webhooks.Uuid)
+		err := p.onboardingCreateWebhook(webhooks.Payload)
 		if err != nil {
-			utils.Log.Error(err)
 			return http.StatusBadRequest, nil, err
 		}
-		onboardingObject.OnboardingStatus = "Onboarding Object Created"
-		err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
-		if err != nil {
-			utils.Log.Error(err)
-			return http.StatusBadRequest, nil, err
-		}
-
-	} else if webhooks.Event == constants.WebhooksDepositsStatusUpdate {
-		//which is depositStatusUpdate
-		webhookPayload := webhooks.Payload.(models.WebhookDepositsCreate)
-
-		depositObject, err := p.SavvyRepo.ReadDepositsByUUID(webhookPayload.Deposit.Uuid)
-		if err != nil {
-			utils.Log.Error(err)
-			return http.StatusBadRequest, nil, err
-		}
-		if webhookPayload.Deposit.Status == "created" {
-			depositObject.PaymentStatus = "Payment Transaction Success"
-		} else {
-			webhookPayload.Deposit.Status = "Payment Transaction Filed"
-		}
-
-		err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
-		if err != nil {
-			utils.Log.Error(err)
-			return http.StatusBadRequest, nil, err
-		}
-
 	} else if webhooks.Event == constants.WebhooksCreateAccounts {
-		//which is the createAccount api? is it the AddBankAccount under Onboarding
-		//depositsPayload := webhooks.Payload.(models.createa)
-		utils.Log.Info(webhooks.Event, webhooks.Payload)
+		err := p.accountWebhook(webhooks.Payload)
+		if err != nil {
+			return http.StatusBadRequest, nil, err
+		}
 	} else if webhooks.Event == constants.WebhooksCreateWithdrawals {
-		//on  what basis do i select model of withdrawal from createwithdrawal, createwithdrawalapi, response
-		_ = webhooks.Payload.(models.CreateWithdrawals)
-
-	} else if webhooks.Event == constants.WebhooksWithdrawalStatusUpdate {
-		_ = webhooks.Payload.(models.Webhook)
+		err := p.accountWebhook(webhooks.Payload)
+		if err != nil {
+			return http.StatusBadRequest, nil, err
+		}
+	} else if webhooks.Event == constants.WebhooksStatusUpdateWithdrawal {
+		err := p.accountWebhook(webhooks.Payload)
+		if err != nil {
+			return http.StatusBadRequest, nil, err
+		}
 	}
 	return http.StatusOK, nil, nil
+}
+
+func (p *MFService) onboardingCreateWebhook(webhookPayload interface{}) error {
+	var onboardingPayload models.WebhookOnboardingCreate
+
+	err := utils.Transcode(webhookPayload, &onboardingPayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(onboardingPayload.Uuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	onboardingObject.OnboardingStatus = "Onboarding Object Created"
+	err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (p *MFService) withdrawStatusUpdateWebhook(webhookPayload interface{}) error {
+	var onboardingPayload models.WebhookOnboardingCreate
+
+	err := utils.Transcode(webhookPayload, &onboardingPayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(onboardingPayload.Uuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	onboardingObject.OnboardingStatus = "Onboarding Object Created"
+	err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (p *MFService) withdrawCreateWebhook(webhookPayload interface{}) error {
+	var accountPayload models.WebhookAccountCreate
+
+	err := utils.Transcode(webhookPayload, &accountPayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+
+		return err
+	}
+
+	fmt.Println(accountPayload)
+	return nil
+}
+
+func (p *MFService) depositStatusUpdateWebhook(webhookPayload interface{}) error {
+	var depositsPayload models.WebhookDepositsCreate
+	err := utils.Transcode(webhookPayload, &depositsPayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+	depositObject, err := p.SavvyRepo.ReadDepositsByUUID(depositsPayload.Deposit.Uuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	if depositsPayload.Deposit.Status == "created" {
+		depositObject.PaymentStatus = "Payment Transaction Success"
+	} else {
+		depositsPayload.Deposit.Status = "Payment Transaction Filed"
+	}
+	err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (p *MFService) depositCreateWebhook(webhookPayload interface{}) error {
+	var depositCreate models.WebhookDepositsCreate
+	err := utils.Transcode(webhookPayload, &depositCreate)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	//onboardinguuid or uuid
+	//onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(webhookPayload.Deposit.Uuid)
+	depositObject, err := p.SavvyRepo.ReadDepositsByUUID(depositCreate.Deposit.Uuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	depositObject.PaymentStatus = "Payment Initiated"
+	err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	// will get this only once
+	// get account by userId and amc id
+	account := &models.ShowAccountDB{
+		UserId:   depositObject.UserId,
+		AmcId:    strconv.Itoa(depositCreate.Deposit.Fund.AmcId),
+		AcntUuid: depositCreate.Deposit.AccountUuid,
+	}
+
+	_, err = p.SavvyRepo.ReadAccountWithAmcId(account.UserId, account.AmcId)
+	if err != nil {
+		if err.Error() == constants.UserNotFound {
+			//	add the account
+			err = p.SavvyRepo.CreateOrUpdateAccount(account)
+			if err != nil {
+				utils.Log.Error(err)
+				return err
+			}
+		} else {
+			utils.Log.Error(err)
+			return err
+		}
+	}
+	return nil
+}
+
+func (p *MFService) accountWebhook(webhookPayload interface{}) error {
+	var accountPayload models.WebhookAccountCreate
+
+	err := utils.Transcode(webhookPayload, &accountPayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+	depositObject, err := p.SavvyRepo.ReadDepositsByUUID(accountPayload.Account.OnboardingUuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	amcInfo, err := p.SavvyRepo.ReadFundHouseDetailsWithAmcCode(accountPayload.Account.AmcCode)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	//create model
+	account := &models.ShowAccountDB{UserId: depositObject.UserId, AmcId: strconv.Itoa(amcInfo.AMCID), AcntUuid: accountPayload.Account.Uuid}
+	err = p.SavvyRepo.CreateOrUpdateAccount(account)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
 }

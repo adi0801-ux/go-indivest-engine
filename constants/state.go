@@ -53,10 +53,10 @@ const (
 	PaymentStatus                   = "paymentInitialised"
 	WebhooksCreateOnboardings       = "onboardings.create"
 	WebhooksCreateDeposits          = "deposits.create"
-	WebhooksDepositsStatusUpdate    = "deposits.status.update"
+	WebhooksStatusUpdateDeposits    = "deposits.status.update"
 	WebhooksCreateAccounts          = "accounts.create"
 	WebhooksCreateWithdrawals       = "withdrawals.create"
-	WebhooksWithdrawalStatusUpdate  = "withdrawals.status.update"
+	WebhooksStatusUpdateWithdrawal  = "withdrawals.status.update"
 	WithdrawalInitiated             = "Withdrawal Initiated"
 	WithdrawalComplete              = "Withdrawal Complete"
 )

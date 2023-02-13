@@ -196,7 +196,7 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 		FundCode:         data.Withdrawal.FundCode,
 		FundName:         data.Withdrawal.FundName,
 		WithdrawalStatus: constants.WithdrawalInitiated,
-		WithdrawlId:      utils.GenerateWithdrwalId(),
+		WithdrawlId:      utils.GenerateWithdrawalId(),
 	}
 	err = p.SavvyRepo.CreateWithdrawal(createWithdrawals)
 	return response.StatusCode, map[string]string{"withdrawal_id": createWithdrawals.WithdrawlId}, nil

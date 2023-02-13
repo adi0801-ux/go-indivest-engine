@@ -20,7 +20,7 @@ type ShowAccountDB struct {
 
 type Webhook struct {
 	Event       string      `json:"event"`
-	SentAt      string      `json:"sent_at"`
+	SentAt      int         `json:"sent_at"`
 	Payload     interface{} `json:"payload"`
 	Signature   string      `json:"signature"`
 	RedirectUrl string      `json:"redirect_url"`
@@ -70,4 +70,12 @@ type WebhookOnboardingCreate struct {
 	AmcCode              string      `json:"amc_code"`
 	ExistingInvestor     bool        `json:"existing_investor"`
 	FullKycStatus        interface{} `json:"full_kyc_status"`
+}
+
+type WebhookAccountCreate struct {
+	Account struct {
+		OnboardingUuid string `json:"onboarding_uuid"`
+		Uuid           string `json:"uuid"`
+		AmcCode        string `json:"amc_code"`
+	} `json:"account"`
 }
