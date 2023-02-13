@@ -31,6 +31,10 @@ func (s *SavvyRepository) ReadWithdrawal(withdrwalId string) (*models.CreateWith
 	return s.Db.ReadWithdrawal_(withdrwalId)
 
 }
+func (s *SavvyRepository) ReadWithdrawalUuid(uuid string) (*models.CreateWithdrawalDb, error) {
+	return s.Db.ReadWithdrawalUuid_(uuid)
+
+}
 func (s *SavvyRepository) ReadWithdrawalAll(userId string) (*models.CreateWithdrawalDb, error) {
 	return s.Db.ReadWithdrawalAll_(userId)
 }

@@ -79,3 +79,39 @@ type WebhookAccountCreate struct {
 		AmcCode        string `json:"amc_code"`
 	} `json:"account"`
 }
+
+type WebhookWithdrawCreate struct {
+	Withdrawal struct {
+		Uuid        string `json:"uuid"`
+		AccountUuid string `json:"account_uuid"`
+		Fund        struct {
+			Name                       string `json:"name"`
+			Active                     bool   `json:"active"`
+			Code                       string `json:"code"`
+			AmfiCode                   string `json:"amfi_code"`
+			MinimumFirstTimeInvestment string `json:"minimum_first_time_investment"`
+			MinimumOngoingInvestment   string `json:"minimum_ongoing_investment"`
+			MinimumRedemptionAmount    string `json:"minimum_redemption_amount"`
+			SettlementDays             int    `json:"settlement_days"`
+			MinimumSipAmount           string `json:"minimum_sip_amount"`
+			MinimumSwpAmount           string `json:"minimum_swp_amount"`
+			MinimumStpAmount           string `json:"minimum_stp_amount"`
+			FactsheetLink              string `json:"factsheet_link"`
+			Category                   string `json:"category"`
+			AmcId                      int    `json:"amc_id"`
+			FundInfo                   struct {
+				Nav         int `json:"nav"`
+				ReturnYear1 int `json:"return_year_1"`
+				ReturnYear3 int `json:"return_year_3"`
+				ReturnYear5 int `json:"return_year_5"`
+			} `json:"fund_info"`
+			RiskRating   int    `json:"risk_rating"`
+			ExpenseRatio string `json:"expense_ratio"`
+			FundManagers string `json:"fund_managers"`
+		} `json:"fund"`
+		Amount            string      `json:"amount"`
+		Units             interface{} `json:"units"`
+		Status            interface{} `json:"status"`
+		StatusDescription interface{} `json:"status_description"`
+	} `json:"withdrawal"`
+}

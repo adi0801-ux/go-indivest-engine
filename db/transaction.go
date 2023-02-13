@@ -63,7 +63,14 @@ func (d *Database) ReadWithdrawal_(withdrwalId string) (*models.CreateWithdrawal
 	}
 	return u, err
 }
-
+func (d *Database) ReadWithdrawalUuid_(uuid string) (*models.CreateWithdrawalDb, error) {
+	u := &models.CreateWithdrawalDb{}
+	err := d.store.Where("uuid = ?", uuid).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
 func (d *Database) ReadWithdrawalAll_(userId string) (*models.CreateWithdrawalDb, error) {
 	u := &models.CreateWithdrawalDb{}
 	err := d.store.Where("user_id = ?", userId).Find(u).Error

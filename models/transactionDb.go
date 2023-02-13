@@ -42,4 +42,5 @@ type CreateWithdrawalDb struct {
 	WithdrawalStatus string    `gorm:"withdrawal_status" json:"withdrawal_status"`
 	WithdrawlId      string    `gorm:"withdrawal_id" json:"withdrawal_id"`
 	UserId           string    `gorm:"user_id" json:"user_id"`
+	AmcId            string    `gorm:"amc_id" json:"amc_id"`
 }
