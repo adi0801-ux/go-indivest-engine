@@ -259,7 +259,7 @@ func (p *MFService) accountWebhook(webhookPayload interface{}) error {
 		utils.Log.Error(err)
 		return err
 	}
-	depositObject, err := p.SavvyRepo.ReadDepositsByUUID(accountPayload.Account.OnboardingUuid)
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(accountPayload.Account.OnboardingUuid)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -270,7 +270,7 @@ func (p *MFService) accountWebhook(webhookPayload interface{}) error {
 		return err
 	}
 	//create model
-	account := &models.ShowAccountDB{UserId: depositObject.UserId, AmcId: strconv.Itoa(amcInfo.AMCID), AcntUuid: accountPayload.Account.Uuid}
+	account := &models.ShowAccountDB{UserId: onboardingObject.UserId, AmcId: strconv.Itoa(amcInfo.AMCID), AcntUuid: accountPayload.Account.Uuid}
 	err = p.SavvyRepo.CreateOrUpdateAccount(account)
 	if err != nil {
 		utils.Log.Error(err)

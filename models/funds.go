@@ -17,7 +17,7 @@ type FundsSupported struct {
 	ID                         int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	CreatedAt                  time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt                  time.Time `gorm:"column:updated_at;default:now()" json:"updated_at"`
-	SavvyCode                  string    `gorm:"column:savvy_code" json:"amc_id"`
+	SavvyCode                  string    `gorm:"column:savvy_code" json:"savvy_code"`
 	AMFICode                   string    `gorm:"column:amfi_code" json:"amfi_code"`
 	Name                       string    `gorm:"column:name" json:"name"`
 	Category                   string    `gorm:"column:category" json:"category"`
@@ -32,6 +32,8 @@ type FundsSupported struct {
 	CagrY1                     float64   `gorm:"column:cagr_y1" json:"cagr_y1"`
 	CagrY3                     float64   `gorm:"column:cagr_y2" json:"cagr_y2"`
 	CagrY5                     float64   `gorm:"column:cagr_y3" json:"cagr_y3"`
+	AMCID                      int       `gorm:"column:amc_id" json:"amc_id"`
+	AMCCode                    string    `gorm:"column:amc_code" json:"amc_code"`
 }
 
 type FundHousesList struct {
@@ -87,8 +89,8 @@ type FundDetails struct {
 			ReturnYear3 float64 `json:"return_year_3"`
 			ReturnYear5 float64 `json:"return_year_5"`
 		} `json:"fund_info"`
-		RiskRating   *int     `json:"risk_rating"`
-		ExpenseRatio *string  `json:"expense_ratio"`
-		FundManagers []string `json:"fund_managers"`
+		RiskRating   *int        `json:"risk_rating"`
+		ExpenseRatio *string     `json:"expense_ratio"`
+		FundManagers interface{} `json:"fund_managers"`
 	} `json:"funds"`
 }

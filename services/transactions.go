@@ -210,9 +210,7 @@ func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
 	if err != nil {
 		return http.StatusBadRequest, nil, err
 	}
-	baseModel := models.GetSipAPI{}
 
-	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
 	params.Add("account_uuid", userDtls.AcntUuid)
 	response, err := p.TSAClient.SendGetRequest(constants.GetSip, params)
@@ -227,7 +225,7 @@ func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	return response.StatusCode, data, err
 }
 
 func (p *MFService) ShowSip() (int, interface{}, error) {

@@ -141,6 +141,8 @@ type GetSipAPI struct {
 	AccountUuid string `json:"account_uuid"`
 }
 type GetSipAPIResponse struct {
+	Sips  []interface{} `json:"sips"`
+	Count int           `json:"count"`
 }
 
 // CreateSip models
