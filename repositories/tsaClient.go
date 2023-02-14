@@ -31,13 +31,13 @@ func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response
 		return nil, err
 	}
 	req.URL.RawQuery = params.Encode()
-
 	//save to db
 	apiLog := &models.APILog{
 		RequestId: utils.GenerateID(),
 		CreatedAt: time.Time{},
 		Method:    method,
 		Endpoint:  endpoint,
+		Params:    params.Encode(),
 	}
 	err = h.LogRep.CreateApiLog(apiLog)
 	if err != nil {
@@ -45,6 +45,15 @@ func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response
 		return nil, err
 	}
 	response, errResp = h.callTSA(req, apiLog.RequestId)
+
+	respBytes, _ := ioutil.ReadAll(response.Body)
+	response.Body = ioutil.NopCloser(bytes.NewBuffer(respBytes))
+
+	//updates in db
+	apiLog.Response = string(respBytes)
+	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusCreated {
+		apiLog.Error = string(respBytes)
+	}
 	apiLog.ResponseCode = response.StatusCode
 	apiLog.ResponseDate = time.Now().String()
 	err = h.LogRep.UpdateApiLog(apiLog)

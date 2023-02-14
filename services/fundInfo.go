@@ -79,7 +79,7 @@ func (p *MFService) UpdateFunds() error {
 			if err != nil {
 				utils.Log.Error(err)
 			}
-			p.CreateOrUpdateFundHouse(data)
+			p.CreateOrUpdateFundHouse(data, fundHouseDetail.AMCCode, fundHouseDetail.AMCID)
 		}()
 
 	}
@@ -88,7 +88,7 @@ func (p *MFService) UpdateFunds() error {
 
 }
 
-func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails) {
+func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcCode string, amcId int) {
 	for _, fundDetail := range fundDetails.Funds {
 		fund := fundDetail
 		func() {
@@ -110,6 +110,8 @@ func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails) {
 				CagrY1:                     fund.FundInfo.ReturnYear1,
 				CagrY3:                     fund.FundInfo.ReturnYear3,
 				CagrY5:                     fund.FundInfo.ReturnYear5,
+				AMCID:                      amcId,
+				AMCCode:                    amcCode,
 			}
 			err := p.SavvyRepo.CreateOrUpdateFundDetails(fundSupported)
 			if err != nil {
