@@ -206,12 +206,12 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 //Sip API
 
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
-	fmt.Println(getSip.UserId)
 	userDtls, err := p.SavvyRepo.ReadAccount(getSip.UserId)
 	if err != nil {
 		return http.StatusBadRequest, nil, err
 	}
 	baseModel := models.GetSipAPI{}
+
 	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
 	params.Add("account_uuid", userDtls.AcntUuid)
@@ -239,7 +239,8 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createSip.UserId)
 
 	userDtls, err := p.SavvyRepo.ReadAccount(createSip.UserId)
-	if err != nil && err.Error() != constants.UserNotFound {
+	if err != nil && err.Error() == constants.UserNotFound {
+		utils.Log.Info(err)
 		userDtls.AcntUuid = ""
 		return http.StatusBadRequest, nil, err
 		//	set account uuid as empty

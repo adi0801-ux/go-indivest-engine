@@ -78,10 +78,35 @@ func (p *MFService) ConnectWebhooks(webhooks *models.Webhook) (int, interface{},
 		if err != nil {
 			return http.StatusBadRequest, nil, err
 		}
+	} else if webhooks.Event == constants.WebhooksSipCreated {
+		err := p.sipCreateWebhook(webhooks.Payload)
+		if err != nil {
+			return http.StatusBadRequest, nil, err
+		}
 	}
 	return http.StatusOK, nil, nil
 }
-
+func (p *MFService) sipCreateWebhook(webhookPayload interface{}) error {
+	var sipCreatePayload models.WebhookSipCreate
+	err := utils.Transcode(webhookPayload, &sipCreatePayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+	sipObject, err := p.SavvyRepo.ReadSipUuid(sipCreatePayload.Sip.Uuid)
+	if err != nil {
+		utils.Log.Info(err)
+		return err
+	}
+	sipObject.SipStatus = constants.SipCreated
+	err = p.SavvyRepo.UpdateSip(sipObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
+}
 func (p *MFService) onboardingCreateWebhook(webhookPayload interface{}) error {
 	var onboardingPayload models.WebhookOnboardingCreate
 
@@ -147,6 +172,10 @@ func (p *MFService) withdrawCreateWebhook(webhookPayload interface{}) error {
 	withdrawalObject.WithdrawalStatus = "Withdrawal Initiated"
 	withdrawalObject.AmcId = strconv.Itoa(accountPayload.Withdrawal.Fund.AmcId)
 	err = p.SavvyRepo.UpdateWithdrawal(withdrawalObject)
+	if err != nil {
+		utils.Log.Info(err)
+		return err
+	}
 	return nil
 }
 

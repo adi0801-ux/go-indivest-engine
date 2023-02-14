@@ -29,6 +29,7 @@ type CreateSipDb struct {
 	Amount        float64   `gorm:"amount" json:"amount"`
 	Uuid          string    `gorm:"uuid" json:"uuid"`
 	PaymentStatus string    `gorm:"payment_status" json:"payment_status"`
+	SipStatus     string    `gorm:"sip_status" json:"sip_status"`
 }
 
 type CreateWithdrawalDb struct {
