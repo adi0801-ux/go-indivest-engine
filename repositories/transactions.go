@@ -23,6 +23,13 @@ func (s *SavvyRepository) CreateSip(w *models.CreateSipDb) error {
 func (s *SavvyRepository) ReadSip(userId string) (*models.CreateSipDb, error) {
 	return s.Db.ReadSip_(userId)
 }
+func (s *SavvyRepository) ReadSipUuid(uuid string) (*models.CreateSipDb, error) {
+	return s.Db.ReadSipUuid_(uuid)
+}
+func (s *SavvyRepository) UpdateSip(m *models.CreateSipDb) error {
+	return s.Db.UpdateSip_(m)
+}
+
 func (s *SavvyRepository) CreateWithdrawal(w *models.CreateWithdrawalDb) error {
 	return s.Db.CreateWithdrawal_(w)
 }
@@ -31,9 +38,13 @@ func (s *SavvyRepository) ReadWithdrawal(withdrwalId string) (*models.CreateWith
 	return s.Db.ReadWithdrawal_(withdrwalId)
 
 }
+func (s *SavvyRepository) ReadWithdrawalUuid(uuid string) (*models.CreateWithdrawalDb, error) {
+	return s.Db.ReadWithdrawalUuid_(uuid)
+
+}
 func (s *SavvyRepository) ReadWithdrawalAll(userId string) (*models.CreateWithdrawalDb, error) {
 	return s.Db.ReadWithdrawalAll_(userId)
 }
 func (s *SavvyRepository) UpdateWithdrawal(m *models.CreateWithdrawalDb) error {
-	return s.Db.UpdateWithdrawal(m)
+	return s.Db.UpdateWithdrawal_(m)
 }

@@ -14,6 +14,7 @@ import (
 // Accounts API
 func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface{}, error) {
 	userInfo, err := p.SavvyRepo.ReadOnboardingObject(userIdDtls.UserId)
+	fmt.Print(userInfo.UserId)
 	//baseModel := models.ShowAccountAPI{}
 	//data, err := p.SavvyRepo.ReadAllAccounts()
 	params := url.Values{}
@@ -68,19 +69,44 @@ func (p *MFService) ConnectWebhooks(webhooks *models.Webhook) (int, interface{},
 			return http.StatusBadRequest, nil, err
 		}
 	} else if webhooks.Event == constants.WebhooksCreateWithdrawals {
-		err := p.accountWebhook(webhooks.Payload)
+		err := p.withdrawCreateWebhook(webhooks.Payload)
 		if err != nil {
 			return http.StatusBadRequest, nil, err
 		}
 	} else if webhooks.Event == constants.WebhooksStatusUpdateWithdrawal {
-		err := p.accountWebhook(webhooks.Payload)
+		err := p.withdrawStatusUpdateWebhook(webhooks.Payload)
+		if err != nil {
+			return http.StatusBadRequest, nil, err
+		}
+	} else if webhooks.Event == constants.WebhooksSipCreated {
+		err := p.sipCreateWebhook(webhooks.Payload)
 		if err != nil {
 			return http.StatusBadRequest, nil, err
 		}
 	}
 	return http.StatusOK, nil, nil
 }
-
+func (p *MFService) sipCreateWebhook(webhookPayload interface{}) error {
+	var sipCreatePayload models.WebhookSipCreate
+	err := utils.Transcode(webhookPayload, &sipCreatePayload)
+	if err != nil {
+		//cannot convert to struct
+		utils.Log.Error(err)
+		return err
+	}
+	sipObject, err := p.SavvyRepo.ReadSipUuid(sipCreatePayload.Sip.Uuid)
+	if err != nil {
+		utils.Log.Info(err)
+		return err
+	}
+	sipObject.SipStatus = constants.SipCreated
+	err = p.SavvyRepo.UpdateSip(sipObject)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
+}
 func (p *MFService) onboardingCreateWebhook(webhookPayload interface{}) error {
 	var onboardingPayload models.WebhookOnboardingCreate
 
@@ -106,7 +132,7 @@ func (p *MFService) onboardingCreateWebhook(webhookPayload interface{}) error {
 }
 
 func (p *MFService) withdrawStatusUpdateWebhook(webhookPayload interface{}) error {
-	var onboardingPayload models.WebhookOnboardingCreate
+	var onboardingPayload models.WebhookWithdrawCreate
 
 	err := utils.Transcode(webhookPayload, &onboardingPayload)
 	if err != nil {
@@ -115,13 +141,13 @@ func (p *MFService) withdrawStatusUpdateWebhook(webhookPayload interface{}) erro
 		return err
 	}
 
-	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(onboardingPayload.Uuid)
+	withdrawalObject, err := p.SavvyRepo.ReadWithdrawalUuid(onboardingPayload.Withdrawal.Uuid)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
 	}
-	onboardingObject.OnboardingStatus = "Onboarding Object Created"
-	err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
+	withdrawalObject.WithdrawalStatus = "Withdrawal Completed"
+	err = p.SavvyRepo.UpdateWithdrawal(withdrawalObject)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -130,17 +156,26 @@ func (p *MFService) withdrawStatusUpdateWebhook(webhookPayload interface{}) erro
 }
 
 func (p *MFService) withdrawCreateWebhook(webhookPayload interface{}) error {
-	var accountPayload models.WebhookAccountCreate
+	var accountPayload models.WebhookWithdrawCreate
 
 	err := utils.Transcode(webhookPayload, &accountPayload)
 	if err != nil {
 		//cannot convert to struct
 		utils.Log.Error(err)
-
 		return err
 	}
-
-	fmt.Println(accountPayload)
+	withdrawalObject, err := p.SavvyRepo.ReadWithdrawalUuid(accountPayload.Withdrawal.Uuid)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	withdrawalObject.WithdrawalStatus = "Withdrawal Initiated"
+	withdrawalObject.AmcId = strconv.Itoa(accountPayload.Withdrawal.Fund.AmcId)
+	err = p.SavvyRepo.UpdateWithdrawal(withdrawalObject)
+	if err != nil {
+		utils.Log.Info(err)
+		return err
+	}
 	return nil
 }
 

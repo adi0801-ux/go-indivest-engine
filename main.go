@@ -101,6 +101,12 @@ func main() {
 	}
 
 	//create cron Reference
+	err = MfSrv.UpdateFundHouses()
+	err = MfSrv.UpdateFunds()
+	if err != nil {
+		utils.Log.Info(err)
+		return
+	}
 
 	cronRef := cron.Cron{SandboxSrv: &sandboxSrv, Sc: cron.CreateScheduler()}
 	// run cron jobs

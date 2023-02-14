@@ -119,13 +119,14 @@ type VerifyWithdrawalOtpAPI struct {
 }
 type VerifyWithdrawOtpAPIResponse struct {
 	Withdrawal struct {
-		Uuid      string      `json:"uuid"`
-		Amount    string      `json:"amount"`
-		FundCode  string      `json:"fund_code"`
-		FundName  string      `json:"fund_name"`
-		Units     interface{} `json:"units"`
-		Status    interface{} `json:"status"`
-		CreatedAt string      `json:"created_at"`
+		Uuid         string      `json:"uuid"`
+		WithdrawalId string      `json:"withdrawal_id"`
+		Amount       string      `json:"amount"`
+		FundCode     string      `json:"fund_code"`
+		FundName     string      `json:"fund_name"`
+		Units        interface{} `json:"units"`
+		Status       interface{} `json:"status"`
+		CreatedAt    string      `json:"created_at"`
 	} `json:"withdrawal"`
 }
 

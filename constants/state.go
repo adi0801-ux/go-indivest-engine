@@ -59,6 +59,8 @@ const (
 	WebhooksStatusUpdateWithdrawal  = "withdrawals.status.update"
 	WithdrawalInitiated             = "Withdrawal Initiated"
 	WithdrawalComplete              = "Withdrawal Complete"
+	WebhooksSipCreated              = "sips.create"
+	SipCreated                      = "Sip Created"
 )
 
 func GenerateFullKycURL(uuid string) string {
