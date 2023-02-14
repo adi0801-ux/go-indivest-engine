@@ -30,7 +30,9 @@ func (h *TSAClient) SendGetRequest(endpoint string, params url.Values) (response
 	if err != nil {
 		return nil, err
 	}
+
 	req.URL.RawQuery = params.Encode()
+
 	//save to db
 	apiLog := &models.APILog{
 		RequestId: utils.GenerateID(),

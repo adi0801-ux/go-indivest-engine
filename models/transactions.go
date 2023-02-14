@@ -9,6 +9,25 @@ type GetDepositsAPI struct {
 }
 
 type GetDepositsAPIResponse struct {
+	Deposits []struct {
+		Uuid                   string      `json:"uuid"`
+		Amount                 int         `json:"amount"`
+		RequestId              interface{} `json:"request_id"`
+		FundCode               string      `json:"fund_code"`
+		FundName               string      `json:"fund_name"`
+		CurrentAmount          int         `json:"current_amount"`
+		Units                  interface{} `json:"units"`
+		Status                 string      `json:"status"`
+		StatusDescription      interface{} `json:"status_description"`
+		ReinvestMode           string      `json:"reinvest_mode"`
+		PaymentLink            interface{} `json:"payment_link"`
+		PartnerTransactionId   interface{} `json:"partner_transaction_id"`
+		UserCompletedPaymentAt interface{} `json:"user_completed_payment_at"`
+		TransferredToAmcAt     interface{} `json:"transferred_to_amc_at"`
+		CreatedAt              string      `json:"created_at"`
+		PaymentGateway         string      `json:"payment_gateway"`
+	} `json:"deposits"`
+	Count int `json:"count"`
 }
 
 // CreateDeposit api models

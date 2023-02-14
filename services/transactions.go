@@ -18,6 +18,7 @@ func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface
 	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
 	params.Add("account_uuid", userDtls.AcntUuid)
+	fmt.Println(params)
 	response, err := p.TSAClient.SendGetRequest(constants.GetDeposits, params)
 	if err != nil {
 		utils.Log.Error(err)
@@ -30,7 +31,7 @@ func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	return response.StatusCode, data, err
 }
 
 func (p *MFService) ShowDeposits() (int, interface{}, error) {
