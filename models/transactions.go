@@ -249,3 +249,8 @@ type HoldingApi struct {
 type GetTransaction struct {
 	UserId string `json:"user_id"`
 }
+
+type CurrentInvestedValue struct {
+	UserId   string `json:"user_id"`
+	FundCode string `json:"fund_code"`
+}

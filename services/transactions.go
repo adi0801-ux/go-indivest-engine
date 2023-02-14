@@ -335,3 +335,17 @@ func (p *MFService) GetTransactions(transDtls *models.GetTransaction) (int, inte
 
 	return http.StatusOK, map[string]interface{}{"sip_details": sips, "withdrawl_details": withdrawals, "deposits": deposits}, nil
 }
+
+func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedValue) (int, interface{}, error) {
+	fundDtls, err := p.SavvyRepo.ReadFundDetails(currentValue.FundCode)
+	depoDtls, err := p.SavvyRepo.ReadDeposits(currentValue.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+	}
+	var units = depoDtls.Amount / float64(fundDtls.NAV)
+	//correct logic
+	//there must be 2 navs. NAV1 at the time of purchasae,
+	//						NAV2 at the time of calculating currentValue
+	currentVal := units * float64(fundDtls.NAV)
+	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
+}
