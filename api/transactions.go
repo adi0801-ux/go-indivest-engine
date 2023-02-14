@@ -200,16 +200,23 @@ func (s *HTTPServer) GetTransactionController(c *fiber.Ctx) error {
 	return nil
 }
 
-//
-//request status
-//func (s *HTTPServer)RequestStatus(c *fiber.Ctx)error{
-//	responseCode, data, err:= s.MfSrv.RequestStatusCode()
-//	if err != nil {
-//		utils.Log.Error(err)
-//		SendResponse(c, responseCode, 0, "processing error", nil, err)
-//		return nil
-//	}
-//	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
-//	return nil
-//}
-//}
+// request status
+func (s *HTTPServer) RequestStatusController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.GetTransaction{}
+
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	fmt.Println(userId)
+	responseCode, data, err := s.MfSrv.RequestStatusCode(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}

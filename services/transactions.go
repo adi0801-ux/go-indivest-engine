@@ -296,14 +296,15 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 	return response.StatusCode, map[string]string{"payments url": data.Url}, err
 }
 
-func (p *MFService) RequestStatusCode(requestStatus string) (int, interface{}, error) {
-	if requestStatus == "SUCCESS" {
-		return http.StatusOK, requestStatus, nil
-	} else if requestStatus == "FAILURE" {
-		return http.StatusBadRequest, requestStatus, nil
-	} else {
-		return 0, requestStatus, nil
+func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, interface{}, error) {
+	depositDtls, err := p.SavvyRepo.ReadDeposits(rqstStatus.UserId)
+	sipDtls, err := p.SavvyRepo.ReadSip(rqstStatus.UserId)
+	withdrawDtls, err := p.SavvyRepo.ReadWithdrawalAll(rqstStatus.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
 	}
+	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.TransactionStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {

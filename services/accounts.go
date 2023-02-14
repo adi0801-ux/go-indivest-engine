@@ -14,7 +14,6 @@ import (
 // Accounts API
 func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface{}, error) {
 	userInfo, err := p.SavvyRepo.ReadOnboardingObject(userIdDtls.UserId)
-	fmt.Print(userInfo.UserId)
 	//baseModel := models.ShowAccountAPI{}
 	//data, err := p.SavvyRepo.ReadAllAccounts()
 	params := url.Values{}
@@ -100,6 +99,7 @@ func (p *MFService) sipCreateWebhook(webhookPayload interface{}) error {
 		return err
 	}
 	sipObject.SipStatus = constants.SipCreated
+	fmt.Println(sipObject.SipStatus)
 	err = p.SavvyRepo.UpdateSip(sipObject)
 	if err != nil {
 		utils.Log.Error(err)
@@ -222,6 +222,7 @@ func (p *MFService) depositCreateWebhook(webhookPayload interface{}) error {
 	depositObject.PaymentStatus = "Payment Initiated"
 	err = p.SavvyRepo.CreateOrUpdateDepositUuid(depositObject)
 	if err != nil {
+		fmt.Print(err)
 		utils.Log.Error(err)
 		return err
 	}
@@ -269,6 +270,7 @@ func (p *MFService) accountWebhook(webhookPayload interface{}) error {
 		utils.Log.Error(err)
 		return err
 	}
+	fmt.Print(amcInfo.AMCID)
 	//create model
 	account := &models.ShowAccountDB{UserId: onboardingObject.UserId, AmcId: strconv.Itoa(amcInfo.AMCID), AcntUuid: accountPayload.Account.Uuid}
 	err = p.SavvyRepo.CreateOrUpdateAccount(account)
