@@ -117,13 +117,13 @@ func (p *MFService) onboardingCreateWebhook(webhookPayload interface{}) error {
 		return err
 	}
 
-	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(onboardingPayload.Uuid)
+	onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(onboardingPayload.Uuid)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
 	}
 	onboardingObject.OnboardingStatus = "Onboarding Object Created"
-	err = p.SavvyRepo.UpdateOrCreateOnboardingObject(onboardingObject)
+	err = p.SavvyRepo.UpdateOrCreateOnboardingObjectUuid(onboardingObject)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -147,7 +147,7 @@ func (p *MFService) withdrawStatusUpdateWebhook(webhookPayload interface{}) erro
 		return err
 	}
 	withdrawalObject.WithdrawalStatus = "Withdrawal Completed"
-	err = p.SavvyRepo.UpdateWithdrawal(withdrawalObject)
+	err = p.SavvyRepo.UpdateWithdrawalUuid(withdrawalObject)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -171,7 +171,7 @@ func (p *MFService) withdrawCreateWebhook(webhookPayload interface{}) error {
 	}
 	withdrawalObject.WithdrawalStatus = "Withdrawal Initiated"
 	withdrawalObject.AmcId = strconv.Itoa(accountPayload.Withdrawal.Fund.AmcId)
-	err = p.SavvyRepo.UpdateWithdrawal(withdrawalObject)
+	err = p.SavvyRepo.UpdateWithdrawalUuid(withdrawalObject)
 	if err != nil {
 		utils.Log.Info(err)
 		return err
@@ -197,7 +197,7 @@ func (p *MFService) depositStatusUpdateWebhook(webhookPayload interface{}) error
 	} else {
 		depositsPayload.Deposit.Status = "Payment Transaction Filed"
 	}
-	err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+	err = p.SavvyRepo.CreateOrUpdateDepositUuid(depositObject)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -220,7 +220,7 @@ func (p *MFService) depositCreateWebhook(webhookPayload interface{}) error {
 		return err
 	}
 	depositObject.PaymentStatus = "Payment Initiated"
-	err = p.SavvyRepo.CreateOrUpdateDeposit(depositObject)
+	err = p.SavvyRepo.CreateOrUpdateDepositUuid(depositObject)
 	if err != nil {
 		utils.Log.Error(err)
 		return err

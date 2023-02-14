@@ -24,6 +24,10 @@ func (s *SavvyRepository) UpdateOrCreateOnboardingObject(m *models.OnboardingObj
 	return s.Db.UpdateOrCreateOnboardingObject_(m)
 }
 
+func (s *SavvyRepository) UpdateOrCreateOnboardingObjectUuid(m *models.OnboardingObjectDB) error {
+	return s.Db.UpdateOrCreateOnboardingObjectUuid_(m)
+}
+
 func (s *SavvyRepository) CreateUserBank(m *models.BankAccountDB) error {
 	return s.Db.CreateUserBank_(m)
 }
