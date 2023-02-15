@@ -97,6 +97,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/holdings", s.GetHoldingsController)
 			accounts.Get("/transactions", s.GetTransactionController)
 			accounts.Post("/webhooks", s.ConnectWebhooksController)
+			accounts.Get("/status", s.RequestStatusController)
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)

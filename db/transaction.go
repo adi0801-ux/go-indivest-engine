@@ -28,8 +28,8 @@ func (d *Database) ReadDepositsByUUID_(uuid string) (*models.CreateDepositsDb, e
 	}
 	return u, err
 }
-func (d *Database) CreateOrUpdateDeposit_(w *models.CreateDepositsDb) error {
-	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
+func (d *Database) CreateOrUpdateDepositUuid_(w *models.CreateDepositsDb) error {
+	result := d.store.Model(&w).Where("uuid = ?", w.Uuid).Updates(&w)
 	if result.RowsAffected == 0 {
 		result = d.store.Create(&w)
 		return result.Error
@@ -99,6 +99,15 @@ func (d *Database) ReadWithdrawalAll_(userId string) (*models.CreateWithdrawalDb
 
 func (d *Database) UpdateWithdrawal_(w *models.CreateWithdrawalDb) error {
 	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
+	if result.RowsAffected == 0 {
+		result = d.store.Create(&w)
+		return result.Error
+	}
+
+	return result.Error
+}
+func (d *Database) UpdateWithdrawalUuid_(w *models.CreateWithdrawalDb) error {
+	result := d.store.Model(&w).Where("uuid = ?", w.Uuid).Updates(&w)
 	if result.RowsAffected == 0 {
 		result = d.store.Create(&w)
 		return result.Error

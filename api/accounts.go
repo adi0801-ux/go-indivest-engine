@@ -30,15 +30,15 @@ func (s *HTTPServer) ShowAccountDetailsController(c *fiber.Ctx) error {
 // Webhooks
 func (s *HTTPServer) ConnectWebhooksController(c *fiber.Ctx) error {
 	baseModel := models.Webhook{}
-	customErrors, err := ValidateRequest[models.Webhook](s, c, &baseModel)
-	if err != nil {
-		utils.Log.Error(err)
-		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
-		return nil
-	}
+	//customErrors, err := ValidateRequest[models.Webhook](s, c, &baseModel)
+	//if err != nil {
+	//	utils.Log.Error(err)
+	//	SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
+	//	return nil
+	//}
 	responseCode, data, err := s.MfSrv.ConnectWebhooks(&baseModel)
 	if err != nil {
-		utils.Log.Error(err)
+		fmt.Println(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)
 		return nil
 	}

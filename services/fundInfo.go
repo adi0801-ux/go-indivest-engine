@@ -112,6 +112,7 @@ func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcC
 				CagrY5:                     fund.FundInfo.ReturnYear5,
 				AMCID:                      amcId,
 				AMCCode:                    amcCode,
+				NAV:                        fundDetail.FundInfo.Nav,
 			}
 			err := p.SavvyRepo.CreateOrUpdateFundDetails(fundSupported)
 			if err != nil {

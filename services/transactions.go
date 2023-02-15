@@ -18,6 +18,7 @@ func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface
 	baseModel.AccountUuid = userDtls.AcntUuid
 	params := url.Values{}
 	params.Add("account_uuid", userDtls.AcntUuid)
+	fmt.Println(params)
 	response, err := p.TSAClient.SendGetRequest(constants.GetDeposits, params)
 	if err != nil {
 		utils.Log.Error(err)
@@ -30,7 +31,7 @@ func (p *MFService) GetDeposits(getDeposits *models.GetDeposits) (int, interface
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return response.StatusCode, nil, err
+	return response.StatusCode, data, err
 }
 
 func (p *MFService) ShowDeposits() (int, interface{}, error) {
@@ -88,6 +89,7 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 		Uuid:              data.Deposit.Uuid,
 		UserId:            createDeposit.UserId,
 		FundCode:          data.Deposit.FundCode,
+		NAV:               data.Deposit.NAV,
 		Amount:            data.Deposit.Amount,
 		PaymentStatus:     "payment initiated",
 		TransactionStatus: "transaction initiated",
@@ -295,14 +297,15 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 	return response.StatusCode, map[string]string{"payments url": data.Url}, err
 }
 
-func (p *MFService) RequestStatusCode(requestStatus string) (int, interface{}, error) {
-	if requestStatus == "SUCCESS" {
-		return http.StatusOK, requestStatus, nil
-	} else if requestStatus == "FAILURE" {
-		return http.StatusBadRequest, requestStatus, nil
-	} else {
-		return 0, requestStatus, nil
+func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, interface{}, error) {
+	depositDtls, err := p.SavvyRepo.ReadDeposits(rqstStatus.UserId)
+	sipDtls, err := p.SavvyRepo.ReadSip(rqstStatus.UserId)
+	withdrawDtls, err := p.SavvyRepo.ReadWithdrawalAll(rqstStatus.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
 	}
+	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.TransactionStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {
@@ -333,3 +336,26 @@ func (p *MFService) GetTransactions(transDtls *models.GetTransaction) (int, inte
 
 	return http.StatusOK, map[string]interface{}{"sip_details": sips, "withdrawl_details": withdrawals, "deposits": deposits}, nil
 }
+
+func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedValue) (int, interface{}, error) {
+	fundDtls, err := p.SavvyRepo.ReadFundDetails(currentValue.FundCode)
+	depoDtls, err := p.SavvyRepo.ReadDeposits(currentValue.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+	}
+	var units = depoDtls.Amount / depoDtls.NAV
+	//correct logic
+	//there must be 2 navs. NAV1 at the time of purchasae,
+	//						NAV2 at the time of calculating currentValue
+	currentVal := units * float64(fundDtls.NAV)
+	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
+}
+
+//
+//// datewise sorting for transaction
+//func (p *MFService) DatewiseDeposit(userDtls *models.UserDtls) (int, interface{}, error) {
+//	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
+//	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
+//	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
+//
+//}

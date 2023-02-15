@@ -39,6 +39,15 @@ func (d *Database) UpdateOrCreateOnboardingObject_(w *models.OnboardingObjectDB)
 	return result.Error
 }
 
+func (d *Database) UpdateOrCreateOnboardingObjectUuid_(w *models.OnboardingObjectDB) error {
+	result := d.store.Model(&w).Where("uuid = ?", w.Uuid).Updates(&w)
+	if result.RowsAffected == 0 {
+		result = d.store.Create(&w)
+		return result.Error
+	}
+
+	return result.Error
+}
 func (d *Database) CreateUserBank_(m *models.BankAccountDB) error {
 	result := d.store.Create(&m)
 	return result.Error
