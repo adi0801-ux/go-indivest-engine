@@ -93,6 +93,7 @@ type Deposit struct {
 	CreatedAt              string  `json:"created_at"`
 	SipUuid                string  `json:"sip_uuid"`
 	StpUuid                string  `json:"stp_uuid"`
+	NAV                    float64 `json:"nav"`
 }
 
 // Withdrawals
@@ -253,4 +254,7 @@ type GetTransaction struct {
 type CurrentInvestedValue struct {
 	UserId   string `json:"user_id"`
 	FundCode string `json:"fund_code"`
+}
+type UserDtls struct {
+	UserId string `json:"user_id"`
 }

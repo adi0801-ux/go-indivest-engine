@@ -15,6 +15,7 @@ type CreateDepositsDb struct {
 	UpdatedAt               time.Time `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
 	PaymentConfirmationTime string    `json:"payment_confirmation_time"`
 	UserId                  string    `gorm:"column:user_id" json:"user_id"`
+	NAV                     float64   `gorm:"column:nav" json:"nav"`
 }
 
 type CreateSipDb struct {

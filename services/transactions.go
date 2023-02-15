@@ -89,6 +89,7 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 		Uuid:              data.Deposit.Uuid,
 		UserId:            createDeposit.UserId,
 		FundCode:          data.Deposit.FundCode,
+		NAV:               data.Deposit.NAV,
 		Amount:            data.Deposit.Amount,
 		PaymentStatus:     "payment initiated",
 		TransactionStatus: "transaction initiated",
@@ -342,10 +343,19 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 	if err != nil {
 		utils.Log.Info(err)
 	}
-	var units = depoDtls.Amount / float64(fundDtls.NAV)
+	var units = depoDtls.Amount / depoDtls.NAV
 	//correct logic
 	//there must be 2 navs. NAV1 at the time of purchasae,
 	//						NAV2 at the time of calculating currentValue
 	currentVal := units * float64(fundDtls.NAV)
 	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
 }
+
+//
+//// datewise sorting for transaction
+//func (p *MFService) DatewiseDeposit(userDtls *models.UserDtls) (int, interface{}, error) {
+//	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
+//	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
+//	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
+//
+//}
