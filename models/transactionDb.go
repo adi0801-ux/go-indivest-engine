@@ -19,18 +19,19 @@ type CreateDepositsDb struct {
 }
 
 type CreateSipDb struct {
-	ID            int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt     time.Time `gorm:"column:created_at;not null" json:"created_at"`
-	UpdatedAt     time.Time `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
-	UserId        string    `gorm:"user_id" json:"user_id"`
-	StartDate     string    `gorm:"start_date" json:"start_date"`
-	EndDate       string    `gorm:"end_date" json:"end_date"`
-	Frequency     string    `gorm:"frequency" json:"frequency"`
-	FundCode      string    `gorm:"fund_code" json:"fund_code"`
-	Amount        float64   `gorm:"amount" json:"amount"`
-	Uuid          string    `gorm:"uuid" json:"uuid"`
-	PaymentStatus string    `gorm:"payment_status" json:"payment_status"`
-	SipStatus     string    `gorm:"sip_status" json:"sip_status"`
+	ID               int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt        time.Time `gorm:"column:created_at;not null" json:"created_at"`
+	UpdatedAt        time.Time `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
+	UserId           string    `gorm:"user_id" json:"user_id"`
+	StartDate        string    `gorm:"start_date" json:"start_date"`
+	EndDate          string    `gorm:"end_date" json:"end_date"`
+	Frequency        string    `gorm:"frequency" json:"frequency"`
+	FundCode         string    `gorm:"fund_code" json:"fund_code"`
+	Amount           float64   `gorm:"amount" json:"amount"`
+	Uuid             string    `gorm:"uuid" json:"uuid"`
+	PaymentStatus    string    `gorm:"payment_status" json:"payment_status"`
+	MonthlySipStatus string    `gorm:"monthly_sip_status" json:"monthly_sip_status"`
+	SipStatus        string    `gorm:"sip_status" json:"sip_status"`
 }
 
 type CreateWithdrawalDb struct {

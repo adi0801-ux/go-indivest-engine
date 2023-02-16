@@ -24,11 +24,11 @@ type Webhook struct {
 	Payload     interface{} `json:"payload"`
 	Signature   string      `json:"signature"`
 	RedirectUrl string      `json:"redirect_url"`
+	XApiKey     string      `json:"x_api_key"`
 }
 
 type WebhooksAPI struct {
 }
-
 type WebhookDepositsCreate struct {
 	Deposit struct {
 		OnboardingUuid string `json:"onboarding_uuid"`
@@ -36,31 +36,32 @@ type WebhookDepositsCreate struct {
 		Uuid           string `json:"uuid"`
 		Amount         int    `json:"amount"`
 		Fund           struct {
-			Name                       string `json:"name"`
-			Active                     bool   `json:"active"`
-			Code                       string `json:"code"`
-			AmfiCode                   string `json:"amfi_code"`
-			MinimumFirstTimeInvestment string `json:"minimum_first_time_investment"`
-			MinimumOngoingInvestment   string `json:"minimum_ongoing_investment"`
-			MinimumRedemptionAmount    string `json:"minimum_redemption_amount"`
-			SettlementDays             int    `json:"settlement_days"`
-			MinimumSipAmount           string `json:"minimum_sip_amount"`
-			MinimumSwpAmount           string `json:"minimum_swp_amount"`
-			MinimumStpAmount           string `json:"minimum_stp_amount"`
-			FactsheetLink              string `json:"factsheet_link"`
-			Category                   string `json:"category"`
-			AmcId                      int    `json:"amc_id"`
+			Name                       string      `json:"name"`
+			Active                     bool        `json:"active"`
+			Code                       string      `json:"code"`
+			AmfiCode                   interface{} `json:"amfi_code"`
+			MinimumFirstTimeInvestment string      `json:"minimum_first_time_investment"`
+			MinimumOngoingInvestment   string      `json:"minimum_ongoing_investment"`
+			MinimumRedemptionAmount    string      `json:"minimum_redemption_amount"`
+			SettlementDays             int         `json:"settlement_days"`
+			MinimumSipAmount           string      `json:"minimum_sip_amount"`
+			MinimumSwpAmount           string      `json:"minimum_swp_amount"`
+			MinimumStpAmount           string      `json:"minimum_stp_amount"`
+			FactsheetLink              string      `json:"factsheet_link"`
+			Category                   string      `json:"category"`
+			AmcId                      int         `json:"amc_id"`
 			FundInfo                   struct {
 				Nav         int `json:"nav"`
 				ReturnYear1 int `json:"return_year_1"`
 				ReturnYear3 int `json:"return_year_3"`
 				ReturnYear5 int `json:"return_year_5"`
 			} `json:"fund_info"`
-			RiskRating   int    `json:"risk_rating"`
-			ExpenseRatio string `json:"expense_ratio"`
-			FundManagers string `json:"fund_managers"`
+			RiskRating   interface{} `json:"risk_rating"`
+			ExpenseRatio interface{} `json:"expense_ratio"`
+			FundManagers interface{} `json:"fund_managers"`
 		} `json:"fund"`
-		Status string `json:"status"`
+		Status  string `json:"status"`
+		SipUuid string `json:"sip_uuid"`
 	} `json:"deposit"`
 }
 type WebhookSipCreate struct {

@@ -47,9 +47,13 @@ func (p *MFService) ShowAccounts(userIdDtls *models.ShowAccount) (int, interface
 
 func (p *MFService) ConnectWebhooks(webhooks *models.Webhook) (int, interface{}, error) {
 
+	//fmt.Print(webhooks)
+	//fmt.Print("webhook connected")
 	if webhooks.Event == constants.WebhooksCreateDeposits {
+		//fmt.Print("webhook hit")
 		err := p.depositCreateWebhook(webhooks.Payload)
 		if err != nil {
+			utils.Log.Info(err)
 			return http.StatusBadRequest, nil, err
 		}
 	} else if webhooks.Event == constants.WebhooksStatusUpdateDeposits {
@@ -207,10 +211,21 @@ func (p *MFService) depositStatusUpdateWebhook(webhookPayload interface{}) error
 
 func (p *MFService) depositCreateWebhook(webhookPayload interface{}) error {
 	var depositCreate models.WebhookDepositsCreate
+	//fmt.Print("create Deposit webhook")
 	err := utils.Transcode(webhookPayload, &depositCreate)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
+	}
+	sip := &models.CreateSipDb{
+		MonthlySipStatus: "Monthly SIP amount deducted",
+	}
+	if depositCreate.Deposit.SipUuid != "" {
+		err = p.SavvyRepo.UpdateSip(sip)
+		if err != nil {
+			utils.Log.Error(err)
+			return err
+		}
 	}
 	//onboardinguuid or uuid
 	//onboardingObject, err := p.SavvyRepo.ReadOnboardingObjectByUUID(webhookPayload.Deposit.Uuid)
@@ -220,6 +235,7 @@ func (p *MFService) depositCreateWebhook(webhookPayload interface{}) error {
 		return err
 	}
 	depositObject.PaymentStatus = "Payment Initiated"
+	fmt.Println(depositObject.PaymentStatus)
 	err = p.SavvyRepo.CreateOrUpdateDepositUuid(depositObject)
 	if err != nil {
 		fmt.Print(err)
