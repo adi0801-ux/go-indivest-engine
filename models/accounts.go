@@ -99,12 +99,24 @@ type WebhookSipCreate struct {
 	} `json:"sip"`
 }
 type WebhookOnboardingCreate struct {
-	PartnerTransactionId interface{} `json:"partner_transaction_id"`
-	Uuid                 string      `json:"uuid"`
-	AmcCode              string      `json:"amc_code"`
-	ExistingInvestor     bool        `json:"existing_investor"`
-	FullKycStatus        interface{} `json:"full_kyc_status"`
+	Onboarding struct {
+		PartnerTransactionId interface{} `json:"partner_transaction_id"`
+		Uuid                 string      `json:"uuid"`
+		AmcCode              string      `json:"amc_code"`
+		ExistingInvestor     bool        `json:"existing_investor"`
+		FullKycStatus        interface{} `json:"full_kyc_status"`
+	} `json:"onboarding"`
 }
+
+//type WebhookOnboardingUpdate struct {
+//	Onboarding struct {
+//		PartnerTransactionId interface{} `json:"partner_transaction_id"`
+//		Uuid                 string      `json:"uuid"`
+//		AmcCode              string      `json:"amc_code"`
+//		ExistingInvestor     bool        `json:"existing_investor"`
+//		FullKycStatus        interface{} `json:"full_kyc_status"`
+//	} `json:"onboarding"`
+//}
 
 type WebhookAccountCreate struct {
 	Account struct {

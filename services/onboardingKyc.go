@@ -146,9 +146,9 @@ func (p *MFService) AddBankAccount(userDetails *models.AddBankAccount) (int, int
 	if err != nil && err.Error() != constants.UserNotFound {
 		return http.StatusBadRequest, nil, err
 	}
-	if onBoardingObject.ExistingInvestor == "0" {
-		return http.StatusBadRequest, nil, fmt.Errorf("user kyc required")
-	}
+	//if onBoardingObject.ExistingInvestor == "0" {
+	//	return http.StatusBadRequest, nil, fmt.Errorf("user kyc required")
+	//}
 
 	baseModel := models.AddBankAccountAPI{}
 	baseModel.Onboarding.AccountNumber = userDetails.AccountNumber
@@ -295,7 +295,7 @@ func (p *MFService) AddPersonalDetails(userDetails *models.AddPersonalDetails) (
 		return http.StatusBadRequest, nil, err
 	}
 
-	return response.StatusCode, nil, nil
+	return response.StatusCode, data, nil
 }
 
 //more steps req
