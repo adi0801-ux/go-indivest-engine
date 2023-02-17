@@ -258,3 +258,8 @@ type CurrentInvestedValue struct {
 type UserDtls struct {
 	UserId string `json:"user_id"`
 }
+type ReturnsCalc struct {
+	FundCode string  `json:"fund_code"`
+	Time     float64 `json:"time"`
+	Amount   float64 `json:"amount"`
+}

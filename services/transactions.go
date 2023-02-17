@@ -211,6 +211,7 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
 	userDtls, err := p.SavvyRepo.ReadAccount(getSip.UserId)
 	if err != nil {
+		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
 
@@ -353,6 +354,16 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
 }
 
+func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int, interface{}, error) {
+	returnsDtls, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
+	}
+	interest := (fundDtls.Amount * returnsDtls.CagrY1 * fundDtls.Time) / 100
+	return http.StatusOK, map[string]interface{}{"Interest": interest}, nil
+}
+
 //	func main() {
 //		var intefaceSlice []interface{}
 //		start := time.Now()
@@ -367,14 +378,19 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 //	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
 //	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
 //	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
-//	if err != nil {
-//		utils.Log.Info(err)
-//		return http.StatusBadRequest, nil, err
-//	}
+//	//if err != nil {
+//	//	utils.Log.Info(err)
+//	//
+//	//}
 //	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
-//	//fmt.Println("transactions:", datewiseTransaction)
-//	sort.Slice(datewiseTransaction, func(p, q int) bool {
-//		return datewiseTransaction[p]. < Author[q].a_id
+//	// Sort by age preserving name order
+//	sort.Slice(datewiseTransaction, func(i, j int) bool {
+//		return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
 //	})
-//	return http.StatusOK, datewiseTransaction, err
+//
+//	fmt.Println("By age,name:", people)
+//	//sort.Slice(datewiseTransaction, func(p, q int) bool {
+//	//	return datewiseTransaction[p]. < Author[q].a_id
+//	//})
+//	return http.StatusOK, datewiseTransaction, nil
 //}
