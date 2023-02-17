@@ -76,7 +76,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			mfKyc.Get("/countryCodes", s.GetCountryCodesController)
 			mfKyc.Get("/annualIncome", s.GetAnnualIncomeLevelController)
 			// --
-			mfKyc.Post("/addDetails", s.AddPersonalDetailsController)
+			mfKyc.Put("/addDetails", s.AddPersonalDetailsController)
 			mfKyc.Post("/uploadPan", s.UploadPanCardController)
 			mfKyc.Post("/verifyPan", s.SubmitPanCardController)
 			//	to test
@@ -96,8 +96,9 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/show", s.ShowAccountDetailsController)
 			accounts.Get("/holdings", s.GetHoldingsController)
 			accounts.Get("/transactions", s.GetTransactionController)
-			accounts.Post("/webhooks", s.ConnectWebhooksController)
+			//accounts.Post("/webhooks", s.ConnectWebhooksController)
 			accounts.Get("/status", s.RequestStatusController)
+			//accounts.Get("/sortedTransaction", s.SortedTransactionController)
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)

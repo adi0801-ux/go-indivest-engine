@@ -40,7 +40,8 @@ func (p *MFService) ShowDeposits() (int, interface{}, error) {
 
 func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, interface{}, error) {
 	onboardingObject, err := p.SavvyRepo.ReadOnboardingObject(createDeposit.UserId)
-
+	//fmt.Print("hi there")
+	//fmt.Print(createDeposit.UserId)
 	userDtls, err := p.SavvyRepo.ReadAccount(createDeposit.UserId)
 	if err != nil && err.Error() != constants.UserNotFound {
 		userDtls.UserId = ""
@@ -240,6 +241,7 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 
 	userDtls, err := p.SavvyRepo.ReadAccount(createSip.UserId)
 	if err != nil && err.Error() == constants.UserNotFound {
+		fmt.Println(err)
 		utils.Log.Info(err)
 		userDtls.AcntUuid = ""
 		return http.StatusBadRequest, nil, err
@@ -351,11 +353,28 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
 }
 
+//	func main() {
+//		var intefaceSlice []interface{}
+//		start := time.Now()
+//	       // append multiple data types
+//		intefaceSlice = append(intefaceSlice, 25, 3.14, "hello", start)
+//		fmt.Println("Multiple data types slice:", intefaceSlice)
+//	}
 //
-//// datewise sorting for transaction
-//func (p *MFService) DatewiseDeposit(userDtls *models.UserDtls) (int, interface{}, error) {
+// datewise sorting for transaction
+//func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
+//	var datewiseTransaction []interface{}
 //	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
 //	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
 //	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
-//
+//	if err != nil {
+//		utils.Log.Info(err)
+//		return http.StatusBadRequest, nil, err
+//	}
+//	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
+//	//fmt.Println("transactions:", datewiseTransaction)
+//	sort.Slice(datewiseTransaction, func(p, q int) bool {
+//		return datewiseTransaction[p]. < Author[q].a_id
+//	})
+//	return http.StatusOK, datewiseTransaction, err
 //}
