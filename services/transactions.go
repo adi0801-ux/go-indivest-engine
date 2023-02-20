@@ -379,7 +379,11 @@ func (p *MFService) PopularFunds(popularFunds *models.PopularFunds) (int, interf
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
+
 	return http.StatusOK, funds, err
+}
+func (p *MFService) FundCategories() (int, interface{}, error) {
+	return http.StatusOK, nil, nil
 }
 
 //	func main() {
