@@ -351,6 +351,7 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 	//there must be 2 navs. NAV1 at the time of purchasae,
 	//						NAV2 at the time of calculating currentValue
 	currentVal := units * float64(fundDtls.NAV)
+	utils.RoundOfTo2Decimal(currentVal)
 	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
 }
 
@@ -378,17 +379,31 @@ func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int
 //	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
 //	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
 //	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
-//	//if err != nil {
-//	//	utils.Log.Info(err)
-//	//
-//	//}
-//	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
-//	// Sort by age preserving name order
 //	sort.Slice(datewiseTransaction, func(i, j int) bool {
-//		return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
+//		return
 //	})
+//	if err != nil {
+//		utils.Log.Info(err)
 //
-//	fmt.Println("By age,name:", people)
+//	}
+//
+//	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
+//	//fmt.Println(reflect.TypeOf(datewiseTransaction))
+//
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return datewiseTransaction[i].created_at < datewiseTransaction[j].created_at
+//	//})
+//
+//	//for _, pur := range datewiseTransaction {
+//	//
+//	//	fmt.Printf("%s %s\n", pur.id, pur.date.Format("2 Jan 2006 15:04"))
+//	//}
+//	//// Sort by age preserving name order
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
+//	//})
+//	//
+//	//fmt.Println("By age,name:", people)
 //	//sort.Slice(datewiseTransaction, func(p, q int) bool {
 //	//	return datewiseTransaction[p]. < Author[q].a_id
 //	//})
