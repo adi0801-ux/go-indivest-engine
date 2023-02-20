@@ -99,6 +99,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/status", s.RequestStatusController)
 			//accounts.Get("/sortedTransaction", s.SortedTransactionController)
 			accounts.Post("/interest", s.ReturnsInterestCalculatorController)
+			accounts.Get("/recommendation", s.RecommendationController)
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)

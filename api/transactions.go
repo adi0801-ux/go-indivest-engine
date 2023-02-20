@@ -256,7 +256,26 @@ func (s *HTTPServer) ReturnsInterestCalculatorController(c *fiber.Ctx) error {
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
+func (s *HTTPServer) RecommendationController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.Recommendation{}
 
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	responseCode, data, err := s.MfSrv.Recommendations(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+//
 //func (s *HTTPServer) SortedTransactionController(c *fiber.Ctx) error {
 //	//userId from the bearer token
 //	userId := c.Locals("userId").(string)
@@ -266,7 +285,7 @@ func (s *HTTPServer) ReturnsInterestCalculatorController(c *fiber.Ctx) error {
 //	if userId == "" {
 //		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 //	}
-//	fmt.Println(baseModel.UserId)
+//	//fmt.Println(baseModel.UserId)
 //	responseCode, data, err := s.MfSrv.SortedTransaction(&baseModel)
 //	if err != nil {
 //		fmt.Print(err)

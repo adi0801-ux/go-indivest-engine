@@ -263,3 +263,6 @@ type ReturnsCalc struct {
 	Time     float64 `json:"time"`
 	Amount   float64 `json:"amount"`
 }
+type Recommendation struct {
+	UserId string `json:"user_id"`
+}

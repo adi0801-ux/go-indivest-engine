@@ -365,6 +365,17 @@ func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int
 	return http.StatusOK, map[string]interface{}{"Interest": interest}, nil
 }
 
+func (p *MFService) Recommendations(recommendations *models.Recommendation) (int, interface{}, error) {
+	withdrawals, err := p.SavvyRepo.ReadWithdrawalAll(recommendations.UserId)
+	deposits, err := p.SavvyRepo.ReadDeposits(recommendations.UserId)
+	sips, err := p.SavvyRepo.ReadSip(recommendations.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+	}
+
+	return http.StatusOK, map[string]interface{}{"sip_details": sips, "withdrawal_details": withdrawals, "deposits": deposits}, nil
+}
+
 //	func main() {
 //		var intefaceSlice []interface{}
 //		start := time.Now()
