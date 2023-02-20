@@ -8,6 +8,7 @@ import (
 	"indivest-engine/utils"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -382,8 +383,35 @@ func (p *MFService) PopularFunds(popularFunds *models.PopularFunds) (int, interf
 
 	return http.StatusOK, funds, err
 }
+func (p *MFService) DistinctFunds() (int, interface{}, error) {
+	distinctFund, err := p.SavvyRepo.ReadAllFundDetails()
+	if err != nil {
+		utils.Log.Info(err)
+	}
+	var str []string
+	for _, fund := range *distinctFund {
+		str = append(str, fund.Category)
+	}
+	return http.StatusOK, str, nil
+}
 func (p *MFService) FundCategories() (int, interface{}, error) {
-	return http.StatusOK, nil, nil
+	//uniqueFundCategory, err := p.SavvyRepo.ReadFundCategory()
+	//if err != nil {
+	//	utils.Log.Info(err)
+	//	return http.StatusBadRequest, nil, err
+	//}
+	allFunds, err := p.SavvyRepo.ReadAllFundDetails()
+
+	data := map[string][]models.FundsSupported{}
+	//for _, category := range *uniqueFundCategory {
+	//
+	//	data[strings.ToLower(category.Category)] = []models.FundsSupported{}
+	//}
+
+	for _, fund := range *allFunds {
+		data[strings.ToLower(fund.Category)] = append(data[strings.ToLower(fund.Category)], fund)
+	}
+	return http.StatusOK, data, err
 }
 
 //	func main() {

@@ -293,8 +293,18 @@ func (s *HTTPServer) PopularFundsController(c *fiber.Ctx) error {
 	return nil
 }
 func (s *HTTPServer) FundCategoriesController(c *fiber.Ctx) error {
-	//userId from the bearer token
+
 	responseCode, data, err := s.MfSrv.FundCategories()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) DistinctCategoriesController(c *fiber.Ctx) error {
+	responseCode, data, err := s.MfSrv.DistinctFunds()
 	if err != nil {
 		utils.Log.Error(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)

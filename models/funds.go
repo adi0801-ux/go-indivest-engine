@@ -95,3 +95,7 @@ type FundDetails struct {
 		FundManagers interface{} `json:"fund_managers"`
 	} `json:"funds"`
 }
+
+type FundCategory struct {
+	Category string `json:"category"`
+}
