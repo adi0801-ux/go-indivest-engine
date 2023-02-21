@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
+	"indivest-engine/utils"
 )
 
 func (d *Database) CreateDeposits_(m *models.CreateDepositsDb) error {
@@ -114,4 +115,34 @@ func (d *Database) UpdateWithdrawalUuid_(w *models.CreateWithdrawalDb) error {
 	}
 
 	return result.Error
+}
+
+func (d *Database) CreateWatchList_(m *models.WatchListDb) error {
+	result := d.store.Create(&m)
+	return result.Error
+}
+func (d *Database) ReadWatchList_(fundCode string) (*models.WatchListDb, error) {
+	u := &models.WatchListDb{}
+	err := d.store.Where("fund_code = ?", fundCode).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
+func (d *Database) ReadWatchListUserId_(userId string) (*models.WatchListDb, error) {
+	u := &models.WatchListDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	if u.CreatedAt.String() == constants.StartDateTime {
+		return u, fmt.Errorf(constants.UserNotFound)
+	}
+	return u, err
+}
+func (d *Database) DeleteWatchList_(w *models.WatchListDb) error {
+
+	err := d.store.Delete(w).Error
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
+	return nil
 }

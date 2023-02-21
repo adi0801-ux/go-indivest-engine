@@ -15,8 +15,9 @@ func (s *HTTPServer) ShowAccountDetailsController(c *fiber.Ctx) error {
 		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 	}
 	baseModel := models.ShowAccount{}
-
+	fmt.Printf(userId)
 	baseModel.UserId = userId
+	fmt.Println(baseModel.UserId)
 	responseCode, data, err := s.MfSrv.ShowAccounts(&baseModel)
 	if err != nil {
 		utils.Log.Error(err)

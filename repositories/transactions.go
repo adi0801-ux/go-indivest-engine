@@ -51,3 +51,20 @@ func (s *SavvyRepository) UpdateWithdrawal(m *models.CreateWithdrawalDb) error {
 func (s *SavvyRepository) UpdateWithdrawalUuid(m *models.CreateWithdrawalDb) error {
 	return s.Db.UpdateWithdrawalUuid_(m)
 }
+
+func (s *SavvyRepository) CreateWatchList(w *models.WatchListDb) error {
+	return s.Db.CreateWatchList_(w)
+}
+
+func (s *SavvyRepository) ReadWatchList(fundCode string) (*models.WatchListDb, error) {
+	return s.Db.ReadWatchList_(fundCode)
+}
+
+func (s *SavvyRepository) ReadWatchListUserId(UserId string) (*models.WatchListDb, error) {
+	return s.Db.ReadWatchListUserId_(UserId)
+}
+
+func (s *SavvyRepository) DeleteWatchList(w *models.WatchListDb) (*models.WatchListDb, error) {
+	err := s.Db.DeleteWatchList_(w)
+	return nil, err
+}
