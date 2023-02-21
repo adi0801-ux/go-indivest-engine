@@ -314,6 +314,48 @@ func (s *HTTPServer) DistinctCategoriesController(c *fiber.Ctx) error {
 	return nil
 }
 
+func (s *HTTPServer) AddToWatchListController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.AddToWatchList{}
+	customErrors, err := ValidateRequest[models.AddToWatchList](s, c, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
+		return nil
+	}
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	responseCode, data, err := s.MfSrv.AddToWatchList(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+func (s *HTTPServer) ShowWatchListController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.ShowWatchList{}
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	responseCode, data, err := s.MfSrv.ShowWatchList(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
 //
 //func (s *HTTPServer) SortedTransactionController(c *fiber.Ctx) error {
 //	//userId from the bearer token

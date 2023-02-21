@@ -260,12 +260,19 @@ type UserDtls struct {
 }
 type ReturnsCalc struct {
 	FundCode string  `json:"fund_code"`
-	Time     float64 `json:"time"`
+	Tenure   float64 `json:"tenure"`
 	Amount   float64 `json:"amount"`
 }
 type Recommendation struct {
 	UserId string `json:"user_id"`
 }
 type PopularFunds struct {
+	UserId string `json:"user_id"`
+}
+type AddToWatchList struct {
+	UserId   string `json:"user_id"`
+	FundCode string `json:"fund_code"`
+}
+type ShowWatchList struct {
 	UserId string `json:"user_id"`
 }

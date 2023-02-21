@@ -362,8 +362,16 @@ func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
-	interest := (fundDtls.Amount * returnsDtls.CagrY1 * fundDtls.Time) / 100
-	return http.StatusOK, map[string]interface{}{"Interest": interest}, nil
+	var cagr float64
+	if fundDtls.Tenure == 1 {
+		cagr = returnsDtls.CagrY1
+	} else if fundDtls.Tenure == 3 {
+		cagr = returnsDtls.CagrY3
+	} else if fundDtls.Tenure == 5 {
+		cagr = returnsDtls.CagrY5
+	}
+	interest := (fundDtls.Amount * cagr * fundDtls.Tenure) / 100
+	return http.StatusOK, interest, nil
 }
 
 func (p *MFService) Recommendations(recommendations *models.Recommendation) (int, interface{}, error) {
@@ -414,29 +422,50 @@ func (p *MFService) FundCategories() (int, interface{}, error) {
 	return http.StatusOK, data, err
 }
 
-//func (p *MFService)AddToWatchList(fundDtls *models.AddToWatchList)(int, interface{},error){
-//	fundInfo, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
-//	if err!= nil{
-//		utils.Log.Info(err)
-//	}
-//	var data models.
-//	addWatchList := &models.AddToWatchListDb{
-//		Uuid:              data.Deposit.Uuid,
-//		UserId:            createDeposit.UserId,
-//		FundCode:          data.Deposit.FundCode,
-//		NAV:               data.Deposit.NAV,
-//		Amount:            data.Deposit.Amount,
-//		PaymentStatus:     "payment initiated",
-//		TransactionStatus: "transaction initiated",
-//		CreatedAt:         time.Now().UTC(),
-//	}
-//	//create update query
-//	err = p.SavvyRepo.CreateDeposits(createDB)
-//	if err != nil {
-//		utils.Log.Error(err)
-//		return http.StatusBadRequest, nil, err
-//	}
-//}
+func (p *MFService) AddToWatchList(fundDtls *models.AddToWatchList) (int, interface{}, error) {
+	fundInfo, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
+	if err != nil {
+		utils.Log.Info(err)
+	}
+	watchList := &models.WatchListDb{
+		AMFICode:                   fundDtls.FundCode,
+		Name:                       fundInfo.Name,
+		Category:                   fundInfo.Category,
+		SavvyCode:                  fundInfo.SavvyCode,
+		Active:                     fundInfo.Active,
+		MinimumFirstTimeInvestment: fundInfo.MinimumFirstTimeInvestment,
+		MinimumOngoingInvestment:   fundInfo.MinimumOngoingInvestment,
+		MinimumRedemptionAmount:    fundInfo.MinimumRedemptionAmount,
+		SettlementDays:             fundInfo.SettlementDays,
+		MinimumSipAmount:           fundInfo.MinimumSipAmount,
+		MinimumStpAmount:           fundInfo.MinimumStpAmount,
+		MinimumSwpAmount:           fundInfo.MinimumSwpAmount,
+		CagrY1:                     fundInfo.CagrY1,
+		CagrY3:                     fundInfo.CagrY3,
+		CagrY5:                     fundInfo.CagrY5,
+		AMCID:                      fundInfo.AMCID,
+		AMCCode:                    fundInfo.AMCCode,
+		NAV:                        fundInfo.NAV,
+		CreatedAt:                  time.Now().UTC(),
+	}
+	//create update query
+	err = p.SavvyRepo.CreateWatchList(watchList)
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, watchList, nil
+}
+
+func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interface{}, error) {
+	fundInfo, err := p.SavvyRepo.ReadWatchList(userDtls.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+	}
+
+	return http.StatusOK, fundInfo, nil
+}
+
 //	func main() {
 //		var intefaceSlice []interface{}
 //		start := time.Now()

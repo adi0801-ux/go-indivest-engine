@@ -98,11 +98,16 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/transactions", s.GetTransactionController)
 			accounts.Get("/status", s.RequestStatusController)
 			//accounts.Get("/sortedTransaction", s.SortedTransactionController)
-			accounts.Post("/interest", s.ReturnsInterestCalculatorController)
 			accounts.Get("/recommendation", s.RecommendationController)
 			accounts.Get("/popularFunds", s.PopularFundsController)
 			accounts.Get("/fundCategories", s.FundCategoriesController)
 			accounts.Get("/distinctCategories", s.DistinctCategoriesController)
+			watchList := accounts.Group("/watchList")
+			{
+				watchList.Post("/create", s.AddToWatchListController)
+				watchList.Get("/show", s.ShowWatchListController)
+			}
+
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)
@@ -127,6 +132,8 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		funds.Get("/listFundHouses", s.fundHousesController)
 		funds.Get("/fundDetails", s.fundDetailsController)
 		funds.Get("/fundInfo", s.fundInfoController)
+		funds.Post("/returnsCalculate", s.ReturnsInterestCalculatorController)
+
 	}
 
 	webhook := router.Group("mfEngine/webhooks")
