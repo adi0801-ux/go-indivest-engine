@@ -51,6 +51,9 @@ func (d *Database) RunMigrations() (err error) {
 		&models.WatchListDb{},
 	)
 
+	err = d.store.AutoMigrate(
+		&models.UserLeads{})
+
 	return err
 }
 
