@@ -356,44 +356,36 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 }
 
 func (p *MFService) AddToWatchList(fundDtls *models.AddToWatchList) (int, interface{}, error) {
-	fundInfo, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
-	if err != nil {
-		utils.Log.Info(err)
+
+	//check if this entry exists
+	watch, err := p.SavvyRepo.ReadWatchList(fundDtls.FundCode)
+	if err != nil && err.Error() == constants.UserNotFound {
+		//create update query
+		watchList := &models.WatchListDb{
+			FundCode: fundDtls.FundCode,
+			UserId:   fundDtls.UserId,
+		}
+		err = p.SavvyRepo.CreateWatchList(watchList)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+	} else {
+		_, err := p.SavvyRepo.DeleteWatchList(watch)
+		if err != nil {
+			utils.Log.Info(err)
+			return http.StatusBadRequest, nil, err
+		}
 	}
-	watchList := &models.WatchListDb{
-		AMFICode:                   fundDtls.FundCode,
-		Name:                       fundInfo.Name,
-		Category:                   fundInfo.Category,
-		SavvyCode:                  fundInfo.SavvyCode,
-		Active:                     fundInfo.Active,
-		MinimumFirstTimeInvestment: fundInfo.MinimumFirstTimeInvestment,
-		MinimumOngoingInvestment:   fundInfo.MinimumOngoingInvestment,
-		MinimumRedemptionAmount:    fundInfo.MinimumRedemptionAmount,
-		SettlementDays:             fundInfo.SettlementDays,
-		MinimumSipAmount:           fundInfo.MinimumSipAmount,
-		MinimumStpAmount:           fundInfo.MinimumStpAmount,
-		MinimumSwpAmount:           fundInfo.MinimumSwpAmount,
-		CagrY1:                     fundInfo.CagrY1,
-		CagrY3:                     fundInfo.CagrY3,
-		CagrY5:                     fundInfo.CagrY5,
-		AMCID:                      fundInfo.AMCID,
-		AMCCode:                    fundInfo.AMCCode,
-		NAV:                        fundInfo.NAV,
-		CreatedAt:                  time.Now().UTC(),
-	}
-	//create update query
-	err = p.SavvyRepo.CreateWatchList(watchList)
-	if err != nil {
-		utils.Log.Error(err)
-		return http.StatusBadRequest, nil, err
-	}
-	return http.StatusOK, watchList, nil
+
+	return http.StatusOK, nil, err
 }
 
 func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interface{}, error) {
-	fundInfo, err := p.SavvyRepo.ReadWatchList(userDtls.UserId)
+	fundInfo, err := p.SavvyRepo.ReadWatchListUserId(userDtls.UserId)
 	if err != nil {
 		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
 	}
 
 	return http.StatusOK, fundInfo, nil
