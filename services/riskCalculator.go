@@ -27,7 +27,7 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 	userDetails.GrossMonthlyIncome = Income.Income
 	userDetails.Profession = Income.Profession
 
-	err := p.UserRep.UpdateUserDetails(&userDetails)
+	err := p.UserRep.CreateOrUpdateUserDetails(&userDetails)
 
 	return err
 }

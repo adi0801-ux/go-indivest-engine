@@ -15,7 +15,7 @@ type Cron struct {
 }
 
 func CreateScheduler() *gocron.Scheduler {
-	go timer()
+	//go timer()
 	return gocron.NewScheduler(time.Local)
 }
 
@@ -65,7 +65,7 @@ func (cron *Cron) SIPJobs() {
 }
 
 func (cron *Cron) RedisUpdateNAVJobs() {
-	job := cron.Sc.Every(15).Second()
+	job := cron.Sc.Every(4).Hours()
 
 	_, err := job.Do(cron.UpdateRedis)
 	if err != nil {
@@ -75,7 +75,7 @@ func (cron *Cron) RedisUpdateNAVJobs() {
 }
 
 func (cron *Cron) UpdateFundsSupported() {
-	job := cron.Sc.Every(15).Second()
+	job := cron.Sc.Every(12).Hours()
 
 	_, err := job.Do(cron.UpdateFundsSavvy)
 	if err != nil {
@@ -126,9 +126,9 @@ func (cron *Cron) UpdateRedis() {
 			return
 		}
 
-		utils.Log.Warn(key, funds.NAV)
+		//utils.Log.Warn(key, funds.NAV)
 	}
-	utils.Log.Warnf("cron completed")
+	utils.Log.Warnf("NAV update Cron completed")
 	return
 }
 
