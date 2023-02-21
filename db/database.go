@@ -50,6 +50,9 @@ func (d *Database) RunMigrations() (err error) {
 		&models.FundHousesSupported{},
 	)
 
+	err = d.store.AutoMigrate(
+		&models.UserLeads{})
+
 	return err
 }
 

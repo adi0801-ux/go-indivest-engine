@@ -16,6 +16,7 @@ type HTTPServer struct {
 	RiskSrv    *services.RiskCalculatorService
 	SandboxSrv *services.SandboxServiceConfig
 	MfSrv      *services.MFService
+	UserSrv    *services.UserSrv
 }
 
 func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
@@ -25,11 +26,8 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	{
 
 		rg.Post("/basicDetailsLanguage", s.basicDetailsLanguageController)
-
 		rg.Post("/basicDetailsIncome", s.basicDetailsIncomeController)
-
 		rg.Post("/basicDetailsExpenses", s.basicDetailsExpensesController)
-
 		rg.Get("/basicDetailsReport", s.basicDetailsReportController)
 	}
 
@@ -40,21 +38,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		//sandbox.Get("/", s.healthCheck)
 
 		sandbox.Post("/buyMutualFund", s.sandboxBuyMutualFund)
-
 		sandbox.Get("/holding", s.sandboxGetHolding)
-
 		sandbox.Get("/allHoldings", s.sandboxGetAllHolding)
-
 		sandbox.Get("/wallet", s.sandboxGetWallet)
-
 		sandbox.Get("/transactions", s.sandboxGetTransactions)
-
 		sandbox.Post("/redeemMutualFund", s.sandboxRedeemMutualFund)
-
 		sandbox.Get("/investmentAnalysis", s.sandboxUserInvestmentAnalysis)
-
 		sandbox.Get("/userMfActivity", s.sandboxUserMfActivity)
-
 		sandbox.Get("/userInvestmentPanel", s.sandboxUserMfInvestmentPanel)
 
 	}
@@ -96,9 +86,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/show", s.ShowAccountDetailsController)
 			accounts.Get("/holdings", s.GetHoldingsController)
 			accounts.Get("/transactions", s.GetTransactionController)
-			//accounts.Post("/webhooks", s.ConnectWebhooksController)
 			accounts.Get("/status", s.RequestStatusController)
-			//accounts.Get("/sortedTransaction", s.SortedTransactionController)
 			withdrawals := accounts.Group("/withdrawals")
 			{
 				withdrawals.Post("/create", s.CreateWithdrawalController)
@@ -131,6 +119,12 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		webhook.Use("/savvy", s.ConnectWebhooksController)
 	}
 
+	userInfo := router.Group("/user/api")
+	userInfo.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+	{
+		userInfo.Post("/onboardingQuestions", s.CreateOnBoardingQuestionsController)
+	}
+
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {
@@ -146,12 +140,13 @@ func GetNewServer(
 	RiskSrv *services.RiskCalculatorService,
 	SandBoxSrv *services.SandboxServiceConfig,
 	MfSrv *services.MFService,
+	UserSrv *services.UserSrv,
 
 	config *utils.Config) *HTTPServer {
 
 	validate := validator.New()
 
-	httpServer := &HTTPServer{config: config, validator: validate, RiskSrv: RiskSrv, MfSrv: MfSrv, SandboxSrv: SandBoxSrv}
+	httpServer := &HTTPServer{config: config, validator: validate, RiskSrv: RiskSrv, MfSrv: MfSrv, SandboxSrv: SandBoxSrv, UserSrv: UserSrv}
 
 	router := fiber.New()
 

@@ -69,6 +69,9 @@ func main() {
 	SavvyRepo := repositories.SavvyRepository{
 		Db: store,
 	}
+	UserRepo := repositories.UserRepository{
+		Db: store,
+	}
 
 	redisRepo := repositories.RedisRepository{
 		Db: redisStore,
@@ -92,12 +95,10 @@ func main() {
 	MfSrv := services.MFService{
 		TSAClient: &TSARepo,
 		SavvyRepo: &SavvyRepo,
+	}
 
-		//FullKycRepo:                nil,
-		//ReadPanCardRepo:            nil,
-		//ReadAddressProofRepo:       nil,
-		//StartVideoVerificationRepo: nil,
-		//GenerateKycContractRepo:    nil,
+	UserSrv := services.UserSrv{
+		UserRepo: &UserRepo,
 	}
 
 	//create cron Reference
@@ -116,7 +117,7 @@ func main() {
 
 	utils.Log.Info("api server initializing")
 	//Create HTTP Server
-	server := api.GetNewServer(&RiskSrv, &sandboxSrv, &MfSrv, config)
+	server := api.GetNewServer(&RiskSrv, &sandboxSrv, &MfSrv, &UserSrv, config)
 
 	err = server.StartServer(config.ServerAddress)
 	if err != nil {

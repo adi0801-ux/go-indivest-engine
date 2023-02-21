@@ -19,3 +19,8 @@ type MFService struct {
 	SavvyRepo *repositories.SavvyRepository
 	config    *utils.Config
 }
+
+type UserSrv struct {
+	config   *utils.Config
+	UserRepo *repositories.UserRepository
+}
