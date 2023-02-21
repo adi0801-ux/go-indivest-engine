@@ -34,7 +34,7 @@ type FundsSupported struct {
 	CagrY5                     float64   `gorm:"column:cagr_y3" json:"cagr_y3"`
 	AMCID                      int       `gorm:"column:amc_id" json:"amc_id"`
 	AMCCode                    string    `gorm:"column:amc_code" json:"amc_code"`
-	NAV                        int       `gorm:"column:nav" json:"nav"`
+	NAV                        float64   `gorm:"column:nav" json:"nav"`
 }
 
 type FundHousesList struct {
@@ -85,7 +85,7 @@ type FundDetails struct {
 		Category                   string `json:"category"`
 		AmcId                      int    `json:"amc_id"`
 		FundInfo                   struct {
-			Nav         int     `json:"nav"`
+			Nav         float64 `json:"nav"`
 			ReturnYear1 float64 `json:"return_year_1"`
 			ReturnYear3 float64 `json:"return_year_3"`
 			ReturnYear5 float64 `json:"return_year_5"`

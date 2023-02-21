@@ -146,6 +146,7 @@ func (u *SandboxServiceConfig) AddToHoldings(userTransaction *models.BuyMutualFu
 }
 
 func (u *SandboxServiceConfig) GetNav(schemeCode string) (float64, error) {
+
 	value, err := u.RedisRep.GetKeyValue("nav_" + schemeCode)
 	if err != nil {
 		return 0, err

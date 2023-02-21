@@ -414,6 +414,29 @@ func (p *MFService) FundCategories() (int, interface{}, error) {
 	return http.StatusOK, data, err
 }
 
+//func (p *MFService)AddToWatchList(fundDtls *models.AddToWatchList)(int, interface{},error){
+//	fundInfo, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
+//	if err!= nil{
+//		utils.Log.Info(err)
+//	}
+//	var data models.
+//	addWatchList := &models.AddToWatchListDb{
+//		Uuid:              data.Deposit.Uuid,
+//		UserId:            createDeposit.UserId,
+//		FundCode:          data.Deposit.FundCode,
+//		NAV:               data.Deposit.NAV,
+//		Amount:            data.Deposit.Amount,
+//		PaymentStatus:     "payment initiated",
+//		TransactionStatus: "transaction initiated",
+//		CreatedAt:         time.Now().UTC(),
+//	}
+//	//create update query
+//	err = p.SavvyRepo.CreateDeposits(createDB)
+//	if err != nil {
+//		utils.Log.Error(err)
+//		return http.StatusBadRequest, nil, err
+//	}
+//}
 //	func main() {
 //		var intefaceSlice []interface{}
 //		start := time.Now()
