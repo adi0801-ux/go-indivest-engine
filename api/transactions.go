@@ -239,18 +239,138 @@ func (s *HTTPServer) CurrentInvestedValueController(c *fiber.Ctx) error {
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
+func (s *HTTPServer) ReturnsInterestCalculatorController(c *fiber.Ctx) error {
+	baseModel := models.ReturnsCalc{}
+	customErrors, err := ValidateRequest[models.ReturnsCalc](s, c, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
+		return nil
+	}
+	responseCode, data, err := s.MfSrv.ReturnsInterestCalculator(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
 
+func (s *HTTPServer) RecommendationController(c *fiber.Ctx) error {
+	////userId from the bearer token
+	//userId := c.Locals("userId").(string)
+	//baseModel := models.Recommendation{}
+	//
+	//baseModel.UserId = userId
+	//if userId == "" {
+	//	errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	//}
+	responseCode, data, err := s.MfSrv.Recommendations()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) PopularFundsController(c *fiber.Ctx) error {
+	////userId from the bearer token
+	//userId := c.Locals("userId").(string)
+	//baseModel := models.PopularFunds{}
+
+	//baseModel.UserId = userId
+	//if userId == "" {
+	//	errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	//}
+	responseCode, data, err := s.MfSrv.PopularFunds()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) FundCategoriesController(c *fiber.Ctx) error {
+
+	responseCode, data, err := s.MfSrv.FundCategories()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) DistinctCategoriesController(c *fiber.Ctx) error {
+	responseCode, data, err := s.MfSrv.DistinctFunds()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+func (s *HTTPServer) AddToWatchListController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.AddToWatchList{}
+	customErrors, err := ValidateRequest[models.AddToWatchList](s, c, &baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendFullErrorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError), customErrors)
+		return nil
+	}
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	responseCode, data, err := s.MfSrv.AddToWatchList(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+func (s *HTTPServer) ShowWatchListController(c *fiber.Ctx) error {
+	//userId from the bearer token
+	userId := c.Locals("userId").(string)
+	baseModel := models.ShowWatchList{}
+	baseModel.UserId = userId
+	if userId == "" {
+		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	}
+	responseCode, data, err := s.MfSrv.ShowWatchList(&baseModel)
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		return nil
+	}
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+
+//
 //func (s *HTTPServer) SortedTransactionController(c *fiber.Ctx) error {
 //	//userId from the bearer token
 //	userId := c.Locals("userId").(string)
 //	baseModel := models.UserDtls{}
-//
+//	//fmt.Println(userId)
 //	baseModel.UserId = userId
 //	if userId == "" {
 //		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
 //	}
+//	//fmt.Println(baseModel.UserId)
 //	responseCode, data, err := s.MfSrv.SortedTransaction(&baseModel)
 //	if err != nil {
+//		fmt.Print(err)
 //		utils.Log.Error(err)
 //		SendResponse(c, responseCode, 0, "processing error", nil, err)
 //		return nil

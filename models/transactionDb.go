@@ -47,3 +47,10 @@ type CreateWithdrawalDb struct {
 	UserId           string    `gorm:"user_id" json:"user_id"`
 	AmcId            string    `gorm:"amc_id" json:"amc_id"`
 }
+type WatchListDb struct {
+	ID        int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;default:now()" json:"updated_at"`
+	FundCode  string    `gorm:"column:fund_code" json:"fund_code"`
+	UserId    string    `gorm:"column:user_id" json:"user_id"`
+}

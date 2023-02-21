@@ -211,6 +211,7 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 func (p *MFService) GetSip(getSip *models.GetSip) (int, interface{}, error) {
 	userDtls, err := p.SavvyRepo.ReadAccount(getSip.UserId)
 	if err != nil {
+		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
 
@@ -307,7 +308,7 @@ func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, i
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.TransactionStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
+	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.PaymentStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {
@@ -350,7 +351,44 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 	//there must be 2 navs. NAV1 at the time of purchasae,
 	//						NAV2 at the time of calculating currentValue
 	currentVal := units * float64(fundDtls.NAV)
+	utils.RoundOfTo2Decimal(currentVal)
 	return http.StatusOK, map[string]interface{}{"current_invested_value": currentVal}, nil
+}
+
+func (p *MFService) AddToWatchList(fundDtls *models.AddToWatchList) (int, interface{}, error) {
+
+	//check if this entry exists
+	watch, err := p.SavvyRepo.ReadWatchList(fundDtls.FundCode)
+	if err != nil && err.Error() == constants.UserNotFound {
+		//create update query
+		watchList := &models.WatchListDb{
+			FundCode: fundDtls.FundCode,
+			UserId:   fundDtls.UserId,
+		}
+		err = p.SavvyRepo.CreateWatchList(watchList)
+		if err != nil {
+			utils.Log.Error(err)
+			return http.StatusBadRequest, nil, err
+		}
+	} else {
+		_, err := p.SavvyRepo.DeleteWatchList(watch)
+		if err != nil {
+			utils.Log.Info(err)
+			return http.StatusBadRequest, nil, err
+		}
+	}
+
+	return http.StatusOK, nil, err
+}
+
+func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interface{}, error) {
+	fundInfo, err := p.SavvyRepo.ReadWatchListUserId(userDtls.UserId)
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	return http.StatusOK, fundInfo, nil
 }
 
 //	func main() {
@@ -367,14 +405,33 @@ func (p *MFService) CurrentInvestedValue(currentValue *models.CurrentInvestedVal
 //	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
 //	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
 //	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
+//	sort.Slice(datewiseTransaction, func(i, j int) bool {
+//		return
+//	})
 //	if err != nil {
 //		utils.Log.Info(err)
-//		return http.StatusBadRequest, nil, err
+//
 //	}
+//
 //	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
-//	//fmt.Println("transactions:", datewiseTransaction)
-//	sort.Slice(datewiseTransaction, func(p, q int) bool {
-//		return datewiseTransaction[p]. < Author[q].a_id
-//	})
-//	return http.StatusOK, datewiseTransaction, err
+//	//fmt.Println(reflect.TypeOf(datewiseTransaction))
+//
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return datewiseTransaction[i].created_at < datewiseTransaction[j].created_at
+//	//})
+//
+//	//for _, pur := range datewiseTransaction {
+//	//
+//	//	fmt.Printf("%s %s\n", pur.id, pur.date.Format("2 Jan 2006 15:04"))
+//	//}
+//	//// Sort by age preserving name order
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
+//	//})
+//	//
+//	//fmt.Println("By age,name:", people)
+//	//sort.Slice(datewiseTransaction, func(p, q int) bool {
+//	//	return datewiseTransaction[p]. < Author[q].a_id
+//	//})
+//	return http.StatusOK, datewiseTransaction, nil
 //}

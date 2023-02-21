@@ -255,6 +255,11 @@ type CurrentInvestedValue struct {
 	UserId   string `json:"user_id"`
 	FundCode string `json:"fund_code"`
 }
-type UserDtls struct {
+
+type AddToWatchList struct {
+	UserId   string `json:"user_id"`
+	FundCode string `json:"fund_code"`
+}
+type ShowWatchList struct {
 	UserId string `json:"user_id"`
 }

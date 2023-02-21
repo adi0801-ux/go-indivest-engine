@@ -48,6 +48,7 @@ func (d *Database) RunMigrations() (err error) {
 	err = d.store.AutoMigrate(
 		&models.FundsSupported{},
 		&models.FundHousesSupported{},
+		&models.WatchListDb{},
 	)
 
 	err = d.store.AutoMigrate(

@@ -44,6 +44,11 @@ func (d *Database) ReadAllFundDetails_() (*[]models.FundsSupported, error) {
 	err := d.store.Find(u).Error
 	return u, err
 }
+func (d *Database) ReadFundCategory_() (*[]models.FundCategory, error) {
+	u := &[]models.FundCategory{}
+	err := d.store.Model(models.FundsSupported{}).Select("DISTINCT ON (category) category").Find(u).Error
+	return u, err
+}
 
 func (d *Database) ReadFundDetails_(AMFICode string) (*models.FundsSupported, error) {
 	u := &models.FundsSupported{}

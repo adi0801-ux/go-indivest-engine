@@ -109,7 +109,7 @@ func main() {
 	//	return
 	//}
 
-	cronRef := cron.Cron{SandboxSrv: &sandboxSrv, Sc: cron.CreateScheduler()}
+	cronRef := cron.Cron{SandboxSrv: &sandboxSrv, Sc: cron.CreateScheduler(), MfSrv: &MfSrv}
 	// run cron jobs
 	cronRef.InitializeScheduler()
 
