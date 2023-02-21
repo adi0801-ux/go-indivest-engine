@@ -266,9 +266,7 @@ type ReturnsCalc struct {
 type Recommendation struct {
 	UserId string `json:"user_id"`
 }
-type PopularFunds struct {
-	UserId string `json:"user_id"`
-}
+
 type AddToWatchList struct {
 	UserId   string `json:"user_id"`
 	FundCode string `json:"fund_code"`

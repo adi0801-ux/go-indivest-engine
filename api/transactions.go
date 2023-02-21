@@ -256,16 +256,17 @@ func (s *HTTPServer) ReturnsInterestCalculatorController(c *fiber.Ctx) error {
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
-func (s *HTTPServer) RecommendationController(c *fiber.Ctx) error {
-	//userId from the bearer token
-	userId := c.Locals("userId").(string)
-	baseModel := models.Recommendation{}
 
-	baseModel.UserId = userId
-	if userId == "" {
-		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
-	}
-	responseCode, data, err := s.MfSrv.Recommendations(&baseModel)
+func (s *HTTPServer) RecommendationController(c *fiber.Ctx) error {
+	////userId from the bearer token
+	//userId := c.Locals("userId").(string)
+	//baseModel := models.Recommendation{}
+	//
+	//baseModel.UserId = userId
+	//if userId == "" {
+	//	errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	//}
+	responseCode, data, err := s.MfSrv.Recommendations()
 	if err != nil {
 		utils.Log.Error(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)
@@ -275,15 +276,15 @@ func (s *HTTPServer) RecommendationController(c *fiber.Ctx) error {
 	return nil
 }
 func (s *HTTPServer) PopularFundsController(c *fiber.Ctx) error {
-	//userId from the bearer token
-	userId := c.Locals("userId").(string)
-	baseModel := models.PopularFunds{}
+	////userId from the bearer token
+	//userId := c.Locals("userId").(string)
+	//baseModel := models.PopularFunds{}
 
-	baseModel.UserId = userId
-	if userId == "" {
-		errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
-	}
-	responseCode, data, err := s.MfSrv.PopularFunds(&baseModel)
+	//baseModel.UserId = userId
+	//if userId == "" {
+	//	errorResponse(c, http.StatusBadRequest, fmt.Errorf(constants.RequestError))
+	//}
+	responseCode, data, err := s.MfSrv.PopularFunds()
 	if err != nil {
 		utils.Log.Error(err)
 		SendResponse(c, responseCode, 0, "processing error", nil, err)

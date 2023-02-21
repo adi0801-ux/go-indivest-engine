@@ -309,7 +309,7 @@ func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, i
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.TransactionStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
+	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.PaymentStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {
@@ -374,15 +374,16 @@ func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int
 	return http.StatusOK, interest, nil
 }
 
-func (p *MFService) Recommendations(recommendations *models.Recommendation) (int, interface{}, error) {
+func (p *MFService) Recommendations() (int, interface{}, error) {
 	_, funds, err := p.GetListOfFunds()
 	if err != nil {
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
+
 	return http.StatusOK, funds, err
 }
-func (p *MFService) PopularFunds(popularFunds *models.PopularFunds) (int, interface{}, error) {
+func (p *MFService) PopularFunds() (int, interface{}, error) {
 	_, funds, err := p.GetListOfFunds()
 	if err != nil {
 		utils.Log.Info(err)
