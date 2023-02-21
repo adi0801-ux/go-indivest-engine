@@ -9,6 +9,9 @@ func (s *SavvyRepository) CreateDeposits(w *models.CreateDepositsDb) error {
 func (s *SavvyRepository) ReadDeposits(userId string) (*models.CreateDepositsDb, error) {
 	return s.Db.ReadDeposits_(userId)
 }
+func (s *SavvyRepository) ReadAllDeposits(userId string) (*[]models.CreateDepositsDb, error) {
+	return s.Db.ReadAllDeposits_(userId)
+}
 
 func (s *SavvyRepository) ReadDepositsByUUID(uuid string) (*models.CreateDepositsDb, error) {
 	return s.Db.ReadDepositsByUUID_(uuid)
@@ -22,6 +25,9 @@ func (s *SavvyRepository) CreateSip(w *models.CreateSipDb) error {
 }
 func (s *SavvyRepository) ReadSip(userId string) (*models.CreateSipDb, error) {
 	return s.Db.ReadSip_(userId)
+}
+func (s *SavvyRepository) ReadAllSip(userId string) (*[]models.CreateSipDb, error) {
+	return s.Db.ReadAllSip_(userId)
 }
 func (s *SavvyRepository) ReadSipUuid(uuid string) (*models.CreateSipDb, error) {
 	return s.Db.ReadSipUuid_(uuid)
@@ -44,6 +50,10 @@ func (s *SavvyRepository) ReadWithdrawalUuid(uuid string) (*models.CreateWithdra
 }
 func (s *SavvyRepository) ReadWithdrawalAll(userId string) (*models.CreateWithdrawalDb, error) {
 	return s.Db.ReadWithdrawalAll_(userId)
+}
+
+func (s *SavvyRepository) ReadAllWithdrawal(userId string) (*[]models.CreateWithdrawalDb, error) {
+	return s.Db.ReadAllWithdrawal_(userId)
 }
 func (s *SavvyRepository) UpdateWithdrawal(m *models.CreateWithdrawalDb) error {
 	return s.Db.UpdateWithdrawal_(m)

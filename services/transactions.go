@@ -301,14 +301,15 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 }
 
 func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, interface{}, error) {
-	depositDtls, err := p.SavvyRepo.ReadDeposits(rqstStatus.UserId)
-	sipDtls, err := p.SavvyRepo.ReadSip(rqstStatus.UserId)
-	withdrawDtls, err := p.SavvyRepo.ReadWithdrawalAll(rqstStatus.UserId)
+	//deposit := map[string]interface{}{}
+	depositDtls, err := p.SavvyRepo.ReadAllDeposits(rqstStatus.UserId)
+	sipDtls, err := p.SavvyRepo.ReadAllSip(rqstStatus.UserId)
+	withdrawDtls, err := p.SavvyRepo.ReadAllWithdrawal(rqstStatus.UserId)
 	if err != nil {
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.PaymentStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
+	return http.StatusOK, map[string]interface{}{"deposits": depositDtls, "sips": sipDtls, "withdrawal": withdrawDtls}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {

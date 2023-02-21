@@ -21,6 +21,11 @@ func (d *Database) ReadDeposits_(userId string) (*models.CreateDepositsDb, error
 	return u, err
 }
 
+func (d *Database) ReadAllDeposits_(userId string) (*[]models.CreateDepositsDb, error) {
+	u := &[]models.CreateDepositsDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	return u, err
+}
 func (d *Database) ReadDepositsByUUID_(uuid string) (*models.CreateDepositsDb, error) {
 	u := &models.CreateDepositsDb{}
 	err := d.store.Where("uuid = ?", uuid).Find(u).Error
@@ -49,6 +54,11 @@ func (d *Database) ReadSip_(userId string) (*models.CreateSipDb, error) {
 	if u.CreatedAt.String() == constants.StartDateTime {
 		return u, fmt.Errorf(constants.UserNotFound)
 	}
+	return u, err
+}
+func (d *Database) ReadAllSip_(userId string) (*[]models.CreateSipDb, error) {
+	u := &[]models.CreateSipDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
 	return u, err
 }
 func (d *Database) ReadSipUuid_(uuid string) (*models.CreateSipDb, error) {
@@ -97,7 +107,11 @@ func (d *Database) ReadWithdrawalAll_(userId string) (*models.CreateWithdrawalDb
 	}
 	return u, err
 }
-
+func (d *Database) ReadAllWithdrawal_(userId string) (*[]models.CreateWithdrawalDb, error) {
+	u := &[]models.CreateWithdrawalDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	return u, err
+}
 func (d *Database) UpdateWithdrawal_(w *models.CreateWithdrawalDb) error {
 	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
 	if result.RowsAffected == 0 {
