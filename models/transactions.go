@@ -255,17 +255,6 @@ type CurrentInvestedValue struct {
 	UserId   string `json:"user_id"`
 	FundCode string `json:"fund_code"`
 }
-type UserDtls struct {
-	UserId string `json:"user_id"`
-}
-type ReturnsCalc struct {
-	FundCode string  `json:"fund_code"`
-	Tenure   float64 `json:"tenure"`
-	Amount   float64 `json:"amount"`
-}
-type Recommendation struct {
-	UserId string `json:"user_id"`
-}
 
 type AddToWatchList struct {
 	UserId   string `json:"user_id"`

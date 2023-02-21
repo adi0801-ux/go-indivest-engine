@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -142,4 +143,71 @@ func (p *MFService) GetFundDetail(AMFICode string) (int, interface{}, error) {
 		return http.StatusBadRequest, nil, err
 	}
 	return http.StatusOK, fundHouseList, nil
+}
+
+func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int, interface{}, error) {
+	returnsDtls, err := p.SavvyRepo.ReadFundDetails(fundDtls.FundCode)
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
+	}
+	var cagr float64
+	if fundDtls.Tenure == 1 {
+		cagr = returnsDtls.CagrY1
+	} else if fundDtls.Tenure == 3 {
+		cagr = returnsDtls.CagrY3
+	} else if fundDtls.Tenure == 5 {
+		cagr = returnsDtls.CagrY5
+	}
+	interest := (fundDtls.Amount * cagr * fundDtls.Tenure) / 100
+	return http.StatusOK, interest, nil
+}
+
+func (p *MFService) Recommendations() (int, interface{}, error) {
+	_, funds, err := p.GetListOfFunds()
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	return http.StatusOK, funds, err
+}
+func (p *MFService) PopularFunds() (int, interface{}, error) {
+	_, funds, err := p.GetListOfFunds()
+	if err != nil {
+		utils.Log.Info(err)
+		return http.StatusBadRequest, nil, err
+	}
+
+	return http.StatusOK, funds, err
+}
+func (p *MFService) DistinctFunds() (int, interface{}, error) {
+	distinctFund, err := p.SavvyRepo.ReadAllFundDetails()
+	if err != nil {
+		utils.Log.Info(err)
+	}
+	var str []string
+	for _, fund := range *distinctFund {
+		str = append(str, fund.Category)
+	}
+	return http.StatusOK, str, nil
+}
+func (p *MFService) FundCategories() (int, interface{}, error) {
+	//uniqueFundCategory, err := p.SavvyRepo.ReadFundCategory()
+	//if err != nil {
+	//	utils.Log.Info(err)
+	//	return http.StatusBadRequest, nil, err
+	//}
+	allFunds, err := p.SavvyRepo.ReadAllFundDetails()
+
+	data := map[string][]models.FundsSupported{}
+	//for _, category := range *uniqueFundCategory {
+	//
+	//	data[strings.ToLower(category.Category)] = []models.FundsSupported{}
+	//}
+
+	for _, fund := range *allFunds {
+		data[strings.ToLower(fund.Category)] = append(data[strings.ToLower(fund.Category)], fund)
+	}
+	return http.StatusOK, data, err
 }
