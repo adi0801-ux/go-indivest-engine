@@ -112,6 +112,11 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			}
 		}
 
+		userInfo := mfEngine.Group("/user")
+		userInfo.Use(s.AuthorizeMiddleware(s.config.AuthApi))
+		{
+			userInfo.Post("/onboardingQuestions", s.CreateOnBoardingQuestionsController)
+		}
 	}
 
 	funds := router.Group("/funds/api")
@@ -131,12 +136,6 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	webhook.Use(s.WebhookAuthenticationMiddleware())
 	{
 		webhook.Use("/savvy", s.ConnectWebhooksController)
-	}
-
-	userInfo := router.Group("/user/api")
-	userInfo.Use(s.AuthorizeMiddleware(s.config.AuthApi))
-	{
-		userInfo.Post("/onboardingQuestions", s.CreateOnBoardingQuestionsController)
 	}
 
 }
