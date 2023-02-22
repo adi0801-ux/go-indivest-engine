@@ -103,7 +103,7 @@ func (s *HTTPServer) CreateOnBoardingQuestionsController(c *fiber.Ctx) error {
 	responseCode, data, err := s.UserSrv.SaveOnBoardingQuestionnaire(&baseModel)
 	if err != nil {
 		utils.Log.Error(err)
-		SendResponse(c, responseCode, 0, "processing error", nil, err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
 		return nil
 	}
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
