@@ -26,6 +26,12 @@ func (d *Database) ReadAllDeposits_(userId string) (*[]models.CreateDepositsDb, 
 	err := d.store.Where("user_id = ?", userId).Find(u).Error
 	return u, err
 }
+
+func (d *Database) ReadAlDeposits_(userId string) ([]models.CreateDepositsDb, error) {
+	u := []models.CreateDepositsDb{}
+	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	return u, err
+}
 func (d *Database) ReadDepositsByUUID_(uuid string) (*models.CreateDepositsDb, error) {
 	u := &models.CreateDepositsDb{}
 	err := d.store.Where("uuid = ?", uuid).Find(u).Error

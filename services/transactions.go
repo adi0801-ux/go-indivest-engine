@@ -403,19 +403,20 @@ func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interfac
 // datewise sorting for transaction
 //func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
 //	var datewiseTransaction []interface{}
-//	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
-//	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
-//	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
-//	sort.Slice(datewiseTransaction, func(i, j int) bool {
-//		return
-//	})
+//	depoDtls, err := p.SavvyRepo.ReadAllDeposits(userDtls.UserId)
+//	fmt.Println(reflect.TypeOf(depoDtls))
+//	withDtls, err := p.SavvyRepo.ReadAllWithdrawal(userDtls.UserId)
+//	sipDtls, err := p.SavvyRepo.ReadAllSip(userDtls.UserId)
 //	if err != nil {
-//		utils.Log.Info(err)
-//
+//		utils.Log.Error(err)
 //	}
-//
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return
+//	//})
+//	fmt.Println(reflect.TypeOf(depoDtls))
 //	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
 //	//fmt.Println(reflect.TypeOf(datewiseTransaction))
+//	fmt.Println((datewiseTransaction))
 //
 //	//sort.Slice(datewiseTransaction, func(i, j int) bool {
 //	//	return datewiseTransaction[i].created_at < datewiseTransaction[j].created_at

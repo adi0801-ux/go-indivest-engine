@@ -263,3 +263,7 @@ type AddToWatchList struct {
 type ShowWatchList struct {
 	UserId string `json:"user_id"`
 }
+
+type UserDtls struct {
+	UserId string `json:"user_id"`
+}

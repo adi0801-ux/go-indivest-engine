@@ -12,7 +12,9 @@ func (s *SavvyRepository) ReadDeposits(userId string) (*models.CreateDepositsDb,
 func (s *SavvyRepository) ReadAllDeposits(userId string) (*[]models.CreateDepositsDb, error) {
 	return s.Db.ReadAllDeposits_(userId)
 }
-
+func (s *SavvyRepository) ReadAlDeposits(userId string) ([]models.CreateDepositsDb, error) {
+	return s.Db.ReadAlDeposits_(userId)
+}
 func (s *SavvyRepository) ReadDepositsByUUID(uuid string) (*models.CreateDepositsDb, error) {
 	return s.Db.ReadDepositsByUUID_(uuid)
 }
