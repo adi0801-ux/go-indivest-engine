@@ -23,3 +23,13 @@ func (d *Database) ReadUserLeads_(userId string) (*models.UserLeads, error) {
 	}
 	return u, nil
 }
+
+func (d *Database) UpdateOrCreateUserLeads_(w *models.UserLeads) error {
+	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
+	if result.RowsAffected == 0 {
+		result = d.store.Create(&w)
+		return result.Error
+	}
+
+	return result.Error
+}

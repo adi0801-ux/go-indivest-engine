@@ -13,7 +13,7 @@ func (p *UserSrv) SaveOnBoardingQuestionnaire(questions *models.UserQuestioner) 
 		Profession:        questions.Profession,
 	}
 
-	err := p.UserRepo.CreateUserLeads(questionDb)
+	err := p.UserRepo.UpdateOrCreateUserLeads(questionDb)
 	if err != nil {
 		utils.Log.Error(err)
 		return http.StatusBadRequest, nil, err

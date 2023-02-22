@@ -16,3 +16,7 @@ func (s *UserRepository) CreateUserLeads(w *models.UserLeads) error {
 func (s *UserRepository) ReadUserLeads(userId string) (*models.UserLeads, error) {
 	return s.Db.ReadUserLeads_(userId)
 }
+
+func (s *UserRepository) UpdateOrCreateUserLeads(w *models.UserLeads) error {
+	return s.Db.UpdateOrCreateUserLeads_(w)
+}
