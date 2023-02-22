@@ -60,9 +60,7 @@ func main() {
 	//create repository references
 
 	//Create a Repository Reference
-	userRep := repositories.UserDetailsRepository{
-		Db: store,
-	}
+
 	sandboxRep := repositories.SandboxRepository{
 		Db: store,
 	}
@@ -84,7 +82,7 @@ func main() {
 
 	//Create a service Reference
 	RiskSrv := services.RiskCalculatorService{
-		UserRep: &userRep,
+		UserRep: &UserRepo,
 	}
 
 	sandboxSrv := services.SandboxServiceConfig{
