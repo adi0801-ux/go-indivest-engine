@@ -99,6 +99,7 @@ func main() {
 
 	UserSrv := services.UserSrv{
 		UserRepo: &UserRepo,
+		Config:   config,
 	}
 
 	//create cron Reference
