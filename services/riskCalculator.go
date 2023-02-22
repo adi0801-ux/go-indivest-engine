@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
+	"indivest-engine/utils"
 )
 
 func (p *RiskCalculatorService) AddLanguage(language *models.UserBasicDetailsLanguage) error {
@@ -23,11 +24,15 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 	var userDetails models.UserDetails
 
 	userDetails.UserID = Income.UserId
-	userDetails.Age = int64(Income.Age)
+	userDetails.Age = Income.Age
 	userDetails.GrossMonthlyIncome = Income.Income
 	userDetails.Profession = Income.Profession
-
+	userDetails.UserExpertise = Income.UserExpertise
 	err := p.UserRep.CreateOrUpdateUserDetails(&userDetails)
+	if err != nil {
+		utils.Log.Error(err)
+		return err
+	}
 
 	return err
 }
