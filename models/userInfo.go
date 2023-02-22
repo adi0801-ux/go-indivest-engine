@@ -19,8 +19,8 @@ type UserLogin struct {
 
 type User struct {
 	ID            int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt     time.Time `gorm:"column:created_at;not null" json:"created_at"`
-	UpdatedAt     time.Time `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
+	CreatedAt     time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt     time.Time `gorm:"column:updated_at;default:now()" json:"updated_at"`
 	UserId        string    `gorm:"user_id" json:"user_id"`
 	FirstName     string    `gorm:"first_name" json:"first_name"`
 	LastName      string    `gorm:"last_name" json:"last_name"`
