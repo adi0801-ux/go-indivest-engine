@@ -6,7 +6,7 @@ import (
 )
 
 type RiskCalculatorService struct {
-	UserRep *repositories.UserDetailsRepository
+	UserRep *repositories.UserRepository
 }
 
 type SandboxServiceConfig struct {
@@ -21,6 +21,6 @@ type MFService struct {
 }
 
 type UserSrv struct {
-	config   *utils.Config
+	Config   *utils.Config
 	UserRepo *repositories.UserRepository
 }

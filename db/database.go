@@ -52,7 +52,8 @@ func (d *Database) RunMigrations() (err error) {
 	)
 
 	err = d.store.AutoMigrate(
-		&models.UserLeads{})
+		&models.UserLeads{},
+		&models.User{})
 
 	return err
 }

@@ -4,12 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/segmentio/ksuid"
+	"golang.org/x/crypto/bcrypt"
 	"indivest-engine/constants"
 	"math"
 	"time"
 )
 
 func GenerateID() string {
+	//"github.com/segmentio/ksuid"
+	return ksuid.New().String()
+}
+func GenerateUserID() string {
 	//"github.com/segmentio/ksuid"
 	return ksuid.New().String()
 }
@@ -32,9 +37,7 @@ func GetCurrentDate() int {
 }
 
 func GetCurrentDateTime() time.Time {
-
 	return time.Now()
-
 }
 
 func RoundOfTo2Decimal(f float64) float64 {
@@ -60,4 +63,14 @@ func Transcode(in, out interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func HashPassword(password string) string {
+	pwd, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(pwd)
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
