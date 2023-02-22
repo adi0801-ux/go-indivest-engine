@@ -138,6 +138,13 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 		webhook.Use("/savvy", s.ConnectWebhooksController)
 	}
 
+	authSrv := router.Group("/authService/api")
+	{
+		authSrv.Post("/user/signup", s.UserSignUpController)
+		authSrv.Post("/user/login", s.UserLoginController)
+		authSrv.Get("/token/verify", s.VerifyTokenController)
+	}
+
 }
 
 //func (s *HTTPServer) HandleNotFound(router *fiber.App) {

@@ -20,6 +20,8 @@ type Config struct {
 	PaymentRedirectUrl string `mapstructure:"PAYMENT_REDIRECT_URL"`
 	SecretKey          string `mapstructure:"SECRET_KEY"`
 	XApiKey            string `mapstructure:"X_API_KEY"`
+	JwtSecretKey       string `mapstructure:"JWT_SECRET_KEY"`
+	TokenExpire        string `mapstructure:"TOKEN_EXPIRE"`
 }
 
 func LoadConfig(path string) (config *Config, err error) {

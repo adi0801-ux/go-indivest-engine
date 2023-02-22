@@ -6,10 +6,11 @@ type UserBasicDetailsLanguage struct {
 }
 
 type UserBasicDetailsIncome struct {
-	Income     float64 `json:"income" validate:"required,gt=0"`
-	Age        int     `json:"age" validate:"required,gt=0"`
-	Profession string  `json:"profession" validate:"required,oneof='self_employed' 'salaried' 'professional' 'homemaker'"`
-	UserId     string  `json:"user_id"`
+	Income        float64 `json:"income" validate:"required,gt=0"`
+	Age           string  `json:"age" validate:"required"`
+	UserExpertise string  `json:"user_expertise"`
+	Profession    string  `json:"profession" validate:"required,oneof='self_employed' 'salaried' 'professional' 'homemaker'"`
+	UserId        string  `json:"user_id"`
 }
 
 type UserBasicDetailsExpenses struct {
