@@ -32,26 +32,37 @@ func (s *SavvyRepository) CreateUserBank(m *models.BankAccountDB) error {
 	return s.Db.CreateUserBank_(m)
 }
 
-func (s *SavvyRepository) ReadAllOccupationStatus() (*[]models.OccupationDB, error) {
+func (s *SavvyRepository) ReadAllOccupationStatus() (*[]models.OccupationCode, error) {
 	return s.Db.ReadAllOccupationStatus_()
 }
 
-func (s *SavvyRepository) ReadAllGenderCodes() (*[]models.GenderCodesDB, error) {
+func (s *SavvyRepository) ReadAllGenderCodes() (*[]models.GenderCodes, error) {
 	return s.Db.ReadAllGenderCodes_()
 }
 
-func (s *SavvyRepository) ReadAllMaritalStatusCodes() (*[]models.MaritalStatusCodesDB, error) {
+func (s *SavvyRepository) ReadAllMaritalStatusCodes() (*[]models.MaritalStatusCode, error) {
 	return s.Db.ReadAllMaritalStatusCodes_()
 }
 
-func (s *SavvyRepository) ReadAllCountryCodes() (*[]models.CountryCodesDB, error) {
+func (s *SavvyRepository) ReadAllCountryCodes() (*[]models.CountryCode, error) {
 	return s.Db.ReadAllCountryCodes_()
 }
 
-func (s *SavvyRepository) ReadAllAnnualIncomeLevel() (*[]models.IncomeLevelDB, error) {
+func (s *SavvyRepository) ReadAllAnnualIncomeLevel() (*[]models.AnnualIncome, error) {
 	return s.Db.ReadAllAnnualIncomeLevel_()
 }
-
+func (s *SavvyRepository) ReadSourceOfWealth() (*[]models.SourceOfWealth, error) {
+	return s.Db.ReadSourceOfWealth_()
+}
+func (s *SavvyRepository) ReadFatcaCountryCode() (*[]models.FatcaCountryCode, error) {
+	return s.Db.ReadFatcaCountryCode()
+}
+func (s *SavvyRepository) ReadApplicationStatus() (*[]models.ApplicationStatusCode, error) {
+	return s.Db.ReadApplicationStatus()
+}
+func (s *SavvyRepository) ReadAddressType() (*[]models.AddressType, error) {
+	return s.Db.ReadAddressType()
+}
 func (s *SavvyRepository) CreateFullKyc(m *models.StartFullKycDB) error {
 	return s.Db.CreateFullKyc_(m)
 }

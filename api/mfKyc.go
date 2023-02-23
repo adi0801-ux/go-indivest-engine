@@ -148,6 +148,54 @@ func (s *HTTPServer) GetAnnualIncomeLevelController(c *fiber.Ctx) error {
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
+func (s *HTTPServer) GetSourceOfWealthController(c *fiber.Ctx) error {
+
+	responseCode, data, err := s.MfSrv.GetSourceOfWealth()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
+		return nil
+	}
+
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) GetFatcaCountryCodeController(c *fiber.Ctx) error {
+
+	responseCode, data, err := s.MfSrv.GetFatcaCountryCode()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
+		return nil
+	}
+
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) GetApplicationStatusController(c *fiber.Ctx) error {
+
+	responseCode, data, err := s.MfSrv.GetApplicationStatus()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
+		return nil
+	}
+
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
+func (s *HTTPServer) GetAddressTypeController(c *fiber.Ctx) error {
+
+	responseCode, data, err := s.MfSrv.GetAddressType()
+	if err != nil {
+		utils.Log.Error(err)
+		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
+		return nil
+	}
+
+	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
+	return nil
+}
 
 func (s *HTTPServer) AddPersonalDetailsController(c *fiber.Ctx) error {
 	userID := c.Locals("userId").(string)
@@ -169,7 +217,7 @@ func (s *HTTPServer) AddPersonalDetailsController(c *fiber.Ctx) error {
 		SendResponse(c, responseCode, 0, "processing error", nil, err.Error())
 		return nil
 	}
-	
+
 	SendSuccessResponse(c, responseCode, 1, "SUCCESS", data)
 	return nil
 }
