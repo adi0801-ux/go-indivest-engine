@@ -9,7 +9,7 @@ type UserBasicDetailsIncome struct {
 	Income        float64 `json:"income" validate:"required,gt=0"`
 	Age           string  `json:"age" validate:"required"`
 	UserExpertise string  `json:"user_expertise"`
-	Profession    string  `json:"profession" validate:"required,oneof='self_employed' 'salaried' 'professional' 'homemaker'"`
+	Profession    string  `json:"profession" validate:"required,oneof='self employed' 'salaried' 'professional' 'homemaker'"`
 	UserId        string  `json:"user_id"`
 }
 
