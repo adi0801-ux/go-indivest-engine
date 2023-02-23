@@ -1,17 +1,90 @@
-package main
+package seeders
 
-import (
-	"fmt"
-	gs "github.com/randree/gormseeder"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-)
+import "indivest-engine/db"
 
-func main() {
-	db, err := gorm.Open(postgres.Open("host=localhost user=postgres password=8178954036 dbname=indivest_engine port=5432 sslmode=disable"))
+// //Run Seeder
+
+type Seeder struct {
+	db *db.Database
+}
+
+func RunFatcaCountryCode(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.FatcaCountryCode()
 	if err != nil {
-		fmt.Println(err.Error())
+		return err
 	}
+	return err
+}
+func RunAddressType(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.AddressType()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunAnnualIncomeCode(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.AnnualIncomeCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunApplicationStatusCode(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.ApplicantStatusCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
 
-	gs.InitSeeder(db, "Seeders")
+func RunCountryCode(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.CountryCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunMaritalStatus(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.MaritalStatusCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunOccupationCodes(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.OccupationCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunSourceOfWealthCodes(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
+}
+func RunGenderCodes(store *db.Database) error {
+	s := &Seeder{db: store}
+	err := s.GenderCode()
+	//err := s.SourceOfWealth()
+	if err != nil {
+		return err
+	}
+	return err
 }
