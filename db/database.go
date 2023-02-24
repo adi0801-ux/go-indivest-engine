@@ -36,7 +36,6 @@ func (d *Database) RunMigrations() (err error) {
 		&models.APILog{},
 		&models.OnboardingObjectDB{},
 		&models.BankAccountDB{},
-		&models.OccupationDB{},
 		&models.ReadPanCardDB{},
 		&models.StartVideoVerificationDB{},
 		&models.ShowAccountDB{},

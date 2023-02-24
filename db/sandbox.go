@@ -8,13 +8,13 @@ import (
 )
 
 func (d *Database) CreateUserWallet_(w *models.UserWallet) error {
-	result := d.store.Create(&w)
+	result := d.Store.Create(&w)
 	return result.Error
 }
 
 func (d *Database) ReadUserWallet_(userId string) (*models.UserWallet, error) {
 	u := &models.UserWallet{}
-	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	err := d.Store.Where("user_id = ?", userId).Find(u).Error
 	//if err != nil {
 	//	return u, err
 	//}
@@ -27,7 +27,7 @@ func (d *Database) ReadUserWallet_(userId string) (*models.UserWallet, error) {
 
 func (d *Database) ReadAllUserWallets_() (*[]models.UserWallet, error) {
 	u := &[]models.UserWallet{}
-	err := d.store.Find(u).Error
+	err := d.Store.Find(u).Error
 	if err != nil {
 		return u, err
 	}
@@ -40,7 +40,7 @@ func (d *Database) ReadAllUserWallets_() (*[]models.UserWallet, error) {
 
 func (d *Database) UpdateUserWallet_(u *models.UserWallet) error {
 
-	result := d.store.Where("user_id = ?", u.UserID).Updates(u)
+	result := d.Store.Where("user_id = ?", u.UserID).Updates(u)
 
 	return result.Error
 }
@@ -48,13 +48,13 @@ func (d *Database) UpdateUserWallet_(u *models.UserWallet) error {
 //Transaction
 
 func (d *Database) CreateMFTransaction_(w *models.UserMFTransactions) error {
-	result := d.store.Create(&w)
+	result := d.Store.Create(&w)
 	return result.Error
 }
 
 func (d *Database) ReadMFTransactions_(userId string, schemeCode string) (*[]models.UserMFTransactions, error) {
 	u := &[]models.UserMFTransactions{}
-	err := d.store.Where("user_id = ? and scheme_code = ?", userId, schemeCode).Find(u).Error
+	err := d.Store.Where("user_id = ? and scheme_code = ?", userId, schemeCode).Find(u).Error
 	if err != nil {
 		return u, err
 	}
@@ -67,7 +67,7 @@ func (d *Database) ReadMFTransactions_(userId string, schemeCode string) (*[]mod
 
 func (d *Database) ReadAllMFTransactions_(userId string) (*[]models.UserMFTransactions, error) {
 	u := &[]models.UserMFTransactions{}
-	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	err := d.Store.Where("user_id = ?", userId).Find(u).Error
 	if err != nil {
 		return u, err
 	}
@@ -81,21 +81,21 @@ func (d *Database) ReadAllMFTransactions_(userId string) (*[]models.UserMFTransa
 //User SIP's
 
 func (d *Database) CreateUserSIP_(w *models.UserMFActiveSIP) error {
-	result := d.store.Create(&w)
+	result := d.Store.Create(&w)
 	return result.Error
 }
 
 func (d *Database) FindAllUserSIPWithDate_(SipDate int) (*[]models.UserMFActiveSIP, error) {
 	u := &[]models.UserMFActiveSIP{}
 
-	result := d.store.Where("sip_date = ? and active = ?", SipDate, constants.DefaultSIPActiveSatus).Find(u)
+	result := d.Store.Where("sip_date = ? and active = ?", SipDate, constants.DefaultSIPActiveSatus).Find(u)
 	return u, result.Error
 }
 
 func (d *Database) UpdateOrCreateUserHoldings_(w *models.UserMFHoldings) error {
-	result := d.store.Model(&w).Where("user_id = ? AND scheme_code = ?", w.UserID, w.SchemeCode).Updates(&w)
+	result := d.Store.Model(&w).Where("user_id = ? AND scheme_code = ?", w.UserID, w.SchemeCode).Updates(&w)
 	if result.RowsAffected == 0 {
-		result = d.store.Create(&w)
+		result = d.Store.Create(&w)
 		return result.Error
 	}
 
@@ -104,7 +104,7 @@ func (d *Database) UpdateOrCreateUserHoldings_(w *models.UserMFHoldings) error {
 
 func (d *Database) ReadUserHolding_(userId string, schemeCode string) (*models.UserMFHoldings, error) {
 	u := &models.UserMFHoldings{}
-	err := d.store.Where("user_id = ? and scheme_code = ?", userId, schemeCode).Find(u).Error
+	err := d.Store.Where("user_id = ? and scheme_code = ?", userId, schemeCode).Find(u).Error
 	if err != nil {
 		return u, err
 	}
@@ -116,7 +116,7 @@ func (d *Database) ReadUserHolding_(userId string, schemeCode string) (*models.U
 
 func (d *Database) ReadUserHoldings_(userId string) (*[]models.UserMFHoldings, error) {
 	u := &[]models.UserMFHoldings{}
-	err := d.store.Where("user_id = ? ", userId).Find(u).Error
+	err := d.Store.Where("user_id = ? ", userId).Find(u).Error
 	if err != nil {
 		return u, err
 	}
@@ -129,14 +129,14 @@ func (d *Database) ReadUserHoldings_(userId string) (*[]models.UserMFHoldings, e
 //daily report
 
 func (d *Database) CreateMFDailyReport_(w *models.UserMFDailyReport) error {
-	result := d.store.Create(&w)
+	result := d.Store.Create(&w)
 	return result.Error
 }
 
 func (d *Database) ReadAllMFDailyReport_(userId string, daysLimit int) (*[]models.UserMFDailyReport, error) {
 	u := &[]models.UserMFDailyReport{}
 	queryParam := strconv.Itoa(daysLimit)
-	err := d.store.Where("user_id = ? and created_at >= (now() - INTERVAL '"+queryParam+" days')", userId).Find(u).Error
+	err := d.Store.Where("user_id = ? and created_at >= (now() - INTERVAL '"+queryParam+" days')", userId).Find(u).Error
 	if err != nil {
 		return u, err
 	}
