@@ -134,6 +134,38 @@ func (p *MFService) GetAnnualIncomeLevel() (int, interface{}, error) {
 	}
 	return http.StatusOK, data, nil
 }
+func (p *MFService) GetSourceOfWealth() (int, interface{}, error) {
+	data, err := p.SavvyRepo.ReadSourceOfWealth()
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, data, nil
+}
+func (p *MFService) GetFatcaCountryCode() (int, interface{}, error) {
+	data, err := p.SavvyRepo.ReadFatcaCountryCode()
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, data, nil
+}
+func (p *MFService) GetApplicationStatus() (int, interface{}, error) {
+	data, err := p.SavvyRepo.ReadApplicationStatus()
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, data, nil
+}
+func (p *MFService) GetAddressType() (int, interface{}, error) {
+	data, err := p.SavvyRepo.ReadAddressType()
+	if err != nil {
+		utils.Log.Error(err)
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, data, nil
+}
 
 // StartFullKyc step 1 - existing investor
 
