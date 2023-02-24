@@ -8,14 +8,14 @@ import (
 
 func (s *Seeder) SourceOfWealth() error {
 	listOfObject := []models.SourceOfWealth{
-		{1, "1", "Salary"},
-		{2, "2", "Business"},
-		{3, "3", "Gift"},
-		{4, "4", "Ancestral Property"},
-		{5, "5", "Rental Income"},
-		{6, "6", "Prize Money"},
-		{7, "7", "Royalty"},
-		{8, "8", "Others"},
+		{Id: 1, Code: "1", Description: "Salary"},
+		{Id: 2, Code: "2", Description: "Business"},
+		{Id: 3, Code: "3", Description: "Gift"},
+		{Id: 4, Code: "4", Description: "Ancestral Property"},
+		{Id: 5, Code: "5", Description: "Rental Income"},
+		{Id: 6, Code: "6", Description: "Prize Money"},
+		{Id: 7, Code: "7", Description: "Royalty"},
+		{Id: 8, Code: "8", Description: "Others"},
 	}
 
 	for _, listDb := range listOfObject {

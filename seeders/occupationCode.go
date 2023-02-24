@@ -8,17 +8,17 @@ import (
 
 func (s *Seeder) OccupationCode() error {
 	listOfObject := []models.OccupationCode{
-		{1, "1", "Private Sector"},
-		{2, "2", "Public Sector"},
-		{3, "3", "Business"},
-		{4, "4", "Professional"},
-		{5, "6", "Retired"},
-		{6, "7", "Housewife"},
-		{7, "8", "Student"},
-		{8, "10", "Government Sector"},
-		{9, "99", "Others"},
-		{10, "11", "Self Employed"},
-		{11, "12", "Not Categorized"},
+		{Id: 1, Code: "1", Description: "Private Sector"},
+		{Id: 2, Code: "2", Description: "Public Sector"},
+		{Id: 3, Code: "3", Description: "Business"},
+		{Id: 4, Code: "4", Description: "Professional"},
+		{Id: 5, Code: "6", Description: "Retired"},
+		{Id: 6, Code: "7", Description: "Housewife"},
+		{Id: 7, Code: "8", Description: "Student"},
+		{Id: 8, Code: "10", Description: "Government Sector"},
+		{Id: 9, Code: "99", Description: "Others"},
+		{Id: 10, Code: "11", Description: "Self Employed"},
+		{Id: 11, Code: "12", Description: "Not Categorized"},
 	}
 
 	for _, listDb := range listOfObject {

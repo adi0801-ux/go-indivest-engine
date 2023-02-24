@@ -1,6 +1,8 @@
 package seeders
 
-import "indivest-engine/db"
+import (
+	"indivest-engine/db"
+)
 
 // //Run Seeder
 
@@ -8,18 +10,18 @@ type Seeder struct {
 	db *db.Database
 }
 
-func RunFatcaCountryCode(store *db.Database) error {
+func RunAddressType(store *db.Database) error {
 	s := &Seeder{db: store}
-	err := s.FatcaCountryCode()
+	err := s.AddressType()
 	if err != nil {
 		return err
 	}
 	return err
 }
-func RunAddressType(store *db.Database) error {
+
+func RunFatcaCountryCode(store *db.Database) error {
 	s := &Seeder{db: store}
-	err := s.AddressType()
-	//err := s.SourceOfWealth()
+	err := s.FatcaCountryCode()
 	if err != nil {
 		return err
 	}

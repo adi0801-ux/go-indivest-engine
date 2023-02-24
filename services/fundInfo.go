@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"indivest-engine/constants"
 	"indivest-engine/models"
 	"indivest-engine/utils"
@@ -72,7 +73,7 @@ func (p *MFService) UpdateFunds() error {
 
 		func() {
 			param := url.Values{}
-			param.Add("amc_code", fundHouseDetail.AMCCode)
+			fmt.Println(fundHouseDetail.Logo)
 			response, err := p.TSAClient.SendGetRequest(constants.FundDetailsEndpoint, param)
 			var data models.FundDetails
 			//converting struct to []bytes
@@ -80,7 +81,7 @@ func (p *MFService) UpdateFunds() error {
 			if err != nil {
 				utils.Log.Error(err)
 			}
-			p.CreateOrUpdateFundHouse(data, fundHouseDetail.AMCCode, fundHouseDetail.AMCID)
+			p.CreateOrUpdateFundHouse(data, fundHouseDetail.AMCCode, fundHouseDetail.AMCID, fundHouseDetail.Logo)
 		}()
 
 	}
@@ -89,7 +90,7 @@ func (p *MFService) UpdateFunds() error {
 
 }
 
-func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcCode string, amcId int) {
+func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcCode string, amcId int, logo string) {
 	for _, fundDetail := range fundDetails.Funds {
 		fund := fundDetail
 		func() {
@@ -114,6 +115,7 @@ func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcC
 				AMCID:                      amcId,
 				AMCCode:                    amcCode,
 				NAV:                        fundDetail.FundInfo.Nav,
+				Logo:                       logo,
 			}
 			err := p.SavvyRepo.CreateOrUpdateFundDetails(fundSupported)
 			if err != nil {

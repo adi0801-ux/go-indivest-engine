@@ -8,12 +8,13 @@ import (
 
 func (s *Seeder) GenderCode() error {
 	listOfObject := []models.GenderCodes{
-		{1, "M", "Male"},
-		{2, "F", "Female"},
-		{3, "T", "Transgender"},
+		{Id: 1, Code: "M", Description: "Male"},
+		{Id: 2, Code: "F", Description: "Female"},
+		{Id: 3, Code: "T", Description: "Transgender"},
 	}
 
 	for _, listDb := range listOfObject {
+		fmt.Println("begining of data input")
 		err := s.db.Store.Create(&listDb)
 		//if err != nil && err.Error.Error() == {
 		//	fmt.Println(err.Error)
@@ -23,7 +24,7 @@ func (s *Seeder) GenderCode() error {
 			fmt.Println(err)
 			utils.Log.Error(err)
 		} else {
-			return err.Error
+			fmt.Println("hi there")
 		}
 	}
 	return nil

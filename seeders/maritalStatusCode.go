@@ -8,9 +8,9 @@ import (
 
 func (s *Seeder) MaritalStatusCode() error {
 	listOfObject := []models.MaritalStatusCode{
-		{1, "MARRIED", "Married"},
-		{2, "UNMARRIED", "Unmarried"},
-		{3, "OTHERS", "Others"},
+		{Id: 1, Code: "MARRIED", Description: "Married"},
+		{Id: 2, Code: "UNMARRIED", Description: "Unmarried"},
+		{Id: 3, Code: "OTHERS", Description: "Others"},
 	}
 
 	for _, listDb := range listOfObject {
