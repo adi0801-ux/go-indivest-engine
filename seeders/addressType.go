@@ -1,7 +1,6 @@
 package seeders
 
 import (
-	"fmt"
 	"indivest-engine/models"
 	"indivest-engine/utils"
 )
@@ -15,20 +14,10 @@ func (s *Seeder) AddressType() error {
 	}
 
 	for _, listDb := range listOfObject {
-		resp := s.db.Store.Create(&listDb)
-		if resp != nil && resp.Error.Error() == "address_types_pkey" {
-			//fmt.Println(resp.Error)
-			utils.Log.Error(resp.Error)
-		} else {
+		resp := s.db.Store.FirstOrCreate(&listDb)
+		if resp.Error != nil {
 			utils.Log.Error(resp.Error)
 		}
-		fmt.Println(resp.Error, resp.RowsAffected)
-		//if err != nil {
-		//	fmt.Println(err.Error)
-		//	utils.Log.Error(err)
-		//} else {
-		//	return err.Error
-		//}
 	}
 	return nil
 }

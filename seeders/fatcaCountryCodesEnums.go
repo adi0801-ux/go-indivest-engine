@@ -1,7 +1,6 @@
 package seeders
 
 import (
-	"fmt"
 	"indivest-engine/models"
 	"indivest-engine/utils"
 )
@@ -263,16 +262,10 @@ func (s *Seeder) FatcaCountryCode() error {
 	}
 
 	for _, lis := range l {
-		err := s.db.Store.Create(&lis)
-		//if err != nil && err.Error.Error() == {
-		//	fmt.Println(err.Error)
-		//	utils.Log.Error(err)
-		//}
-		if err.Error != nil {
-			fmt.Println(err.Error.Error())
-			utils.Log.Error(err)
-		} else {
-			fmt.Println("hi there")
+		resp := s.db.Store.FirstOrCreate(&lis)
+
+		if resp.Error != nil {
+			utils.Log.Error(resp.Error)
 		}
 	}
 	return nil

@@ -1,7 +1,6 @@
 package seeders
 
 import (
-	"fmt"
 	"indivest-engine/models"
 	"indivest-engine/utils"
 )
@@ -16,16 +15,9 @@ func (s *Seeder) AnnualIncomeCode() error {
 		{Id: 6, Code: "36", Description: "1 crore"},
 	}
 	for _, listDb := range listOfObject {
-		err := s.db.Store.Create(&listDb)
-		//if err != nil && err.Error.Error() == {
-		//	fmt.Println(err.Error)
-		//	utils.Log.Error(err)
-		//}
-		if err != nil {
-			fmt.Println(err.Error)
-			utils.Log.Error(err)
-		} else {
-			return err.Error
+		resp := s.db.Store.FirstOrCreate(&listDb)
+		if resp.Error != nil {
+			utils.Log.Error(resp.Error)
 		}
 	}
 	return nil
