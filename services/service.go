@@ -6,7 +6,7 @@ import (
 )
 
 type RiskCalculatorService struct {
-	UserRep *repositories.UserRepository
+	UserRepo *repositories.UserRepository
 }
 
 type SandboxServiceConfig struct {

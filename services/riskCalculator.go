@@ -13,7 +13,7 @@ func (p *RiskCalculatorService) AddLanguage(language *models.UserBasicDetailsLan
 	userDetails.UserID = language.UserId
 	userDetails.Language = language.Language
 
-	err := p.UserRep.CreateOrUpdateUserDetails(&userDetails)
+	err := p.UserRepo.CreateOrUpdateUserDetails(&userDetails)
 
 	return err
 
@@ -28,7 +28,7 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 	userDetails.GrossMonthlyIncome = Income.Income
 	userDetails.Profession = Income.Profession
 	userDetails.UserExpertise = Income.UserExpertise
-	err := p.UserRep.CreateOrUpdateUserDetails(&userDetails)
+	err := p.UserRepo.CreateOrUpdateUserDetails(&userDetails)
 	if err != nil {
 		utils.Log.Error(err)
 		return err
@@ -39,7 +39,7 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 
 func (p *RiskCalculatorService) AddExpenses(Expenses *models.UserBasicDetailsExpenses) (calcResp models.CalculationResponse, err error) {
 
-	userDetails, err := p.UserRep.ReadUserDetails(Expenses.UserId)
+	userDetails, err := p.UserRepo.ReadUserDetails(Expenses.UserId)
 	if err != nil {
 		return calcResp, err
 	}
@@ -59,15 +59,28 @@ func (p *RiskCalculatorService) AddExpenses(Expenses *models.UserBasicDetailsExp
 		return calcResp, fmt.Errorf("monthly_savings is more than monthly_investments (not possible)")
 	}
 
-	err = p.UserRep.UpdateUserDetails(userDetails)
+	err = p.UserRepo.UpdateUserDetails(userDetails)
 	if err != nil {
+		return calcResp, err
+	}
+
+	user, err := p.UserRepo.ReadUser(Expenses.UserId)
+	if err != nil {
+		utils.Log.Error(err)
+		return calcResp, err
+	}
+	user.ProfileStatus = "2"
+
+	err = p.UserRepo.UpdateOrCreateUser(user)
+	if err != nil {
+		utils.Log.Error(err)
 		return calcResp, err
 	}
 	return p.CalculateUserInformation(userDetails)
 }
 
 func (p *RiskCalculatorService) GetUserInformation(UserId string) (calcResp models.CalculationResponse, err error) {
-	userDetails, err := p.UserRep.ReadUserDetails(UserId)
+	userDetails, err := p.UserRepo.ReadUserDetails(UserId)
 	if err != nil {
 		return calcResp, err
 	}
