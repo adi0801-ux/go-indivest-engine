@@ -96,7 +96,7 @@ func main() {
 
 	//Create a service Reference
 	RiskSrv := services.RiskCalculatorService{
-		UserRep: &UserRepo,
+		UserRepo: &UserRepo,
 	}
 
 	sandboxSrv := services.SandboxServiceConfig{
