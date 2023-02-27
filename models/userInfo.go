@@ -6,7 +6,7 @@ type UserSignup struct {
 	FirstName   string `json:"first_name" validate:"required"`
 	LastName    string `json:"last_name" validate:"required"`
 	EmailId     string `json:"email_id" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"required,number,len=10"`
 	Password    string `json:"password" validate:"required"`
 	DeviceToken string `json:"device_token"`
 	DeviceType  string `json:"device_type"`
