@@ -46,15 +46,8 @@ func main() {
 		utils.Log.Fatal("error creating migrations")
 	}
 
-	err = seeders.RunFatcaCountryCode(store)
-	err = seeders.RunGenderCodes(store)
-	err = seeders.RunAddressType(store)
-	err = seeders.RunAnnualIncomeCode(store)
-	err = seeders.RunApplicationStatusCode(store)
-	err = seeders.RunMaritalStatus(store)
-	err = seeders.RunSourceOfWealthCodes(store)
-	err = seeders.RunOccupationCodes(store)
-	err = seeders.RunCountryCode(store)
+	utils.Log.Info("running seeders ..")
+	err = seeders.RunSeeders(store)
 	if err != nil {
 		utils.Log.Fatal("error running seeders")
 	}

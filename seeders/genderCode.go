@@ -1,7 +1,6 @@
 package seeders
 
 import (
-	"fmt"
 	"indivest-engine/models"
 	"indivest-engine/utils"
 )
@@ -14,17 +13,10 @@ func (s *Seeder) GenderCode() error {
 	}
 
 	for _, listDb := range listOfObject {
-		fmt.Println("begining of data input")
-		err := s.db.Store.Create(&listDb)
-		//if err != nil && err.Error.Error() == {
-		//	fmt.Println(err.Error)
-		//	utils.Log.Error(err)
-		//}
-		if err != nil {
-			fmt.Println(err)
-			utils.Log.Error(err)
-		} else {
-			fmt.Println("hi there")
+		resp := s.db.Store.FirstOrCreate(&listDb)
+
+		if resp.Error != nil {
+			utils.Log.Error(resp.Error)
 		}
 	}
 	return nil
