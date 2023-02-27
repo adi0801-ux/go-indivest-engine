@@ -17,26 +17,25 @@ type ConnectionConfig struct {
 }
 
 type Database struct {
-	store *gorm.DB
+	Store *gorm.DB
 }
 
 func (d *Database) RunMigrations() (err error) {
-	err = d.store.AutoMigrate(&models.SessionManager{},
+	err = d.Store.AutoMigrate(&models.SessionManager{},
 		&models.UserDetails{},
 		&models.UserReports{},
 	)
-	err = d.store.AutoMigrate(&models.UserWallet{},
+	err = d.Store.AutoMigrate(&models.UserWallet{},
 		&models.UserMFTransactions{},
 		&models.UserMFActiveSIP{},
 		&models.UserMFHoldings{},
 		&models.UserMFDailyReport{},
 	)
 
-	err = d.store.AutoMigrate(
+	err = d.Store.AutoMigrate(
 		&models.APILog{},
 		&models.OnboardingObjectDB{},
 		&models.BankAccountDB{},
-		&models.OccupationDB{},
 		&models.ReadPanCardDB{},
 		&models.StartVideoVerificationDB{},
 		&models.ShowAccountDB{},
@@ -45,21 +44,31 @@ func (d *Database) RunMigrations() (err error) {
 		&models.CreateWithdrawalDb{},
 	)
 
-	err = d.store.AutoMigrate(
+	err = d.Store.AutoMigrate(
 		&models.FundsSupported{},
 		&models.FundHousesSupported{},
 		&models.WatchListDb{},
 	)
 
-	err = d.store.AutoMigrate(
+	err = d.Store.AutoMigrate(
 		&models.UserLeads{},
-		&models.User{})
+		&models.User{},
+		&models.FatcaCountryCode{},
+		&models.CountryCode{},
+		&models.AddressType{},
+		&models.AnnualIncome{},
+		&models.ApplicationStatusCode{},
+		&models.MaritalStatusCode{},
+		&models.SourceOfWealth{},
+		&models.OccupationCode{},
+		&models.GenderCodes{},
+	)
 
 	return err
 }
 
 func (d *Database) CloseConnection() (err error) {
-	conn, err := d.store.DB()
+	conn, err := d.Store.DB()
 
 	if err != nil {
 		utils.Log.Error(err)

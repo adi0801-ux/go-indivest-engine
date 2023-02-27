@@ -50,6 +50,17 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 	}
 
 	mfEngine := router.Group("/mfEngine/api")
+
+	mfEngine.Get("/occupationStatus", s.GetOccupationsController)
+	mfEngine.Get("/genderCodes", s.GetGenderCodesController)
+	mfEngine.Get("/martialStatus", s.GetMaritalStatusCodesController)
+	mfEngine.Get("/countryCodes", s.GetCountryCodesController)
+	mfEngine.Get("/annualIncome", s.GetAnnualIncomeLevelController)
+	mfEngine.Get("/sourceOfWealth", s.GetSourceOfWealthController)
+	mfEngine.Get("/fatcaCountryCode", s.GetFatcaCountryCodeController)
+	mfEngine.Get("/applicationStatus", s.GetApplicationStatusController)
+	mfEngine.Get("/addressType", s.GetAddressTypeController)
+
 	mfEngine.Get("/", s.healthCheck)
 	mfEngine.Use(s.AuthorizeMiddleware(s.config.AuthApi))
 	{
@@ -59,12 +70,8 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			mfKyc.Get("/status", s.CheckIfKycDoneController)
 			mfKyc.Post("/start", s.StartFullKycController)
 			mfKyc.Post("/addBank", s.AddBankAccountController)
-			mfKyc.Get("/occupationStatus", s.GetOccupationsController)
 			//to test
-			mfKyc.Get("/genderCodes", s.GetGenderCodesController)
-			mfKyc.Get("/martialStatus", s.GetMaritalStatusCodesController)
-			mfKyc.Get("/countryCodes", s.GetCountryCodesController)
-			mfKyc.Get("/annualIncome", s.GetAnnualIncomeLevelController)
+
 			// --
 			mfKyc.Put("/addDetails", s.AddPersonalDetailsController)
 			mfKyc.Post("/uploadPan", s.UploadPanCardController)

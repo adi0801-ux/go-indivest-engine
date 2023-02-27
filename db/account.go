@@ -7,13 +7,13 @@ import (
 )
 
 func (d *Database) CreateAccount_(m *models.ShowAccountDB) error {
-	result := d.store.Create(&m)
+	result := d.Store.Create(&m)
 	return result.Error
 }
 
 func (d *Database) ReadAccount_(userId string) (*models.ShowAccountDB, error) {
 	u := &models.ShowAccountDB{}
-	err := d.store.Where("user_id = ?", userId).Find(u).Error
+	err := d.Store.Where("user_id = ?", userId).Find(u).Error
 	if u.CreatedAt.String() == constants.StartDateTime {
 		return u, fmt.Errorf(constants.UserNotFound)
 	}
@@ -21,7 +21,7 @@ func (d *Database) ReadAccount_(userId string) (*models.ShowAccountDB, error) {
 }
 func (d *Database) ReadAccountWithAmcId_(userId string, AmcId string) (*models.ShowAccountDB, error) {
 	u := &models.ShowAccountDB{}
-	err := d.store.Where("user_id = ? and amc_id = ?", userId, AmcId).Find(u).Error
+	err := d.Store.Where("user_id = ? and amc_id = ?", userId, AmcId).Find(u).Error
 	if u.CreatedAt.String() == constants.StartDateTime {
 		return u, fmt.Errorf(constants.UserNotFound)
 	}
@@ -29,9 +29,9 @@ func (d *Database) ReadAccountWithAmcId_(userId string, AmcId string) (*models.S
 }
 
 func (d *Database) CreateOrUpdateAccount_(w *models.ShowAccountDB) error {
-	result := d.store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
+	result := d.Store.Model(&w).Where("user_id = ?", w.UserId).Updates(&w)
 	if result.RowsAffected == 0 {
-		result = d.store.Create(&w)
+		result = d.Store.Create(&w)
 		return result.Error
 	}
 

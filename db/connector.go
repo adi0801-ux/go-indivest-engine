@@ -33,7 +33,7 @@ func ConnectToDB(config *ConnectionConfig) (*Database, error) {
 	}
 
 	database := &Database{
-		store: db,
+		Store: db,
 	}
 
 	//err = gormdb.AutoMigrate(&MarginRecords{} , &CancelOrders{}, &TradingPairs{})

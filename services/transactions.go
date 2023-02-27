@@ -301,14 +301,15 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 }
 
 func (p *MFService) RequestStatusCode(rqstStatus *models.GetTransaction) (int, interface{}, error) {
-	depositDtls, err := p.SavvyRepo.ReadDeposits(rqstStatus.UserId)
-	sipDtls, err := p.SavvyRepo.ReadSip(rqstStatus.UserId)
-	withdrawDtls, err := p.SavvyRepo.ReadWithdrawalAll(rqstStatus.UserId)
+	//deposit := map[string]interface{}{}
+	depositDtls, err := p.SavvyRepo.ReadAllDeposits(rqstStatus.UserId)
+	sipDtls, err := p.SavvyRepo.ReadAllSip(rqstStatus.UserId)
+	withdrawDtls, err := p.SavvyRepo.ReadAllWithdrawal(rqstStatus.UserId)
 	if err != nil {
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err
 	}
-	return http.StatusOK, map[string]interface{}{"deposit_status": depositDtls.PaymentStatus, "sip_status": sipDtls.SipStatus, "withdrawal_status": withdrawDtls.WithdrawalStatus}, err
+	return http.StatusOK, map[string]interface{}{"deposits": depositDtls, "sips": sipDtls, "withdrawal": withdrawDtls}, err
 }
 
 func (p *MFService) GetHoldings(holdings *models.Holding) (int, interface{}, error) {
@@ -402,19 +403,20 @@ func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interfac
 // datewise sorting for transaction
 //func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
 //	var datewiseTransaction []interface{}
-//	depoDtls, err := p.SavvyRepo.ReadDeposits(userDtls.UserId)
-//	withDtls, err := p.SavvyRepo.ReadWithdrawalAll(userDtls.UserId)
-//	sipDtls, err := p.SavvyRepo.ReadSip(userDtls.UserId)
-//	sort.Slice(datewiseTransaction, func(i, j int) bool {
-//		return
-//	})
+//	depoDtls, err := p.SavvyRepo.ReadAllDeposits(userDtls.UserId)
+//	fmt.Println(reflect.TypeOf(depoDtls))
+//	withDtls, err := p.SavvyRepo.ReadAllWithdrawal(userDtls.UserId)
+//	sipDtls, err := p.SavvyRepo.ReadAllSip(userDtls.UserId)
 //	if err != nil {
-//		utils.Log.Info(err)
-//
+//		utils.Log.Error(err)
 //	}
-//
+//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
+//	//	return
+//	//})
+//	fmt.Println(reflect.TypeOf(depoDtls))
 //	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
 //	//fmt.Println(reflect.TypeOf(datewiseTransaction))
+//	fmt.Println((datewiseTransaction))
 //
 //	//sort.Slice(datewiseTransaction, func(i, j int) bool {
 //	//	return datewiseTransaction[i].created_at < datewiseTransaction[j].created_at

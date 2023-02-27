@@ -105,37 +105,3 @@ type BankAccountDB struct {
 	BankCity      string    `gorm:"column:bank_city" json:"bank_city"`
 	IfscCode      string    `gorm:"column:ifsc_code" json:"ifsc_code"`
 }
-
-type OccupationDB struct {
-	ID             int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt      time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
-	OccupationId   string    `gorm:"column:occupation_id;not null" json:"occupation_id"`
-	OccupationName string    `gorm:"column:occupation_name" json:"occupation_name"`
-}
-
-type GenderCodesDB struct {
-	ID         int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt  time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
-	GenderCode string    `gorm:"column:gender_code;not null" json:"gender_code"`
-	GenderName string    `gorm:"column:gender_name" json:"gender_name"`
-}
-
-type MaritalStatusCodesDB struct {
-	ID                int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt         time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
-	MaritalStatus     string    `gorm:"column:martial_status;not null" json:"martial_status"`
-	MaritalStatusName string    `gorm:"column:martial_status_name" json:"martial_status_name"`
-}
-
-type CountryCodesDB struct {
-	ID          int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt   time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
-	CountryCode string    `gorm:"column:country_code;not null" json:"country_code"`
-	CountryName string    `gorm:"column:country_name" json:"country_name"`
-}
-
-type IncomeLevelDB struct {
-	ID               int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt        time.Time `gorm:"column:created_at;not null;default:now()" json:"created_at"`
-	AnualIncomeLevel string    `gorm:"column:income_level;not null" json:"income_level"`
-}

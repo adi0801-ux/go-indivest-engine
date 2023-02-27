@@ -357,7 +357,6 @@ func (s *HTTPServer) ShowWatchListController(c *fiber.Ctx) error {
 	return nil
 }
 
-//
 //func (s *HTTPServer) SortedTransactionController(c *fiber.Ctx) error {
 //	//userId from the bearer token
 //	userId := c.Locals("userId").(string)
