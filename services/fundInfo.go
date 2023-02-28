@@ -166,7 +166,7 @@ func (p *MFService) ReturnsInterestCalculator(fundDtls *models.ReturnsCalc) (int
 }
 
 func (p *MFService) Recommendations() (int, interface{}, error) {
-	_, funds, err := p.GetListOfFunds()
+	funds, err := p.SavvyRepo.ReadFirstTenFundDetails()
 	if err != nil {
 		utils.Log.Info(err)
 		return http.StatusBadRequest, nil, err

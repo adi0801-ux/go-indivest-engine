@@ -44,6 +44,12 @@ func (d *Database) ReadAllFundDetails_() (*[]models.FundsSupported, error) {
 	err := d.Store.Find(u).Error
 	return u, err
 }
+func (d *Database) ReadFirstTenFundDetails_() (*[]models.FundsSupported, error) {
+	u := &[]models.FundsSupported{}
+	err := d.Store.Limit(10).Find(&u).Error
+	//err := d.Store.Find(u).Error
+	return u, err
+}
 func (d *Database) ReadFundCategory_() (*[]models.FundCategory, error) {
 	u := &[]models.FundCategory{}
 	err := d.Store.Model(models.FundsSupported{}).Select("DISTINCT ON (category) category").Find(u).Error

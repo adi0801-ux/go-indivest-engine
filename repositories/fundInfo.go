@@ -23,6 +23,10 @@ func (s *SavvyRepository) CreateOrUpdateFundDetails(m *models.FundsSupported) er
 func (s *SavvyRepository) ReadAllFundDetails() (*[]models.FundsSupported, error) {
 	return s.Db.ReadAllFundDetails_()
 }
+func (s *SavvyRepository) ReadFirstTenFundDetails() (*[]models.FundsSupported, error) {
+	return s.Db.ReadFirstTenFundDetails_()
+}
+
 func (s *SavvyRepository) ReadFundCategory() (*[]models.FundCategory, error) {
 	return s.Db.ReadFundCategory_()
 }
