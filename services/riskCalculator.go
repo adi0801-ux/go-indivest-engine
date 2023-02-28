@@ -26,8 +26,6 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 	userDetails.UserID = Income.UserId
 	userDetails.Age = Income.Age
 	userDetails.GrossMonthlyIncome = utils.RoundOfTo2Decimal(Income.Income)
-	fmt.Println(utils.RoundOfTo2Decimal(Income.Income))
-	fmt.Println(utils.RoundOfTo2Decimal(12.3456))
 	userDetails.Profession = Income.Profession
 	userDetails.UserExpertise = Income.UserExpertise
 	err := p.UserRepo.CreateOrUpdateUserDetails(&userDetails)
