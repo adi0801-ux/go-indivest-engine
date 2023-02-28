@@ -7,10 +7,13 @@ import (
 	"indivest-engine/models"
 	"indivest-engine/utils"
 	"net/http"
+	"strings"
 	"time"
 )
 
 func (p *UserSrv) UserSignUp(signUp *models.UserSignup) (int, interface{}, error) {
+	signUp.EmailId = strings.ToLower(signUp.EmailId)
+
 	_, err := p.UserRepo.ReadUserByEmail(signUp.EmailId)
 	if err == nil {
 		utils.Log.Error(err)
@@ -48,6 +51,7 @@ func (p *UserSrv) UserSignUp(signUp *models.UserSignup) (int, interface{}, error
 }
 
 func (p *UserSrv) UserLogin(login *models.UserLogin) (int, interface{}, error) {
+	login.EmailId = strings.ToLower(login.EmailId)
 	user, err := p.UserRepo.ReadUserByEmail(login.EmailId)
 	if err != nil {
 		utils.Log.Error(err)
