@@ -109,12 +109,12 @@ func (p *MFService) CreateOrUpdateFundHouse(fundDetails models.FundDetails, amcC
 				MinimumSipAmount:           fund.MinimumSipAmount,
 				MinimumSwpAmount:           fund.MinimumSwpAmount,
 				MinimumStpAmount:           fund.MinimumStpAmount,
-				CagrY1:                     utils.RoundFloat(fund.FundInfo.ReturnYear1, 10),
-				CagrY3:                     utils.RoundFloat(fund.FundInfo.ReturnYear3, 10),
-				CagrY5:                     utils.RoundFloat(fund.FundInfo.ReturnYear5, 10),
+				CagrY1:                     fund.FundInfo.ReturnYear1,
+				CagrY3:                     fund.FundInfo.ReturnYear3,
+				CagrY5:                     fund.FundInfo.ReturnYear5,
 				AMCID:                      amcId,
 				AMCCode:                    amcCode,
-				NAV:                        utils.RoundFloat(fundDetail.FundInfo.Nav, 10),
+				NAV:                        fundDetail.FundInfo.Nav,
 				Logo:                       logo,
 			}
 			err := p.SavvyRepo.CreateOrUpdateFundDetails(fundSupported)

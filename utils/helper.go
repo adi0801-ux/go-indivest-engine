@@ -47,10 +47,7 @@ func RoundOfTo2Decimal(f float64) float64 {
 
 	return math.Round(f*100) / 100
 }
-func RoundFloat(val float64, precision uint) float64 {
-	ratio := math.Pow(10, float64(precision))
-	return math.Round(val*ratio) / ratio
-}
+
 func GeneratePartnerTransactionID() string {
 	return "PART_TRANS_" + GenerateID()
 }
