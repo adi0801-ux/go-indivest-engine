@@ -401,35 +401,55 @@ func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interfac
 //	}
 //
 // datewise sorting for transaction
+//type DataStr struct {
+//	Key   int
+//	Value string
+//}
+//
+//func main() {
+//	data := []string{"AWS", "GoLinux", "Google", "Linux", "Chrome"}
+//
+//	var res []DataStr
+//	for key, value := range data {
+//		res = append(res, DataStr{
+//			key, value,
+//		})
+//	}
+////}
 //func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
-//	var datewiseTransaction []interface{}
+//	type datewiseTransaction []struct {
+//		CreatedTime time.Time
+//		amount     string
+//		Updated_at unix.BpfHdr
+//		User_id    string
+//	}
+//	res := make([]datewiseTransaction, 0)
 //	depoDtls, err := p.SavvyRepo.ReadAllDeposits(userDtls.UserId)
-//	fmt.Println(reflect.TypeOf(depoDtls))
 //	withDtls, err := p.SavvyRepo.ReadAllWithdrawal(userDtls.UserId)
 //	sipDtls, err := p.SavvyRepo.ReadAllSip(userDtls.UserId)
 //	if err != nil {
 //		utils.Log.Error(err)
 //	}
-//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
-//	//	return
-//	//})
-//	fmt.Println(reflect.TypeOf(depoDtls))
-//	datewiseTransaction = append(datewiseTransaction, depoDtls, withDtls, sipDtls)
-//	//fmt.Println(reflect.TypeOf(datewiseTransaction))
-//	fmt.Println((datewiseTransaction))
 //
-//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
-//	//	return datewiseTransaction[i].created_at < datewiseTransaction[j].created_at
-//	//})
+//	for _, values := range *depoDtls {
+//		res = append(res, datewiseTransaction{
+//			CreatedTime: values.CreatedAt,
+//			Updated_at: values.UpdatedAt,
+//		})
+//	}
+//
+//	sort.Slice(res, func(i, j int) bool {
+//		return res[i][]  datewiseTransaction[j].created_at
+//	})
 //
 //	//for _, pur := range datewiseTransaction {
 //	//
 //	//	fmt.Printf("%s %s\n", pur.id, pur.date.Format("2 Jan 2006 15:04"))
 //	//}
-//	//// Sort by age preserving name order
-//	//sort.Slice(datewiseTransaction, func(i, j int) bool {
-//	//	return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
-//	//})
+//	// Sort by age preserving name order
+//	sort.Slice(datewiseTransaction, func(i, j int) bool {
+//		return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
+//	})
 //	//
 //	//fmt.Println("By age,name:", people)
 //	//sort.Slice(datewiseTransaction, func(p, q int) bool {

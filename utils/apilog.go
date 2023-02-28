@@ -34,7 +34,10 @@ func LoggerToFile() fiber.Handler {
 		startTime := time.Now()
 
 		//Process request
-		c.Next()
+		err := c.Next()
+		if err != nil {
+			return err
+		}
 
 		//End time
 		endTime := time.Now()
