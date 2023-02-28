@@ -25,7 +25,9 @@ func (p *RiskCalculatorService) AddIncome(Income *models.UserBasicDetailsIncome)
 
 	userDetails.UserID = Income.UserId
 	userDetails.Age = Income.Age
-	userDetails.GrossMonthlyIncome = Income.Income
+	userDetails.GrossMonthlyIncome = utils.RoundOfTo2Decimal(Income.Income)
+	fmt.Println(utils.RoundOfTo2Decimal(Income.Income))
+	fmt.Println(utils.RoundOfTo2Decimal(12.3456))
 	userDetails.Profession = Income.Profession
 	userDetails.UserExpertise = Income.UserExpertise
 	err := p.UserRepo.CreateOrUpdateUserDetails(&userDetails)
@@ -45,10 +47,10 @@ func (p *RiskCalculatorService) AddExpenses(Expenses *models.UserBasicDetailsExp
 	}
 
 	userDetails.UserID = Expenses.UserId
-	userDetails.MonthlyEssentialExpense = Expenses.MonthlyEssentialExpense
-	userDetails.MonthlyNonEssentialExpense = Expenses.MonthlyNonEssentialExpense
+	userDetails.MonthlyEssentialExpense = utils.RoundOfTo2Decimal(Expenses.MonthlyEssentialExpense)
+	userDetails.MonthlyNonEssentialExpense = utils.RoundOfTo2Decimal(Expenses.MonthlyNonEssentialExpense)
 	userDetails.MonthlySavings = userDetails.GrossMonthlyIncome - userDetails.MonthlyNonEssentialExpense - userDetails.MonthlyEssentialExpense
-	userDetails.MonthlyInvestments = Expenses.MonthlyInvestments
+	userDetails.MonthlyInvestments = utils.RoundOfTo2Decimal(Expenses.MonthlyInvestments)
 	userDetails.MonthlyInvestibleSurplus = userDetails.MonthlySavings - userDetails.MonthlyInvestments
 
 	if userDetails.MonthlySavings < 0 {
@@ -121,17 +123,17 @@ func (p *RiskCalculatorService) CalculateRecommendedInvestibleSurplus(userDetail
 	var rcmInvestibleFund models.InvestibleSurplus
 
 	if userDetails.MonthlyInvestibleSurplus <= 0 {
-		rcmInvestibleFund.EmergencyFund = 0
+		rcmInvestibleFund.EmergencyFund = utils.RoundOfTo2Decimal(0)
 	} else if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund < 1000 {
-		rcmInvestibleFund.EmergencyFund = userDetails.MonthlyInvestibleSurplus
+		rcmInvestibleFund.EmergencyFund = utils.RoundOfTo2Decimal(userDetails.MonthlyInvestibleSurplus)
 	} else if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund > 1000 {
-		rcmInvestibleFund.EmergencyFund = constants.RecommendedEmergencyFund * userDetails.MonthlyInvestibleSurplus
+		rcmInvestibleFund.EmergencyFund = utils.RoundOfTo2Decimal(constants.RecommendedEmergencyFund * userDetails.MonthlyInvestibleSurplus)
 	}
 
 	if userDetails.MonthlyInvestibleSurplus*constants.RecommendedInvestibleFund >= 1000 {
-		rcmInvestibleFund.InvestibleFund = userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund
+		rcmInvestibleFund.InvestibleFund = utils.RoundOfTo2Decimal(userDetails.MonthlyInvestibleSurplus * constants.RecommendedInvestibleFund)
 	} else {
-		rcmInvestibleFund.InvestibleFund = 0
+		rcmInvestibleFund.InvestibleFund = utils.RoundOfTo2Decimal(0)
 	}
 
 	return rcmInvestibleFund, nil
@@ -141,11 +143,11 @@ func (p *RiskCalculatorService) CalculateCurrentPercentStats(userDetails *models
 
 	var currentStats models.CurrentPercentStats
 
-	currentStats.EssentialExpenses = userDetails.MonthlyEssentialExpense / userDetails.GrossMonthlyIncome * 100
+	currentStats.EssentialExpenses = utils.RoundOfTo2Decimal(userDetails.MonthlyEssentialExpense / userDetails.GrossMonthlyIncome * 100)
 
-	currentStats.NonEssentialExpenses = userDetails.MonthlyNonEssentialExpense / userDetails.GrossMonthlyIncome * 100
+	currentStats.NonEssentialExpenses = utils.RoundOfTo2Decimal(userDetails.MonthlyNonEssentialExpense / userDetails.GrossMonthlyIncome * 100)
 
-	currentStats.Savings = userDetails.MonthlySavings / userDetails.GrossMonthlyIncome * 100
+	currentStats.Savings = utils.RoundOfTo2Decimal(userDetails.MonthlySavings / userDetails.GrossMonthlyIncome * 100)
 
 	return currentStats, nil
 }
@@ -180,11 +182,11 @@ func (p *RiskCalculatorService) CalculateIdealFinancialProfile(userDetails *mode
 
 	var idealStats models.IdealPercentStats
 
-	idealStats.EssentialExpenses = userDetails.GrossMonthlyIncome * constants.IdealMonthlyEssentialExpense / 100
+	idealStats.EssentialExpenses = utils.RoundOfTo2Decimal(userDetails.GrossMonthlyIncome * constants.IdealMonthlyEssentialExpense / 100)
 
-	idealStats.NonEssentialExpenses = userDetails.GrossMonthlyIncome * constants.IdealMonthlyNonEssentialExpense / 100
+	idealStats.NonEssentialExpenses = utils.RoundOfTo2Decimal(userDetails.GrossMonthlyIncome * constants.IdealMonthlyNonEssentialExpense / 100)
 
-	idealStats.Savings = userDetails.GrossMonthlyIncome * constants.IdealMonthlySavings / 100
+	idealStats.Savings = utils.RoundOfTo2Decimal(userDetails.GrossMonthlyIncome * constants.IdealMonthlySavings / 100)
 
 	return idealStats, nil
 
