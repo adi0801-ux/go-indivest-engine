@@ -94,7 +94,7 @@ func (s *HTTPServer) RegisterRoutes(router *fiber.App) {
 			accounts.Get("/holdings", s.GetHoldingsController)
 			accounts.Get("/transactions", s.GetTransactionController)
 			accounts.Get("/transactionsStatus", s.RequestStatusController)
-			//accounts.Get("/sortedTransaction", s.SortedTransactionController)
+			accounts.Get("/sortedTransaction", s.SortedTransactionController)
 
 			watchList := accounts.Group("/watchList")
 			{

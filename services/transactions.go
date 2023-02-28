@@ -8,6 +8,7 @@ import (
 	"indivest-engine/utils"
 	"net/http"
 	"net/url"
+	"sort"
 	"time"
 )
 
@@ -91,7 +92,7 @@ func (p *MFService) CreateDeposit(createDeposit *models.CreateDeposit) (int, int
 		UserId:            createDeposit.UserId,
 		FundCode:          data.Deposit.FundCode,
 		NAV:               data.Deposit.NAV,
-		Amount:            data.Deposit.Amount,
+		Amount:            utils.RoundOfTo2Decimal(data.Deposit.Amount),
 		PaymentStatus:     "payment initiated",
 		TransactionStatus: "transaction initiated",
 		CreatedAt:         time.Now().UTC(),
@@ -196,7 +197,7 @@ func (p *MFService) CreateWithdrawal(createWithdrawal *models.CreateWithdrawals)
 	createWithdrawals := &models.CreateWithdrawalDb{
 		UserId:           createWithdrawal.UserId,
 		Uuid:             data.Withdrawal.Uuid,
-		Amount:           data.Withdrawal.Amount,
+		Amount:           utils.RoundOfTo2Decimal(data.Withdrawal.Amount),
 		FundCode:         data.Withdrawal.FundCode,
 		FundName:         data.Withdrawal.FundName,
 		WithdrawalStatus: constants.WithdrawalInitiated,
@@ -285,7 +286,7 @@ func (p *MFService) CreateSip(createSip *models.CreateSip) (int, interface{}, er
 		EndDate:       data.Sip.EndDate,
 		Frequency:     data.Sip.Frequency,
 		FundCode:      data.Sip.FundCode,
-		Amount:        data.Sip.Amount,
+		Amount:        utils.RoundOfTo2Decimal(data.Sip.Amount),
 		Uuid:          data.Sip.Uuid,
 		CreatedAt:     time.Time{},
 		UpdatedAt:     time.Now(),
@@ -401,59 +402,70 @@ func (p *MFService) ShowWatchList(userDtls *models.ShowWatchList) (int, interfac
 //	}
 //
 // datewise sorting for transaction
-//type DataStr struct {
-//	Key   int
-//	Value string
-//}
 //
-//func main() {
-//	data := []string{"AWS", "GoLinux", "Google", "Linux", "Chrome"}
-//
-//	var res []DataStr
-//	for key, value := range data {
-//		res = append(res, DataStr{
-//			key, value,
-//		})
-//	}
-////}
-//func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
-//	type datewiseTransaction []struct {
-//		CreatedTime time.Time
-//		amount     string
-//		Updated_at unix.BpfHdr
-//		User_id    string
-//	}
-//	res := make([]datewiseTransaction, 0)
-//	depoDtls, err := p.SavvyRepo.ReadAllDeposits(userDtls.UserId)
-//	withDtls, err := p.SavvyRepo.ReadAllWithdrawal(userDtls.UserId)
-//	sipDtls, err := p.SavvyRepo.ReadAllSip(userDtls.UserId)
-//	if err != nil {
-//		utils.Log.Error(err)
+//	type DataStr struct {
+//		Key   int
+//		Value string
 //	}
 //
-//	for _, values := range *depoDtls {
-//		res = append(res, datewiseTransaction{
-//			CreatedTime: values.CreatedAt,
-//			Updated_at: values.UpdatedAt,
-//		})
-//	}
+//	func main() {
+//		data := []string{"AWS", "GoLinux", "Google", "Linux", "Chrome"}
 //
-//	sort.Slice(res, func(i, j int) bool {
-//		return res[i][]  datewiseTransaction[j].created_at
-//	})
+//		var res []DataStr
+//		for key, value := range data {
+//			res = append(res, DataStr{
+//				key, value,
+//			})
+//		}
 //
-//	//for _, pur := range datewiseTransaction {
-//	//
-//	//	fmt.Printf("%s %s\n", pur.id, pur.date.Format("2 Jan 2006 15:04"))
-//	//}
-//	// Sort by age preserving name order
-//	sort.Slice(datewiseTransaction, func(i, j int) bool {
-//		return datewiseTransaction[i].date.Before(datewiseTransaction[j].date)
-//	})
-//	//
-//	//fmt.Println("By age,name:", people)
-//	//sort.Slice(datewiseTransaction, func(p, q int) bool {
-//	//	return datewiseTransaction[p]. < Author[q].a_id
-//	//})
-//	return http.StatusOK, datewiseTransaction, nil
-//}
+// //}
+type DatewiseTransaction struct {
+	CreatedTime time.Time
+	Amount      float64
+	UpdatedAt   time.Time
+	UserId      string
+}
+
+func (p *MFService) SortedTransaction(userDtls *models.UserDtls) (int, interface{}, error) {
+
+	res := []*DatewiseTransaction{}
+	depoDtls, err := p.SavvyRepo.ReadAllDeposits(userDtls.UserId)
+	withDtls, err := p.SavvyRepo.ReadAllWithdrawal(userDtls.UserId)
+	sipDtls, err := p.SavvyRepo.ReadAllSip(userDtls.UserId)
+	if err != nil {
+		utils.Log.Error(err)
+	}
+
+	for _, values := range *depoDtls {
+
+		res = append(res, &DatewiseTransaction{
+			Amount:      values.Amount,
+			CreatedTime: values.CreatedAt,
+			UpdatedAt:   values.UpdatedAt,
+			UserId:      userDtls.UserId,
+		})
+	}
+	for _, values := range *withDtls {
+
+		res = append(res, &DatewiseTransaction{
+			Amount:      values.Amount,
+			CreatedTime: values.CreatedAt,
+			UpdatedAt:   values.UpdatedAt,
+			UserId:      userDtls.UserId,
+		})
+	}
+	for _, values := range *sipDtls {
+
+		res = append(res, &DatewiseTransaction{
+			Amount:      values.Amount,
+			CreatedTime: values.CreatedAt,
+			UpdatedAt:   values.UpdatedAt,
+			UserId:      userDtls.UserId,
+		})
+	}
+	sort.Slice(res, func(p, q int) bool {
+		return res[p].CreatedTime.Unix() < res[q].CreatedTime.Unix()
+	})
+
+	return http.StatusOK, res, nil
+}

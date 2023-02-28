@@ -39,7 +39,7 @@ type CreateWithdrawalDb struct {
 	CreatedAt        time.Time `gorm:"column:created_at;not null" json:"created_at"`
 	UpdatedAt        time.Time `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
 	Uuid             string    `gorm:"column:uuid" json:"uuid"`
-	Amount           string    `gorm:"column:amount" json:"amount"`
+	Amount           float64   `gorm:"column:amount" json:"amount"`
 	FundCode         string    `gorm:"column:fund_code" json:"fund_code"`
 	FundName         string    `gorm:"column:fund_name" json:"fund_name"`
 	WithdrawalStatus string    `gorm:"withdrawal_status" json:"withdrawal_status"`

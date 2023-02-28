@@ -98,23 +98,23 @@ type Deposit struct {
 
 // Withdrawals
 type CreateWithdrawals struct {
-	UserId   string `json:"user_id"`
-	Amount   string `json:"amount"`
-	FundCode string `json:"fund_code"`
+	UserId   string  `json:"user_id"`
+	Amount   float64 `json:"amount"`
+	FundCode string  `json:"fund_code"`
 }
 
 type CreateWithdrawalAPI struct {
 	Withdrawal struct {
-		Amount               string `json:"amount"`
-		FundCode             string `json:"fund_code"`
-		AccountUuid          string `json:"account_uuid"`
-		PartnerTransactionId string `json:"partner_transaction_id"`
+		Amount               float64 `json:"amount"`
+		FundCode             string  `json:"fund_code"`
+		AccountUuid          string  `json:"account_uuid"`
+		PartnerTransactionId string  `json:"partner_transaction_id"`
 	} `json:"withdrawal"`
 }
 type CreateWithdrawlAPIResponse struct {
 	Withdrawal struct {
 		Uuid      string      `json:"uuid"`
-		Amount    string      `json:"amount"`
+		Amount    float64     `json:"amount"`
 		FundCode  string      `json:"fund_code"`
 		FundName  string      `json:"fund_name"`
 		Units     interface{} `json:"units"`
@@ -141,7 +141,7 @@ type VerifyWithdrawOtpAPIResponse struct {
 	Withdrawal struct {
 		Uuid         string      `json:"uuid"`
 		WithdrawalId string      `json:"withdrawal_id"`
-		Amount       string      `json:"amount"`
+		Amount       float64     `json:"amount"`
 		FundCode     string      `json:"fund_code"`
 		FundName     string      `json:"fund_name"`
 		Units        interface{} `json:"units"`
