@@ -46,7 +46,9 @@ func (d *Database) ReadAllFundDetails_() (*[]models.FundsSupported, error) {
 }
 func (d *Database) ReadFirstTenFundDetails_() (*[]models.FundsSupported, error) {
 	u := &[]models.FundsSupported{}
-	err := d.Store.Limit(10).Find(&u).Error
+	//err := d.Store.First(&u, "10").Error
+	err := d.Store.Find(&u, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}).Error
+	//err := d.Store.Offset(5).Limit(5).Find(&u).Error
 	//err := d.Store.Find(u).Error
 	return u, err
 }
